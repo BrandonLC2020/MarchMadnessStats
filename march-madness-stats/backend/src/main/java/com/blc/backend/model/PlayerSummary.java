@@ -1,18 +1,45 @@
 package com.blc.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PlayerSummary {
+    @JsonProperty("full_name")
     private String fullName;
+
+    @JsonProperty("jersey_number")
     private String jerseyNumber;
+
+    @JsonProperty("id")
     private String id;
+
+    @JsonProperty("first_name")
     private String firstName;
+
+    @JsonProperty("last_name")
     private String lastName;
+
+    @JsonProperty("position")
     private String position;
+
+    @JsonProperty("primary_position")
     private String primaryPosition;
+
+    @JsonProperty("played")
     private boolean played;
+
+    @JsonProperty("active")
     private boolean active;
+
+    @JsonProperty("starter")
     private boolean starter;
+
+    @JsonProperty("on_court")
     private boolean onCourt;
+
+    @JsonProperty("name_suffix")
     private String nameSuffix;
+
+    @JsonProperty("statistics")
     private Statistics statistics;
 
     // Getters and Setters

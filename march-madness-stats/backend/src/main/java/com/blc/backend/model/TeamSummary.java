@@ -2,18 +2,43 @@ package com.blc.backend.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TeamSummary {
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("alias")
     private String alias;
+
+    @JsonProperty("market")
     private String market;
+
+    @JsonProperty("id")
     private String id;
+
+    @JsonProperty("points")
     private int points;
+
+    @JsonProperty("rank")
     private int rank;
+
+    @JsonProperty("bonus")
     private boolean bonus;
+
+    @JsonProperty("remaining_timeouts")
     private int remainingTimeouts;
+
+    @JsonProperty("scoring")
     private List<Scoring> scoring;
+
+    @JsonProperty("statistics")
     private Statistics statistics;
+
+    @JsonProperty("coaches")
     private List<Coach> coaches;
+
+    @JsonProperty("players")
     private List<PlayerSummary> players;
 
     public String getName() {

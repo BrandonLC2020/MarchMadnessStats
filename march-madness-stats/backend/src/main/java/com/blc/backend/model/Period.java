@@ -1,49 +1,138 @@
 package com.blc.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Period {
+    @JsonProperty("type")
     private String type;
+
+    @JsonProperty("id")
     private String id;
+
+    @JsonProperty("number")
     private int number;
+
+    @JsonProperty("sequence")
     private int sequence;
+
+    @JsonProperty("minutes")
     private String minutes;
+
+    @JsonProperty("field_goals_made")
     private int fieldGoalsMade;
+
+    @JsonProperty("field_goals_att")
     private int fieldGoalsAtt;
+
+    @JsonProperty("field_goals_pct")
     private double fieldGoalsPct;
+
+    @JsonProperty("three_points_made")
     private int threePointsMade;
+
+    @JsonProperty("three_points_att")
     private int threePointsAtt;
+
+    @JsonProperty("three_points_pct")
     private double threePointsPct;
+
+    @JsonProperty("two_points_made")
     private int twoPointsMade;
+
+    @JsonProperty("two_points_att")
     private int twoPointsAtt;
+
+    @JsonProperty("two_points_pct")
     private double twoPointsPct;
+
+    @JsonProperty("blocked_att")
     private int blockedAtt;
+
+    @JsonProperty("free_throws_made")
     private int freeThrowsMade;
+
+    @JsonProperty("free_throws_att")
     private int freeThrowsAtt;
+
+    @JsonProperty("free_throws_pct")
     private double freeThrowsPct;
+
+    @JsonProperty("offensive_rebounds")
     private int offensiveRebounds;
+
+    @JsonProperty("defensive_rebounds")
     private int defensiveRebounds;
+
+    @JsonProperty("rebounds")
     private int rebounds;
+
+    @JsonProperty("assists")
     private int assists;
+
+    @JsonProperty("turnovers")
     private int turnovers;
+
+    @JsonProperty("steals")
     private int steals;
+
+    @JsonProperty("blocks")
     private int blocks;
+
+    @JsonProperty("assists_turnover_ratio")
     private double assistsTurnoverRatio;
+
+    @JsonProperty("personal_fouls")
     private int personalFouls;
+
+    @JsonProperty("offensive_fouls")
     private int offensiveFouls;
+
+    @JsonProperty("tech_fouls")
     private int techFouls;
+
+    @JsonProperty("flagrant_fouls")
     private int flagrantFouls;
+
+    @JsonProperty("pls_min")
     private int plsMin;
+
+    @JsonProperty("points")
     private int points;
+
+    @JsonProperty("effective_fg_pct")
     private double effectiveFgPct;
+
+    @JsonProperty("efficiency")
     private int efficiency;
+
+    @JsonProperty("efficiency_game_score")
     private double efficiencyGameScore;
+
+    @JsonProperty("points_in_paint")
     private int pointsInPaint;
+
+    @JsonProperty("points_in_paint_att")
     private int pointsInPaintAtt;
+
+    @JsonProperty("points_in_paint_made")
     private int pointsInPaintMade;
+
+    @JsonProperty("points_in_paint_pct")
     private double pointsInPaintPct;
+
+    @JsonProperty("true_shooting_att")
     private double trueShootingAtt;
+
+    @JsonProperty("true_shooting_pct")
     private double trueShootingPct;
+
+    @JsonProperty("fouls_drawn")
     private int foulsDrawn;
+
+    @JsonProperty("points_off_turnovers")
     private int pointsOffTurnovers;
+
+    @JsonProperty("second_chance_pts")
     private int secondChancePts;
 
     public String getType() {
