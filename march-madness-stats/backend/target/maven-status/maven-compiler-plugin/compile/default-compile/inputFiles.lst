@@ -1,7 +1,11 @@
+/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Poll.java
+/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Rankings.java
+/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/GameSchedule.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Player.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Location.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/config/Config.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/PlayerSummary.java
+/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/League.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Statistics.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Coach.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Game.java
@@ -15,3 +19,4 @@
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Venue.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Conference.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Season.java
+/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/TeamRanking.java
