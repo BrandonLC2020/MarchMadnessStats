@@ -1,0 +1,71 @@
+package com.blc.backend.model;
+
+import java.util.List;
+
+public class Statistics {
+    private String minutes;
+    private int fieldGoalsMade;
+    private int fieldGoalsAtt;
+    private double fieldGoalsPct;
+    private int threePointsMade;
+    private int threePointsAtt;
+    private double threePointsPct;
+    private int twoPointsMade;
+    private int twoPointsAtt;
+    private double twoPointsPct;
+    private int blockedAtt;
+    private int freeThrowsMade;
+    private int freeThrowsAtt;
+    private double freeThrowsPct;
+    private int offensiveRebounds;
+    private int defensiveRebounds;
+    private int assists;
+    private int steals;
+    private int blocks;
+    private double assistsTurnoverRatio;
+    private int personalFouls;
+    private int ejections;
+    private int foulouts;
+    private int points;
+    private int fastBreakPts;
+    private int secondChancePts;
+    private int teamTurnovers;
+    private int pointsOffTurnovers;
+    private int teamRebounds;
+    private int flagrantFouls;
+    private int playerTechFouls;
+    private int teamTechFouls;
+    private int coachTechFouls;
+    private int pointsInPaint;
+    private int teamOffensiveRebounds;
+    private int teamDefensiveRebounds;
+    private int totalRebounds;
+    private int totalTurnovers;
+    private int personalRebounds;
+    private int playerTurnovers;
+    private int fieldGoalsAtRimMade;
+    private int fieldGoalsAtRimAtt;
+    private double fieldGoalsAtRimPct;
+    private int fieldGoalsAtMidrangeMade;
+    private int fieldGoalsAtMidrangeAtt;
+    private double fieldGoalsAtMidrangePct;
+    private int benchPoints;
+    private int biggestLead;
+    private double effectiveFgPct;
+    private int efficiency;
+    private double efficiencyGameScore;
+    private int foulsDrawn;
+    private int offensiveFouls;
+    private int plsMin;
+    private int pointsInPaintAtt;
+    private int pointsInPaintMade;
+    private double pointsInPaintPct;
+    private int totalFouls;
+    private double trueShootingAtt;
+    private double trueShootingPct;
+    private int coachEjections;
+    private MostUnanswered mostUnanswered;
+    private List<Period> periods;
+
+    // Getters and Setters
+}
