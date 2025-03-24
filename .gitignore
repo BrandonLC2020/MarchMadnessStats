@@ -29,4 +29,4 @@ march-madness-stats/backend/.LCKpom.xml~
 march-madness-stats/frontend/.LCKpom.xml~
 
 # dotenv File
-.env
+*.env
