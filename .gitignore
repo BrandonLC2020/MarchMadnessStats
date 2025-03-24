@@ -27,3 +27,6 @@ replay_pid*
 march-madness-stats/.LCKpom.xml~
 march-madness-stats/backend/.LCKpom.xml~
 march-madness-stats/frontend/.LCKpom.xml~
+
+# dotenv File
+.env
