@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Config {
     private static final Dotenv dotenv = Dotenv.configure()
-        .directory("march-madness-stats/.env") // Folder containing .env
+        .directory("march-madness-stats/") // Folder containing .env
         .load();
 
 
