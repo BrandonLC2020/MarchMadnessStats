@@ -24,6 +24,9 @@ public class Game {
     @JsonProperty("conference_game")
     private boolean conferenceGame;
 
+    @JsonProperty("venue")
+    private Venue venue;
+
     @JsonProperty("home")
     private Team home;
 
@@ -83,6 +86,14 @@ public class Game {
         this.conferenceGame = conferenceGame;
     }
 
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
+    }
+
     public Team getHome() {
         return home;
     }
@@ -97,43 +108,5 @@ public class Game {
 
     public void setAway(Team away) {
         this.away = away;
-    }
-
-    // Nested Team class
-    public static class Team {
-
-        @JsonProperty("name")
-        private String name;
-
-        @JsonProperty("alias")
-        private String alias;
-
-        @JsonProperty("id")
-        private String id;
-
-        // Getters and setters
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getAlias() {
-            return alias;
-        }
-
-        public void setAlias(String alias) {
-            this.alias = alias;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
     }
 }
