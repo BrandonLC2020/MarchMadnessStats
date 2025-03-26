@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import io.github.cdimascio.dotenv.Dotenv;
     
 public class DatabaseConnection {
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure()
+        .directory("../") // Folder containing .env
+        .load();
     private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
 
     private static final String DATABASE_NAME = dotenv.get("DB_NAME");

@@ -18,6 +18,7 @@ com/blc/backend/model/Conference.class
 com/blc/backend/model/Statistics.class
 com/blc/backend/model/Season.class
 com/blc/backend/model/Period.class
+com/blc/backend/repository/DatabaseConnection.class
 com/blc/backend/model/Player$Season.class
 com/blc/backend/model/Location.class
 com/blc/backend/model/Game.class
