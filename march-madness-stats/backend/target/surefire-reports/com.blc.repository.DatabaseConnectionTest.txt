@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: com.blc.repository.DatabaseConnectionTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.087 s <<< FAILURE! -- in com.blc.repository.DatabaseConnectionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.086 s <<< FAILURE! -- in com.blc.repository.DatabaseConnectionTest
 com.blc.repository.DatabaseConnectionTest.testGetConnection -- Time elapsed: 0.079 s <<< ERROR!
 java.lang.RuntimeException: Failed to connect to the database
 	at com.blc.repository.DatabaseConnectionTest.testGetConnection(DatabaseConnectionTest.java:19)
@@ -9,7 +9,7 @@ java.lang.RuntimeException: Failed to connect to the database
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 Caused by: java.lang.RuntimeException: Error connecting to the database
-	at com.blc.backend.repository.DatabaseConnection.getConnection(DatabaseConnection.java:57)
+	at com.blc.backend.repository.DatabaseConnection.getConnection(DatabaseConnection.java:66)
 	at com.blc.repository.DatabaseConnectionTest.testGetConnection(DatabaseConnectionTest.java:14)
 	... 3 more
 Caused by: java.sql.SQLException: Failed loading the class 'com.google.cloud.sql.mysql.SocketFactory'.
@@ -25,7 +25,7 @@ Caused by: java.sql.SQLException: Failed loading the class 'com.google.cloud.sql
 	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:682)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.blc.backend.repository.DatabaseConnection.getConnection(DatabaseConnection.java:53)
+	at com.blc.backend.repository.DatabaseConnection.getConnection(DatabaseConnection.java:62)
 	... 4 more
 Caused by: com.mysql.cj.exceptions.WrongArgumentException: Failed loading the class 'com.google.cloud.sql.mysql.SocketFactory'.
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)

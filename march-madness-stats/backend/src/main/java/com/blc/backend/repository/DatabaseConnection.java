@@ -21,7 +21,16 @@ public class DatabaseConnection {
     private static final String DB_NAME = dotenv.get("DB_NAME", "default_db_name");
     private static final String CLOUD_SQL_INSTANCE = dotenv.get("CLOUD_SQL_INSTANCE", "localhost");
     private static final String DB_USER = dotenv.get("DB_USER", "root");
-    private static final String DB_PASSWORD = dotenv.get("DB_PASSWORD", "password");
+    private static final String DB_PASSWORD = dotenv.get("DB_PASSWORD", "password");  // Don't log password
+
+    // Log environment variables (except for password for security reasons)
+    static {
+        logger.log(Level.INFO, "DB_NAME: {0}", DB_NAME);
+        logger.log(Level.INFO, "CLOUD_SQL_INSTANCE: {0}", CLOUD_SQL_INSTANCE);
+        logger.log(Level.INFO, "DB_USER: {0}", DB_USER);
+        // Don't log the password for security reasons
+        logger.log(Level.INFO, "DB_PASSWORD: (hidden for security reasons)");
+    }
 
     // JDBC URL format
     private static final String JDBC_URL = String.format("jdbc:mysql://google/%s?cloudSqlInstance=%s&socketFactory=com.google.cloud.sql.mysql.SocketFactory",
