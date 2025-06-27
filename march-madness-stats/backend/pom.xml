@@ -32,18 +32,13 @@
         <artifactId>java-dotenv</artifactId>
         <version>5.2.2</version>
     </dependency>
+    <!-- Microsoft SQL Server Driver -->
     <dependency>
-        <groupId>io.github.cdimascio</groupId>
-        <artifactId>dotenv-java</artifactId>
-        <version>3.0.0</version>
+        <groupId>com.microsoft.sqlserver</groupId>
+        <artifactId>mssql-jdbc</artifactId>
+        <scope>runtime</scope>
     </dependency>
-    <!-- MySQL Connector Dependency -->
-    <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>8.0.33</version> <!-- Stable version -->
-    </dependency>
-    <!-- Jackson for JSON Parsing -->
+    <!-- Jackson for JSON Parsing (managed by Spring Boot) -->
     <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
