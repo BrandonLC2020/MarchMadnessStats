@@ -1,5 +1,7 @@
 package com.blc.backend.model;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,11 +15,11 @@ public class Season {
     
     @JsonProperty("start_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String startDate;
+    private LocalDate startDate;
     
     @JsonProperty("end_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String endDate;
+    private LocalDate endDate;
     
     @JsonProperty("status")
     private String status;
@@ -55,19 +57,19 @@ public class Season {
         return this.startYear + 1;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

@@ -1,9 +1,7 @@
 package com.blc.backend.model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Game {
@@ -12,8 +10,8 @@ public class Game {
     private String id;
 
     @JsonProperty("scheduled")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDate scheduledDate;
+    // Use a type that preserves time and timezone info, and let Jackson handle parsing.
+    private OffsetDateTime scheduled;
 
     @JsonProperty("home_points")
     private int homePoints;
@@ -42,24 +40,12 @@ public class Game {
         this.id = id;
     }
 
-    public LocalDate getScheduled() {
-        return scheduledDate;
+    public OffsetDateTime getScheduled() {
+        return scheduled;
     }
 
-    public LocalDate getScheduledDate() {
-        return scheduledDate;
-    }
-    
-    public void setScheduled(String scheduled) {
-        // Convert the string to a LocalDate object (only the date part)
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
-        this.scheduledDate = LocalDate.parse(scheduled.substring(0, 10), formatter);
-    }
-
-    public void setScheduledDate(String scheduled) {
-        // Convert the string to a LocalDate object (only the date part)
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
-        this.scheduledDate = LocalDate.parse(scheduled.substring(0, 10), formatter);
+    public void setScheduled(OffsetDateTime scheduled) {
+        this.scheduled = scheduled;
     }
 
     public int getHomePoints() {

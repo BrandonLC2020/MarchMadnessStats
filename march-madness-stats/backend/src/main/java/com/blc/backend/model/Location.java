@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Location {
 
     @JsonProperty("lat")
-    private String lat;
+    private Double lat;
 
     @JsonProperty("lng")
-    private String lng;
+    private Double lng;
 
     // Getters and setters
-    public String getLat() { return lat; }
-    public void setLat(String lat) { this.lat = lat; }
+    public Double getLat() { return lat; }
+    public void setLat(Double lat) { this.lat = lat; }
 
-    public String getLng() { return lng; }
-    public void setLng(String lng) { this.lng = lng; }
+    public Double getLng() { return lng; }
+    public void setLng(Double lng) { this.lng = lng; }
 }
