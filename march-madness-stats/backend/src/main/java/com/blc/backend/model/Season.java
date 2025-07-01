@@ -44,14 +44,6 @@ public class Season {
         this.startYear = year;
     }
 
-    public void setYear(int year) {
-        this.startYear = year;
-    }
-
-    public int getYear() {
-        return this.startYear;
-    }
-
      // Calculate and return the end year (1 more than the start year)
      public int getEndYear() {
         return this.startYear + 1;
