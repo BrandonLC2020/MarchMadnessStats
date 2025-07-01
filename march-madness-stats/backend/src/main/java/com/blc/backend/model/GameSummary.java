@@ -1,5 +1,7 @@
 package com.blc.backend.model;
 
+import java.time.OffsetDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameSummary {
@@ -13,7 +15,7 @@ public class GameSummary {
     private boolean neutralSite;
 
     @JsonProperty("scheduled")
-    private String scheduled;
+    private OffsetDateTime scheduled;
 
     @JsonProperty("conference_game")
     private boolean conferenceGame;
@@ -76,11 +78,11 @@ public class GameSummary {
         this.neutralSite = neutralSite;
     }
 
-    public String getScheduled() {
+    public OffsetDateTime getScheduled() {
         return scheduled;
     }
 
-    public void setScheduled(String scheduled) {
+    public void setScheduled(OffsetDateTime scheduled) {
         this.scheduled = scheduled;
     }
 

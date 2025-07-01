@@ -16,7 +16,6 @@
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/TeamSummary.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/BackendApplication.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/MostUnanswered.java
-/Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/repository/DatabaseConnection.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Venue.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Conference.java
 /Users/brandonlamer-connolly/code/MarchMadnessStats/march-madness-stats/backend/src/main/java/com/blc/backend/model/Season.java
