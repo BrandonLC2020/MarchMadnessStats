@@ -1,7 +1,8 @@
-package com.blc.backend.model;
+package com.blc.backend.model.core;
 
 import java.util.List;
 
+import com.blc.backend.model.Conference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Team {

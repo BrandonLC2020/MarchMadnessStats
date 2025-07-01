@@ -2,6 +2,8 @@ package com.blc.backend.model;
 
 import java.time.OffsetDateTime;
 
+import com.blc.backend.model.core.Team;
+import com.blc.backend.model.core.Venue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Game {

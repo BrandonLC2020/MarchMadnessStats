@@ -1,4 +1,4 @@
-package com.blc.backend.model;
+package com.blc.backend.model.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -2,6 +2,9 @@ package com.blc.backend.model;
 
 import java.util.List;
 
+import com.blc.backend.model.core.Location;
+import com.blc.backend.model.core.Season;
+import com.blc.backend.model.core.Team;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

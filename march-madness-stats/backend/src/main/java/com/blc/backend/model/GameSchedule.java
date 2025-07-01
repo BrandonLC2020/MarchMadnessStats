@@ -2,6 +2,8 @@ package com.blc.backend.model;
 
 import java.util.List;
 
+import com.blc.backend.model.core.League;
+import com.blc.backend.model.core.Season;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameSchedule {

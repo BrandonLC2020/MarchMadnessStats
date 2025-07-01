@@ -3,6 +3,8 @@ package com.blc.backend.model;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.blc.backend.model.core.Season;
+import com.blc.backend.model.core.Venue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameSummary {
