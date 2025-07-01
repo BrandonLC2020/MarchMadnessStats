@@ -1,6 +1,7 @@
 package com.blc.backend.model;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,6 +11,12 @@ public class GameSummary {
 
     @JsonProperty("title")
     private String title;
+
+    @JsonProperty("status")
+    private String status;
+
+    @JsonProperty("coverage")
+    private String coverage;
 
     @JsonProperty("neutral_site")
     private boolean neutralSite;
@@ -38,6 +45,9 @@ public class GameSummary {
     @JsonProperty("track_on_court")
     private boolean trackOnCourt;
 
+    @JsonProperty("entry_mode")
+    private String entryMode;
+
     @JsonProperty("clock_decimal")
     private String clockDecimal;
 
@@ -47,12 +57,21 @@ public class GameSummary {
     @JsonProperty("venue")
     private Venue venue;
 
+    @JsonProperty("broadcasts")
+    private List<Broadcast> broadcasts;
+
+    @JsonProperty("time_zones")
+    private TimeZones timeZones;
+
     @JsonProperty("home")
-    private Team home;
+    private TeamSummary home;
 
     @JsonProperty("away")
-    private Team away;
+    private TeamSummary away;
 
+    @JsonProperty("officials")
+    private List<Official> officials;
+    
     // Getters and Setters
     public String getId() {
         return id;
@@ -68,6 +87,22 @@ public class GameSummary {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCoverage() {
+        return coverage;
+    }
+
+    public void setCoverage(String coverage) {
+        this.coverage = coverage;
     }
 
     public boolean isNeutralSite() {
@@ -142,6 +177,14 @@ public class GameSummary {
         this.trackOnCourt = trackOnCourt;
     }
 
+    public String getEntryMode() {
+        return entryMode;
+    }
+
+    public void setEntryMode(String entryMode) {
+        this.entryMode = entryMode;
+    }
+
     public String getClockDecimal() {
         return clockDecimal;
     }
@@ -166,19 +209,114 @@ public class GameSummary {
         this.venue = venue;
     }
 
-    public Team getHome() {
+    public List<Broadcast> getBroadcasts() {
+        return broadcasts;
+    }
+
+    public void setBroadcasts(List<Broadcast> broadcasts) {
+        this.broadcasts = broadcasts;
+    }
+
+    public TimeZones getTimeZones() {
+        return timeZones;
+    }
+
+    public void setTimeZones(TimeZones timeZones) {
+        this.timeZones = timeZones;
+    }
+
+    public TeamSummary getHome() {
         return home;
     }
 
-    public void setHome(Team home) {
+    public void setHome(TeamSummary home) {
         this.home = home;
     }
 
-    public Team getAway() {
+    public TeamSummary getAway() {
         return away;
     }
 
-    public void setAway(Team away) {
+    public void setAway(TeamSummary away) {
         this.away = away;
+    }
+
+    public List<Official> getOfficials() {
+        return officials;
+    }
+
+    public void setOfficials(List<Official> officials) {
+        this.officials = officials;
+    }
+
+    public static class Broadcast {
+        @JsonProperty("type")
+        private String type;
+        @JsonProperty("locale")
+        private String locale;
+        @JsonProperty("network")
+        private String network;
+
+        public String getType() { return type; }
+        public void setType(String type) { this.type = type; }
+
+        public String getLocale() { return locale; }
+        public void setLocale(String locale) { this.locale = locale; }
+
+        public String getNetwork() { return network; }
+        public void setNetwork(String network) { this.network = network; }
+    }
+
+    public static class TimeZones {
+        @JsonProperty("venue")
+        private String venue;
+        @JsonProperty("home")
+        private String home;
+        @JsonProperty("away")
+        private String away;
+
+        public String getVenue() { return venue; }
+        public void setVenue(String venue) { this.venue = venue; }
+
+        public String getHome() { return home; }
+        public void setHome(String home) { this.home = home; }
+
+        public String getAway() { return away; }
+        public void setAway(String away) { this.away = away; }
+    }
+
+    public static class Official {
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("full_name")
+        private String fullName;
+
+        @JsonProperty("assignment")
+        private String assignment;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getAssignment() {
+            return assignment;
+        }
+
+        public void setAssignment(String assignment) {
+            this.assignment = assignment;
+        }
     }
 }
