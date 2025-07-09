@@ -64,6 +64,24 @@
         <artifactId>jaxb-runtime</artifactId>
         <scope>runtime</scope>
     </dependency>
+    <!-- Add JAXB XJC dependencies for Java 11+ -->
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-xjc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-jxc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>4.0.3</version>
+    </dependency>
 
   </dependencies>
   
@@ -90,6 +108,7 @@
                           <xsdOption>
                               <xsdDir>${project.basedir}/src/main/resources/schemas</xsdDir>
                               <packagename>com.blc.model</packagename>
+                              <extension>true</extension>
                           </xsdOption>
                       </xsdOptions>
                   </configuration>
