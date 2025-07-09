@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://feed.elasticstats.com/schema/basketball/ncaam/netrankings-v8.0.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="season" type="net:seasonType" xmlns:net="http://feed.elasticstats.com/schema/basketball/ncaam/netrankings-v8.0.xsd">
+    <xs:annotation>
+      <xs:documentation> Generation started @ 2024-02-28 16:41:27 UTC </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="teamType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:integer" name="avg_opp_net" use="optional"/>
+        <xs:attribute type="xs:integer" name="avg_opp_net_rank" use="optional"/>
+        <xs:attribute type="xs:integer" name="conf_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="conf_wins" use="optional"/>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:integer" name="losses" use="optional"/>
+        <xs:attribute type="xs:string" name="market" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:integer" name="net_non_conf_sos" use="optional"/>
+        <xs:attribute type="xs:integer" name="net_rank" use="optional"/>
+        <xs:attribute type="xs:integer" name="net_sos" use="optional"/>
+        <xs:attribute type="xs:integer" name="non_conf_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="non_conf_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="prev_net_rank" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_1_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_1_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_2_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_2_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_3_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_3_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_4_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="quad_4_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="road_losses" use="optional"/>
+        <xs:attribute type="xs:integer" name="road_wins" use="optional"/>
+        <xs:attribute type="xs:integer" name="wins" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="rankingsType">
+    <xs:sequence>
+      <xs:element type="net:teamType" name="team" maxOccurs="unbounded" minOccurs="0" xmlns:net="http://feed.elasticstats.com/schema/basketball/ncaam/netrankings-v8.0.xsd"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="seasonType">
+    <xs:sequence>
+      <xs:element type="net:rankingsType" name="rankings" xmlns:net="http://feed.elasticstats.com/schema/basketball/ncaam/netrankings-v8.0.xsd"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="id"/>
+    <xs:attribute type="xs:string" name="type"/>
+    <xs:attribute type="xs:string" name="year"/>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:s="http://feed.elasticstats.com/schema/basketball/ncaam/standings-v3.0.xsd"
+           targetNamespace="http://feed.elasticstats.com/schema/basketball/ncaam/standings-v3.0.xsd"
+  elementFormDefault="qualified" >
+
+  <xs:include schemaLocation="../common-v2.0.xsd"/>
+  <xs:include schemaLocation="../common-standings-v2.0.xsd"/>
+
+  <xs:complexType name="leagueType">
+    <xs:sequence>
+      <xs:element name="season" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="conference" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="team" type="s:teamRecordType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+                <xs:attribute name="id" use="optional" type="xs:string" />
+                <xs:attribute name="name" use="optional" type="xs:string"/>
+                <xs:attribute name="alias" use="optional" type="xs:string"/>
+              </xs:complexType> 
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="id" use="required" type="xs:string"/>
+          <xs:attribute name="type" use="required" type="xs:string"/>
+          <xs:attribute name="year" use="required" type="xs:integer"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="s:baseOrganizationAttributes"/>
+  </xs:complexType>
+
+  <xs:element name="league" type="s:leagueType" />
+ 
+  <xs:complexType name="teamRecordType">
+    <xs:sequence>
+      <xs:element name="games-behind" type="s:gamesBehindType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="streak" type="s:streakType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="records" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="record" maxOccurs="unbounded" minOccurs="0">
+              <xs:complexType>
+                <xs:attributeGroup ref="s:recordAttributes"/>
+                <xs:attribute name="record_type" type="xs:string" use="optional"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="s:baseTeamAttributes" />
+    <xs:attributeGroup ref="s:recordAttributes" />
+    <xs:attributeGroup ref="s:pointsAttributes" />
+    <xs:attribute name="subdivision" use="optional" type="xs:string" />
+  </xs:complexType>
+ 
+</xs:schema>

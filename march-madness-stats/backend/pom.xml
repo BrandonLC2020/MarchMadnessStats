@@ -54,6 +54,17 @@
         <artifactId>mssqlserver</artifactId>
         <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+
   </dependencies>
   
   <build>
@@ -62,6 +73,30 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-xjc-plugin</artifactId>
+          <version>4.0.0</version>
+          <executions>
+              <execution>
+                  <id>generate-sources</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                      <goal>xsdtojava</goal>
+                  </goals>
+                  <configuration>
+                      <outputDir>${project.build.directory}/generated-sources/java-models</outputDir>
+                      
+                      <xsdOptions>
+                          <xsdOption>
+                              <xsdDir>src/main/resources/schemas</xsdDir>
+                              <packagename>com.example.model</packagename>
+                          </xsdOption>
+                      </xsdOptions>
+                  </configuration>
+              </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
 </project>

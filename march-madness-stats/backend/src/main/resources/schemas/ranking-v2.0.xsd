@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:r="http://feed.elasticstats.com/schema/basketball/ranking-v2.0.xsd"
+           targetNamespace="http://feed.elasticstats.com/schema/basketball/ranking-v2.0.xsd" 
+           elementFormDefault="qualified" >
+
+  <xs:include schemaLocation="common-v2.0.xsd"/>
+
+  <xs:complexType name="pollType">
+    <xs:sequence>
+      <xs:element name="rankings" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="team" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attributeGroup ref="r:baseTeamAttributes" />
+                <xs:attributeGroup ref="r:recordAttributes" />
+                <xs:attribute name="rank" use="required" type="xs:integer"/>
+                <xs:attribute name="points" use="optional" type="xs:integer"/>
+                <xs:attribute name="fp_votes" use="optional" type="xs:integer"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="candidates" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="team" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attributeGroup ref="r:baseTeamAttributes" />
+                <xs:attributeGroup ref="r:recordAttributes" />
+                <xs:attribute name="votes" use="optional" type="xs:integer"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="r:baseOrganizationAttributes" />
+    <xs:attribute name="effective_time" use="optional" type="xs:dateTime"/>
+    <xs:attribute name="week" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PRE" />
+          <xs:enumeration value="W1" />
+          <xs:enumeration value="W2" />
+          <xs:enumeration value="W3" />
+          <xs:enumeration value="W4" />
+          <xs:enumeration value="W5" />
+          <xs:enumeration value="W6" />
+          <xs:enumeration value="W7" />
+          <xs:enumeration value="W8" />
+          <xs:enumeration value="W9" />
+          <xs:enumeration value="W10" />
+          <xs:enumeration value="W11" />
+          <xs:enumeration value="W12" />
+          <xs:enumeration value="W13" />
+          <xs:enumeration value="W14" />
+          <xs:enumeration value="W15" />
+          <xs:enumeration value="W16" />
+          <xs:enumeration value="W17" />
+          <xs:enumeration value="W18" />
+          <xs:enumeration value="W19" />
+          <xs:enumeration value="W20" />
+          <xs:enumeration value="PST" />
+          <xs:enumeration value="PSTF" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="year" use="optional" type="xs:integer"/>
+  </xs:complexType>
+
+  <xs:element name="poll" type="r:pollType" />
+
+  <xs:attributeGroup name="recordAttributes">
+    <xs:attribute name="prev_rank" type="xs:integer"/>
+    <xs:attribute name="losses" type="xs:integer"/>
+    <xs:attribute name="wins" type="xs:integer"/>    
+  </xs:attributeGroup>
+
+</xs:schema>
