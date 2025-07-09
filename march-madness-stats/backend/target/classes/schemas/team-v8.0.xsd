@@ -64,7 +64,11 @@
   
   <xs:complexType name="teamColorType">
     <xs:sequence>
-      <xs:element name="rgbColor" type="t:rgbColorAttributes" />
+      <xs:element name="rgbColor">
+        <xs:complexType>
+          <xs:attributeGroup ref="t:rgbColorAttributes" />
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
     <xs:attributeGroup ref="t:teamColorAttributes" />
   </xs:complexType>

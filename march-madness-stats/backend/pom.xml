@@ -85,12 +85,11 @@
                       <goal>xsdtojava</goal>
                   </goals>
                   <configuration>
-                      <outputDir>${project.build.directory}/generated-sources/java-models</outputDir>
-                      
+                      <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
                       <xsdOptions>
                           <xsdOption>
-                              <xsdDir>src/main/resources/schemas</xsdDir>
-                              <packagename>com.example.model</packagename>
+                              <xsdDir>${project.basedir}/src/main/resources/schemas</xsdDir>
+                              <packagename>com.blc.model</packagename>
                           </xsdOption>
                       </xsdOptions>
                   </configuration>

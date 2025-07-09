@@ -2,7 +2,6 @@ package com.blc.backend.model;
 
 import java.util.List;
 
-import com.blc.backend.model.core.Conference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
