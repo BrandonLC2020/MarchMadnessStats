@@ -3,10 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>3.2.2</version> 
-      <relativePath/> <!-- Ensures correct inheritance -->
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.1</version> <relativePath/>
   </parent>
 
   <groupId>com.blc</groupId>
@@ -14,107 +13,208 @@
   <version>1.0</version>
 
   <dependencies>
-    <!-- Spring Boot dependencies -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>java-dotenv</artifactId>
+      <version>5.2.2</version>
     </dependency>
+    
     <dependency>
-        <groupId>io.github.cdimascio</groupId>
-        <artifactId>java-dotenv</artifactId>
-        <version>5.2.2</version>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <scope>runtime</scope>
     </dependency>
-    <!-- Microsoft SQL Server Driver -->
-    <dependency>
-        <groupId>com.microsoft.sqlserver</groupId>
-        <artifactId>mssql-jdbc</artifactId>
-        <scope>runtime</scope>
-    </dependency>
-    <!-- Jackson for JSON Parsing (managed by Spring Boot) -->
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <!-- Testcontainers for integration testing with real databases -->
-    <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>mssqlserver</artifactId>
-        <scope>test</scope>
-    </dependency>
+
     <dependency>
         <groupId>jakarta.xml.bind</groupId>
         <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
-
     <dependency>
         <groupId>org.glassfish.jaxb</groupId>
         <artifactId>jaxb-runtime</artifactId>
-        <scope>runtime</scope>
     </dependency>
-    <!-- Add JAXB XJC dependencies for Java 11+ -->
+    
     <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-xjc</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-jxc</artifactId>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-impl</artifactId>
-        <version>4.0.3</version>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mssqlserver</artifactId>
+      <scope>test</scope>
     </dependency>
-
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-xjc-plugin</artifactId>
-          <version>4.0.0</version>
-          <executions>
-              <execution>
-                  <id>generate-sources</id>
-                  <phase>generate-sources</phase>
-                  <goals>
-                      <goal>xsdtojava</goal>
-                  </goals>
-                  <configuration>
-                      <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
-                      <xsdOptions>
-                          <xsdOption>
-                              <xsdDir>${project.basedir}/src/main/resources/schemas</xsdDir>
-                              <packagename>com.blc.model</packagename>
-                              <extension>true</extension>
-                          </xsdOption>
-                      </xsdOptions>
-                  </configuration>
-              </execution>
-          </executions>
-        </plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-xjc-plugin</artifactId>
+        <version>4.0.2</version> <executions>
+          <execution>
+            <id>generate-sources-v2</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>xsdtojava</goal>
+            </goals>
+            <configuration>
+              <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+              <xsdOptions>
+                <xsdOption>
+                  <xsd>${project.basedir}/src/main/resources/schemas/common-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/common-game-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/common-statistics-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/common-standings-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/ranking-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/rpi-ranking-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/statistics-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/tournament-v2.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/changelog-v2.0.xsd</xsd>
+                  <packagename>com.blc.model.v2</packagename>
+                  <extension>true</extension>
+                </xsdOption>
+              </xsdOptions>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>generate-sources-v3</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>xsdtojava</goal>
+            </goals>
+            <configuration>
+              <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+              <xsdOptions>
+                <xsdOption>
+                  <xsd>${project.basedir}/src/main/resources/schemas/common-statistics-v3.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/standings-v3.0.xsd</xsd>
+                  <xsd>${project.basedir}/src/main/resources/schemas/statistics-v3.0.xsd</xsd>
+                  <packagename>com.blc.model.v3</packagename>
+                  <extension>true</extension>
+                </xsdOption>
+              </xsdOptions>
+            </configuration>
+          </execution>
+          
+          <execution>
+            <id>generate-sources-v5</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>xsdtojava</goal>
+            </goals>
+            <configuration>
+                <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+                <xsdOptions>
+                    <xsdOption>
+                        <xsd>${project.basedir}/src/main/resources/schemas/schedule-v5.0.xsd</xsd>
+                        <packagename>com.blc.model.v5</packagename>
+                        <extension>true</extension>
+                    </xsdOption>
+                </xsdOptions>
+            </configuration>
+          </execution>
+          
+          <execution>
+              <id>generate-sources-v6</id>
+              <phase>generate-sources</phase>
+              <goals>
+                  <goal>xsdtojava</goal>
+              </goals>
+              <configuration>
+                  <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+                  <xsdOptions>
+                      <xsdOption>
+                          <xsd>${project.basedir}/src/main/resources/schemas/seasons-v6.0.xsd</xsd>
+                          <packagename>com.blc.model.v6</packagename>
+                          <extension>true</extension>
+                      </xsdOption>
+                  </xsdOptions>
+              </configuration>
+          </execution>
+
+          <execution>
+              <id>generate-sources-v7</id>
+              <phase>generate-sources</phase>
+              <goals>
+                  <goal>xsdtojava</goal>
+              </goals>
+              <configuration>
+                  <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+                  <xsdOptions>
+                      <xsdOption>
+                          <xsd>${project.basedir}/src/main/resources/schemas/profile-v7.0.xsd</xsd>
+                          <xsd>${project.basedir}/src/main/resources/schemas/teams-v7.0.xsd</xsd>
+                          <packagename>com.blc.model.v7</packagename>
+                          <extension>true</extension>
+                      </xsdOption>
+                  </xsdOptions>
+              </configuration>
+          </execution>
+          
+          <execution>
+            <id>generate-sources-v8</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>xsdtojava</goal>
+            </goals>
+            <configuration>
+                <sourceRoot>${project.build.directory}/generated-sources/java-models</sourceRoot>
+                <xsdOptions>
+                    <xsdOption>
+                        <xsd>${project.basedir}/src/main/resources/schemas/common-v8.0.xsd</xsd>
+                        <xsd>${project.basedir}/src/main/resources/schemas/common-game-v8.0.xsd</xsd>
+                        <xsd>${project.basedir}/src/main/resources/schemas/game-v8.0.xsd</xsd>
+                        <xsd>${project.basedir}/src/main/resources/schemas/netrankings-v8.0.xsd</xsd>
+                        <xsd>${project.basedir}/src/main/resources/schemas/pbp-v8.0.xsd</xsd>
+                        <xsd>${project.basedir}/src/main/resources/schemas/team-v8.0.xsd</xsd>
+                        <packagename>com.blc.model.v8</packagename>
+                        <extension>true</extension>
+                    </xsdOption>
+                </xsdOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/java-models</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 </project>
