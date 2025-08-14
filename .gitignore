@@ -31,6 +31,5 @@ march-madness-stats/frontend/.LCKpom.xml~
 # dotenv File
 *.env
 VM Instance March Madness Stats.rdp
-
-
+.vscode/
 march-madness-stats/backend/NCAAMB Schema
