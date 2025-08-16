@@ -13,7 +13,6 @@ const ConferencesView: React.FC = () => {
     useEffect(() => {
         const fetchConferences = async () => {
             try {
-                // setLoading(true); // Redundant, handled by initial state
                 const data = await getConferenceHistory();
                 setConferences(data);
             } catch (err: any) {
