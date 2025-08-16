@@ -1,22 +1,9 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
+import { Conference } from '../types/api';
 
 interface ConferenceCardProps {
-  conference: {
-    id: number;
-    sourceId: string;
-    name: string;
-    abbreviation: string;
-    shortName: string;
-    teams: {
-        id: number;
-        sourceId: string;
-        school: string;
-        mascot: string;
-        startSeason: number;
-        endSeason: number | null;
-    }[];
-  };
+  conference: Conference
 }
 
 const ConferenceCard: React.FC<ConferenceCardProps> = ({ conference }) => {
@@ -26,9 +13,11 @@ const ConferenceCard: React.FC<ConferenceCardProps> = ({ conference }) => {
         <Typography variant="h5" component="div">
           {conference.name} ({conference.abbreviation})
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {conference.teams.length} teams
-        </Typography>
+        {!!conference.teams &&
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            {conference.teams?.length} teams
+            </Typography>
+        }
       </CardContent>
     </Card>
   );

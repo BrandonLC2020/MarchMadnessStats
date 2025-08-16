@@ -1,14 +1,42 @@
-import React, { useEffect } from 'react';
-import { Typography, Box, Grid } from '@mui/material';
-import ConferenceCard from '../components/ConferenceCard';
-
-
+import React, { useEffect, useState } from 'react';
+import { Typography, Box, Grid, CircularProgress, Alert } from '@mui/material';
+import ConferenceCard from '../components/ConferenceCard'; // This line is not part of the diff, but it's in the original file.
+import { useConferences } from '../hooks/useConferences';
+import { Conference } from '../types/api';
 
 const ConferencesView: React.FC = () => {
-    const [conferences, setConferences] = React.useState([]);
+    const [conferences, setConferences] = useState<Conference[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const { getConferences } = useConferences();
+
     useEffect(() => {
-        // Fetch conference data here
-    }, []);
+        const fetchConferences = async () => {
+            try {
+                // setLoading(true); // Redundant, handled by initial state
+                const data = await getConferences();
+                setConferences(data);
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchConferences();
+    }, [getConferences]);
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>;
+    }
 
     return (
         <Box sx={{ p: 3 }}>
@@ -16,8 +44,8 @@ const ConferencesView: React.FC = () => {
                 Conferences
             </Typography>
             <Grid container spacing={2}>
-                {conferences.map((conference) => (
-                    <Grid item xs={12} sm={6} md={4} key={conference.id} component="div">
+                {conferences.map((conference: Conference) => (
+                    <Grid key={conference.id}>
                         <ConferenceCard conference={conference} />
                     </Grid>
                 ))}
