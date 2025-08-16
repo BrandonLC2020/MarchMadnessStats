@@ -103,14 +103,12 @@ const RankingsView: React.FC = () => {
                 </Box>
             </Popover>
             <Paper sx={{ p: 2, textAlign: 'center', mt: 2 }}>
-                <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        filterModel={filterModel}
-                        onFilterModelChange={(model) => setFilterModel(model)}
-                    />
-                </div>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    filterModel={filterModel}
+                    onFilterModelChange={(model) => setFilterModel(model)}
+                />
             </Paper>
         </Box>
     );
