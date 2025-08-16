@@ -36,3 +36,9 @@ march-madness-stats/backend/NCAAMB Schema
 
 # Maven build output
 target/
+
+# React frontend
+/march-madness-stats/frontend/node/
+/march-madness-stats/frontend/node_modules/
+/march-madness-stats/frontend/build/
+/march-madness-stats/frontend/npm-debug.log
