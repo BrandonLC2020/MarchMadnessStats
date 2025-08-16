@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, CircularProgress, Alert } from '@mui/material';
-import ConferenceCard from '../components/ConferenceCard'; // This line is not part of the diff, but it's in the original file.
+import ConferenceCard from '../components/ConferenceCard';
 import { useConferences } from '../hooks/useConferences';
 import { ConferenceHistory } from '../types/api';
 
