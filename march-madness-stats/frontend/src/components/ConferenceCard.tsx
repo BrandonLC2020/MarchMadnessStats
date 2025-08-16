@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
-import { Conference } from '../types/api';
+import { ConferenceHistory } from '../types/api';
 
 interface ConferenceCardProps {
-  conference: Conference
+  conference: ConferenceHistory
 }
 
 const ConferenceCard: React.FC<ConferenceCardProps> = ({ conference }) => {
