@@ -3,10 +3,8 @@ import { Typography, Box, Paper, Button, Popover, TextField, MenuItem } from '@m
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'rank', headerName: 'Rank', type: 'number', width: 110 },
-    { field: 'category', headerName: 'Category', width: 160 },
 ];
 
 const rows = [
