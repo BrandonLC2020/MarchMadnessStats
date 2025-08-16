@@ -42,3 +42,4 @@ target/
 /march-madness-stats/frontend/node_modules/
 /march-madness-stats/frontend/build/
 /march-madness-stats/frontend/npm-debug.log
+/march-madness-stats/frontend/package-lock.json
