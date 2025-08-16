@@ -33,3 +33,6 @@ march-madness-stats/frontend/.LCKpom.xml~
 VM Instance March Madness Stats.rdp
 .vscode/
 march-madness-stats/backend/NCAAMB Schema
+
+# Maven build output
+target/

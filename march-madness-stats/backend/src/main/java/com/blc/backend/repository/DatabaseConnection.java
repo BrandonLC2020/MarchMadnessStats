@@ -40,9 +40,8 @@ public class DatabaseConnection {
         // Using encrypt=true is recommended for security.
         // trustServerCertificate=true is used for simplicity; for production,
         // you should configure a proper trust store.
-        JDBC_URL = String.format(
-            "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=true;trustServerCertificate=true",
-            DB_HOST, DB_PORT, DB_NAME
+        JDBC_URL = "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=true;trustServerCertificate=true".formatted(
+                DB_HOST, DB_PORT, DB_NAME
         );
 
         LOGGER.info("Database connection configured for host: {}", DB_HOST);
