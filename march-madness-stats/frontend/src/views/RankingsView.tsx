@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import { Typography, Box, Paper, Button, Popover, TextField, MenuItem } from '@mui/material';
+import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'rank', headerName: 'Rank', type: 'number', width: 110 },
+    { field: 'conference', headerName: 'Conference', width: 160 },
 ];
 
 const rows = [
-    { id: 1, name: 'Alpha', rank: 1, category: 'A' },
-    { id: 2, name: 'Bravo', rank: 2, category: 'B' },
-    { id: 3, name: 'Charlie', rank: 3, category: 'A' },
-    { id: 4, name: 'Delta', rank: 4, category: 'C' },
-    { id: 5, name: 'Echo', rank: 5, category: 'B' },
+    { id: 1, name: 'Alpha', rank: 1, conference: 'A' },
+    { id: 2, name: 'Bravo', rank: 2, conference: 'B' },
+    { id: 3, name: 'Charlie', rank: 3, conference: 'A' },
+    { id: 4, name: 'Delta', rank: 4, conference: 'C' },
+    { id: 5, name: 'Echo', rank: 5, conference: 'B' },
 ];
 
-const seasonFilterOptions = [
+const seasonSearchOptions = [
     { value: 2025, label: '2024-25' },
     { value: 2024, label: '2023-24' },
     { value: 2023, label: '2022-23' },
@@ -41,7 +42,7 @@ const seasonFilterOptions = [
     { value: 2003, label: '2002-03' }
 ];
 
-const weekFilterOptions: { value: number | string; label: string }[] = [
+const weekSearchOptions: { value: number | string; label: string }[] = [
     { value: 'preseason', label: 'Preseason' },
     { value: 2, label: 'Week 2' },
     { value: 3, label: 'Week 3' },
@@ -76,9 +77,10 @@ const conferenceFilterOptions: { value: string; label: string }[] = [
 const RankingsView: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
-    const [filterColumn, setFilterColumn] = useState('');
-    const [filterOperator, setFilterOperator] = useState('contains');
-    const [filterValue, setFilterValue] = useState('');
+    const [filterConference, setFilterConference] = useState('');
+
+    const [searchWeek, setSearchWeek] = useState('');
+    const [searchSeason, setSearchSeason] = useState('');
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -89,9 +91,9 @@ const RankingsView: React.FC = () => {
     };
 
     const handleApplyFilter = () => {
-        if (filterColumn && filterValue) {
+        if (filterConference) {
             setFilterModel({
-                items: [{ field: filterColumn, operator: filterOperator, value: filterValue }],
+                items: [{ field: 'conference', operator: 'equals', value: filterConference }],
             });
         } else {
             setFilterModel({ items: [] });
@@ -107,57 +109,62 @@ const RankingsView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Rankings
             </Typography>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-                Open Filters
-            </Button>
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <TextField
-                        select
-                        label="Column"
-                        value={filterColumn}
-                        onChange={(e) => setFilterColumn(e.target.value)}
-                        variant="standard"
-                    >
-                        {columns.map((col) => (
-                            <MenuItem key={col.field} value={col.field}>
-                                {col.headerName}
-                            </MenuItem>
+            <Box sx={{ direction: 'row', display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <TextField
+                    select
+                    label="Season"
+                    value={searchSeason}
+                    onChange={(e) => setSearchSeason(e.target.value)}
+                >
+                    {seasonSearchOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    select
+                    label="Week"
+                    value={searchWeek}
+                    onChange={(e) => setSearchWeek(e.target.value)}
+                >
+                    {weekSearchOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <Button variant="contained" color="primary">
+                    Get Rankings
+                </Button>
+                <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+                    Filter Conference
+                </Button>
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                >
+                    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        {conferenceFilterOptions.map((option) => (
+                            <Chip
+                                key={option.value}
+                                label={option.label}
+                                onClick={() => setFilterConference(option.value)}
+                                color={filterConference === option.value ? 'primary' : 'default'}
+                            />
                         ))}
-                    </TextField>
-                    <TextField
-                        select
-                        label="Operator"
-                        value={filterOperator}
-                        onChange={(e) => setFilterOperator(e.target.value)}
-                        variant="standard"
-                    >
-                        <MenuItem value="contains">Contains</MenuItem>
-                        <MenuItem value="equals">Equals</MenuItem>
-                        <MenuItem value="startsWith">Starts With</MenuItem>
-                        <MenuItem value="endsWith">Ends With</MenuItem>
-                        <MenuItem value="isAnyOf">Is Any Of</MenuItem>
-                    </TextField>
-                    <TextField
-                        label="Value"
-                        value={filterValue}
-                        onChange={(e) => setFilterValue(e.target.value)}
-                        variant="standard"
-                    />
-                    <Button onClick={handleApplyFilter} variant="contained">
-                        Apply
-                    </Button>
-                </Box>
-            </Popover>
+                        <Button onClick={handleApplyFilter} variant="contained">
+                            Apply
+                        </Button>
+                    </Box>
+                </Popover>
+            </Box>
             <Paper sx={{ p: 2, textAlign: 'center', mt: 2 }}>
                 <DataGrid
                     rows={rows}
