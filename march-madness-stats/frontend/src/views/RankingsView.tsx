@@ -17,6 +17,64 @@ const rows = [
     { id: 5, name: 'Echo', rank: 5, category: 'B' },
 ];
 
+const seasonFilterOptions = [
+    { value: 2025, label: '2024-25' },
+    { value: 2024, label: '2023-24' },
+    { value: 2023, label: '2022-23' },
+    { value: 2022, label: '2021-22' },
+    { value: 2021, label: '2020-21' },
+    { value: 2020, label: '2019-20' },
+    { value: 2019, label: '2018-19' },
+    { value: 2018, label: '2017-18' },
+    { value: 2017, label: '2016-17' },
+    { value: 2016, label: '2015-16' },
+    { value: 2015, label: '2014-15' },
+    { value: 2014, label: '2013-14' },
+    { value: 2013, label: '2012-13' },
+    { value: 2012, label: '2011-12' },
+    { value: 2011, label: '2010-11' },
+    { value: 2010, label: '2009-10' },
+    { value: 2009, label: '2008-09' },
+    { value: 2008, label: '2007-08' },
+    { value: 2007, label: '2006-07' },
+    { value: 2006, label: '2005-06' },
+    { value: 2005, label: '2004-05' },
+    { value: 2004, label: '2003-04' },
+    { value: 2003, label: '2002-03' }
+];
+
+const weekFilterOptions: { value: number | string; label: string }[] = [
+    { value: 'preseason', label: 'Preseason' },
+    { value: 2, label: 'Week 2' },
+    { value: 3, label: 'Week 3' },
+    { value: 4, label: 'Week 4' },
+    { value: 5, label: 'Week 5' },
+    { value: 6, label: 'Week 6' },
+    { value: 7, label: 'Week 7' },
+    { value: 8, label: 'Week 8' },
+    { value: 9, label: 'Week 9' },
+    { value: 10, label: 'Week 10' },
+    { value: 11, label: 'Week 11' },
+    { value: 12, label: 'Week 12' },
+    { value: 13, label: 'Week 13' },
+    { value: 14, label: 'Week 14' },
+    { value: 15, label: 'Week 15' },
+    { value: 16, label: 'Week 16' },
+    { value: 17, label: 'Week 17' },
+    { value: 18, label: 'Week 18' },
+    { value: 19, label: 'Week 19' },
+    { value: 20, label: 'Week 20' },
+    { value: 'postseason', label: 'Postseason' }
+];
+
+const conferenceFilterOptions: { value: string; label: string }[] = [
+    { value: 'ACC', label: 'ACC' },
+    { value: 'Big 12', label: 'Big 12' },
+    { value: 'Big Ten', label: 'Big Ten' },
+    { value: 'Pac-12', label: 'Pac-12' },
+    { value: 'SEC', label: 'SEC' },
+];
+
 const RankingsView: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
