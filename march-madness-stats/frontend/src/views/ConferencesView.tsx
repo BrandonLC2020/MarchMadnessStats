@@ -1,5 +1,8 @@
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Box, Grid } from '@mui/material';
+import ConferenceCard from '../components/ConferenceCard';
+
+
 
 const ConferencesView: React.FC = () => {
     const [conferences, setConferences] = React.useState([]);
@@ -13,7 +16,11 @@ const ConferencesView: React.FC = () => {
                 Conferences
             </Typography>
             <Grid container spacing={2}>
-                {/* Map through your conference data and render ConferenceCard components here */}
+                {conferences.map((conference) => (
+                    <Grid item xs={12} sm={6} md={4} key={conference.id} component="div">
+                        <ConferenceCard conference={conference} />
+                    </Grid>
+                ))}
             </Grid>
         </Box>
     );
