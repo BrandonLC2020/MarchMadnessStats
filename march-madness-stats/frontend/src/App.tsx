@@ -26,7 +26,7 @@ const Home = () => (
       March Madness Stats Dashboard
     </Typography>
     <Grid container spacing={4} sx={{ mt: 2 }}>
-      <Grid item xs={12} sm={6}>
+      <Grid>
         <Card>
           <CardActionArea component={RouterLink} to="/conferences">
             <CardContent>
@@ -40,7 +40,7 @@ const Home = () => (
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid>
         <Card>
           <CardActionArea component={RouterLink} to="/rankings">
             <CardContent>
