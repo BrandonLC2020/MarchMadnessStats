@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip } from '@mui/material';
+import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead } from '@mui/material';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { useRankings } from '../hooks/useRankings';
 import { PollTeamInfo } from '../types/api';
@@ -319,14 +319,30 @@ const RankingsView: React.FC = () => {
                     </Box>
                 </Popover>
             </Box>
-            <Paper sx={{ p: 2, textAlign: 'center', mt: 2 }}>
-                <DataGrid
-                    rows={data}
-                    columns={columns}
-                    filterModel={filterModel}
-                    onFilterModelChange={(model) => setFilterModel(model)}
-                />
-            </Paper>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell key={column.field} align={column.align}>
+                                    {column.headerName}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <TableRow key={row.teamId}>
+                                {columns.map((column) => (
+                                    <TableCell key={column.field} align={column.align}>
+                                        {row[column.field as keyof PollTeamInfo]}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 };
