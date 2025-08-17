@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, Paper } from '@mui/material';
 import { useTeams } from '../hooks/useTeams';
 import { TeamInfo } from '../types/api';
 import { CURRENT_SEASON } from '../types/mostRecent';
@@ -59,7 +59,7 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
     }
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Paper sx={{ p: 3 }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 {teamData.school} {teamData.mascot}
             </Typography>
@@ -69,10 +69,7 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
             <Typography variant="body1">
                 Team Location: {teamData.currentCity}, {teamData.currentState}
             </Typography>
-            <Typography variant="body1">
-                Conference Name: {conferenceName}
-            </Typography>
-        </Box>
+        </Paper>
     );
 };
 
