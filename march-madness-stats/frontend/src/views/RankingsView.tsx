@@ -173,6 +173,7 @@ const conferenceFilterOptions: { value: string; label: string }[] = [
     { value: 'Big Ten', label: 'Big Ten' },
     { value: 'Pac-12', label: 'Pac-12' },
     { value: 'SEC', label: 'SEC' },
+    //TODO: add the remaining conferences
 ];
 
 const RankingsView: React.FC = () => {
