@@ -94,30 +94,30 @@ const seasonMaxWeeks: { [key: number]: number } = {
     2003: 18
 };
 
-const seasonWithWeek1: { [key: number]: boolean } = {
-    2025: true,
-    2024: true,
-    2023: true,
-    2022: true,
-    2021: true,
-    2020: true,
-    2019: true,
-    2018: true,
-    2017: true,
-    2016: true,
-    2015: true,
-    2014: true,
-    2013: true,
-    2012: true,
-    2011: true,
-    2010: true,
-    2009: true,
-    2008: true,
-    2007: true,
-    2006: true,
-    2005: true,
-    2004: true,
-    2003: true
+const seasonMinWeeks: { [key: number]: number } = {
+    2025: 2,
+    2024: 2,
+    2023: 2, 
+    2022: 2,
+    2021: 2,
+    2020: 2,
+    2019: 2,
+    2018: 2,
+    2017: 2,
+    2016: 2,
+    2015: 2,
+    2014: 2,
+    2013: 2,
+    2012: 2,
+    2011: 2,
+    2010: 2,
+    2009: 2,
+    2008: 2,
+    2007: 2,
+    2006: 2,
+    2005: 2,
+    2004: 2,
+    2003: 2
 };
 
 const seasonWithPreseasons: { [key: number]: boolean } = {
