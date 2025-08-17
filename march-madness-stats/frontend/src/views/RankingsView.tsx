@@ -12,14 +12,6 @@ const columns: GridColDef[] = [
     { field: 'firstPlaceVotes', headerName: 'First Place Votes', width: 160 }
 ];
 
-const rows = [
-    { id: 1, name: 'Alpha', rank: 1, conference: 'A' },
-    { id: 2, name: 'Bravo', rank: 2, conference: 'B' },
-    { id: 3, name: 'Charlie', rank: 3, conference: 'A' },
-    { id: 4, name: 'Delta', rank: 4, conference: 'C' },
-    { id: 5, name: 'Echo', rank: 5, conference: 'B' },
-];
-
 const seasonSearchOptions = [
     { value: 2025, label: '2024-25' },
     { value: 2024, label: '2023-24' },
