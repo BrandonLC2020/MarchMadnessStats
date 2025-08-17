@@ -116,8 +116,8 @@ const seasonMinWeeks: { [key: number]: number } = {
     2007: 2,
     2006: 2,
     2005: 2,
-    2004: 2,
-    2003: 2
+    2004: 1,
+    2003: 1
 };
 
 const seasonWithPreseasons: { [key: number]: boolean } = {
@@ -142,8 +142,8 @@ const seasonWithPreseasons: { [key: number]: boolean } = {
     2007: true,
     2006: true,
     2005: true,
-    2004: true,
-    2003: true
+    2004: false,
+    2003: false
 };
 
 const seasonWithPostseasons: { [key: number]: boolean } = {
