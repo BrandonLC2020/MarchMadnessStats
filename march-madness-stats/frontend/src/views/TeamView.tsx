@@ -66,6 +66,9 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
             <Typography variant="h6" component="h2" gutterBottom>
                 Conference: {teamData.conference}
             </Typography>
+            <Typography variant="body1" gutterBottom>
+                Team Venue: {teamData.currentVenue}
+            </Typography>
             <Typography variant="body1">
                 Team Location: {teamData.currentCity}, {teamData.currentState}
             </Typography>
