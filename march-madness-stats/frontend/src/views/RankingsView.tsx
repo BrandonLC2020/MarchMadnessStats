@@ -2,11 +2,14 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { useRankings } from '../hooks/useRankings';
+import { PollTeamInfo } from '../types/api';
 
 const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'rank', headerName: 'Rank', type: 'number', width: 110 },
+    { field: 'ranking', headerName: 'Rank', type: 'number', width: 150 },
+    { field: 'team', headerName: 'Team', width: 110 },
     { field: 'conference', headerName: 'Conference', width: 160 },
+    { field: 'points', headerName: 'Points', width: 160 },
+    { field: 'firstPlaceVotes', headerName: 'First Place Votes', width: 160 }
 ];
 
 const rows = [
@@ -184,7 +187,7 @@ const RankingsView: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
     const [filterConference, setFilterConference] = useState('');
-
+    const [data, setData] = useState<PollTeamInfo[]>([]); // Replace 'any' with your actual data type
     const [searchWeek, setSearchWeek] = useState<number | string | undefined>();
     const [searchSeason, setSearchSeason] = useState<number | string | undefined>();
     const { getRankings } = useRankings();
@@ -232,8 +235,22 @@ const RankingsView: React.FC = () => {
         handleClose();
     };
 
-    const handleSearchRankings = () => {
-        // Your logic to fetch rankings will go here
+    const handleSearchRankings = async () => {
+        if (typeof searchWeek === 'string') {
+            try {
+                const data = await getRankings({season: searchSeason as number, seasonType: searchWeek as 'preseason' | 'postseason', pollType: 'AP'});
+                setData(data);
+            } catch (error) {
+                console.error("Error fetching rankings:", error);
+            }
+        } else {
+            try {
+                const data = await getRankings({season: searchSeason as number, seasonType: 'regular', week: searchWeek as number, pollType: 'AP'});
+                setData(data);
+            } catch (error) {
+                console.error("Error fetching rankings:", error);
+            }
+        }
     }
 
     const open = Boolean(anchorEl);
@@ -304,7 +321,7 @@ const RankingsView: React.FC = () => {
             </Box>
             <Paper sx={{ p: 2, textAlign: 'center', mt: 2 }}>
                 <DataGrid
-                    rows={rows}
+                    rows={data}
                     columns={columns}
                     filterModel={filterModel}
                     onFilterModelChange={(model) => setFilterModel(model)}
