@@ -200,9 +200,8 @@ const RankingsView: React.FC = () => {
             return []; // No season selected, so no weeks to show
         }
         const maxWeek = seasonMaxWeeks[searchSeason as number] || 20; // Default to 20 if season not in our map
-
+        const minWeek = seasonMinWeeks[searchSeason as number] || 2; // Default to 2 if season not in our map
         return weekSearchOptions.filter(option => {
-            // Always include preseason and postseason
             if (typeof option.value === 'string') {
                 if (option.value === 'preseason' && seasonWithPreseasons[searchSeason as number]) {
                     return true;
@@ -210,10 +209,9 @@ const RankingsView: React.FC = () => {
                     return true;
                 }
             }
-            // Only include weeks up to the max for that season
-            return typeof option.value === 'number' && option.value <= maxWeek;
+            return typeof option.value === 'number' && option.value <= maxWeek && option.value >= minWeek;
         });
-    }, [searchSeason]); // Recalculate only when searchSeason changes
+    }, [searchSeason]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
