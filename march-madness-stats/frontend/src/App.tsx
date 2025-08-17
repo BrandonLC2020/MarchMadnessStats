@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import RankingsView from './views/RankingsView';
 import ConferencesView from './views/ConferencesView';
+import ConferenceTeamsView from './views/ConferenceTeamsView'; // Import ConferenceTeamsView
 import './App.css';
 
 const Home = () => (
@@ -74,6 +75,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/rankings" element={<RankingsView />} />
           <Route path="/conferences" element={<ConferencesView />} />
+          {/* Add the new route */}
+          <Route path="/conferences/:conferenceAbbreviation" element={<ConferenceTeamsView />} />
         </Routes>
       </Container>
     </Router>
