@@ -21,7 +21,6 @@ const ConferencesView: React.FC = () => {
                 setLoading(false);
             }
         };
-
         fetchConferences();
     }, [getConferenceHistory]);
 

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
+import { useRankings } from '../hooks/useRankings';
 
 const columns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 150 },
@@ -44,6 +45,7 @@ const seasonSearchOptions = [
 
 const weekSearchOptions: { value: number | string; label: string }[] = [
     { value: 'preseason', label: 'Preseason' },
+    { value: 1, label: 'Week 1' },
     { value: 2, label: 'Week 2' },
     { value: 3, label: 'Week 3' },
     { value: 4, label: 'Week 4' },
@@ -66,6 +68,110 @@ const weekSearchOptions: { value: number | string; label: string }[] = [
     { value: 'postseason', label: 'Postseason' }
 ];
 
+const seasonMaxWeeks: { [key: number]: number } = {
+    2025: 20,
+    2024: 20,
+    2023: 19, 
+    2022: 19,
+    2021: 17,
+    2020: 19,
+    2019: 20,
+    2018: 18,
+    2017: 18,
+    2016: 18,
+    2015: 18,
+    2014: 19,
+    2013: 19,
+    2012: 18,
+    2011: 18,
+    2010: 18,
+    2009: 18,
+    2008: 19,
+    2007: 18,
+    2006: 18,
+    2005: 17,
+    2004: 17,
+    2003: 18
+};
+
+const seasonWithWeek1: { [key: number]: boolean } = {
+    2025: true,
+    2024: true,
+    2023: true,
+    2022: true,
+    2021: true,
+    2020: true,
+    2019: true,
+    2018: true,
+    2017: true,
+    2016: true,
+    2015: true,
+    2014: true,
+    2013: true,
+    2012: true,
+    2011: true,
+    2010: true,
+    2009: true,
+    2008: true,
+    2007: true,
+    2006: true,
+    2005: true,
+    2004: true,
+    2003: true
+};
+
+const seasonWithPreseasons: { [key: number]: boolean } = {
+    2025: true,
+    2024: true,
+    2023: true,
+    2022: true,
+    2021: true,
+    2020: true,
+    2019: true,
+    2018: true,
+    2017: true,
+    2016: true,
+    2015: true,
+    2014: true,
+    2013: true,
+    2012: true,
+    2011: true,
+    2010: true,
+    2009: true,
+    2008: true,
+    2007: true,
+    2006: true,
+    2005: true,
+    2004: true,
+    2003: true
+};
+
+const seasonWithPostseasons: { [key: number]: boolean } = {
+    2025: true,
+    2024: true,
+    2023: false,
+    2022: false,
+    2021: false,
+    2020: true,
+    2019: false,
+    2018: false,
+    2017: true,
+    2016: false,
+    2015: false,
+    2014: false,
+    2013: false,
+    2012: false,
+    2011: false,
+    2010: false,
+    2009: false,
+    2008: false,
+    2007: true,
+    2006: false,
+    2005: false,
+    2004: false,
+    2003: false
+};
+
 const conferenceFilterOptions: { value: string; label: string }[] = [
     { value: 'ACC', label: 'ACC' },
     { value: 'Big 12', label: 'Big 12' },
@@ -79,8 +185,35 @@ const RankingsView: React.FC = () => {
     const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
     const [filterConference, setFilterConference] = useState('');
 
-    const [searchWeek, setSearchWeek] = useState('');
-    const [searchSeason, setSearchSeason] = useState('');
+    const [searchWeek, setSearchWeek] = useState<number | string | undefined>();
+    const [searchSeason, setSearchSeason] = useState<number | string | undefined>();
+    const { getRankings } = useRankings();
+
+    // Reset week when season changes
+    useEffect(() => {
+        setSearchWeek(undefined);
+    }, [searchSeason]);
+    
+    // Filter the week options based on the selected season
+    const filteredWeekOptions = useMemo(() => {
+        if (!searchSeason) {
+            return []; // No season selected, so no weeks to show
+        }
+        const maxWeek = seasonMaxWeeks[searchSeason as number] || 20; // Default to 20 if season not in our map
+
+        return weekSearchOptions.filter(option => {
+            // Always include preseason and postseason
+            if (typeof option.value === 'string') {
+                if (option.value === 'preseason' && seasonWithPreseasons[searchSeason as number]) {
+                    return true;
+                } else if (option.value === 'postseason' && seasonWithPostseasons[searchSeason as number]) {
+                    return true;
+                }
+            }
+            // Only include weeks up to the max for that season
+            return typeof option.value === 'number' && option.value <= maxWeek;
+        });
+    }, [searchSeason]); // Recalculate only when searchSeason changes
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -100,6 +233,10 @@ const RankingsView: React.FC = () => {
         }
         handleClose();
     };
+
+    const handleSearchRankings = () => {
+        // Your logic to fetch rankings will go here
+    }
 
     const open = Boolean(anchorEl);
     const id = open ? 'filter-popover' : undefined;
@@ -127,18 +264,20 @@ const RankingsView: React.FC = () => {
                     label="Week"
                     value={searchWeek}
                     onChange={(e) => setSearchWeek(e.target.value)}
+                    disabled={!searchSeason}
                 >
-                    {weekSearchOptions.map((option) => (
+                    {/* Use the new filtered list of options */}
+                    {filteredWeekOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
                         </MenuItem>
                     ))}
                 </TextField>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={handleSearchRankings} disabled={!searchWeek || !searchSeason}>
                     Get Rankings
                 </Button>
-                <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-                    Filter Conference
+                <Button aria-describedby={id} variant="contained" onClick={handleClick} disabled={!searchWeek || !searchSeason}>
+                    Filter By Conference
                 </Button>
                 <Popover
                     id={id}
