@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead } from '@mui/material';
-import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
+import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead, CircularProgress } from '@mui/material';
+import { GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { useRankings } from '../hooks/useRankings';
-import { PollTeamInfo } from '../types/api';
+import { PollTeamInfo, SeasonType } from '../types/api';
 
 const columns: GridColDef[] = [
     { field: 'ranking', headerName: 'Rank', type: 'number', width: 150 },
@@ -182,6 +182,7 @@ const RankingsView: React.FC = () => {
     const [data, setData] = useState<PollTeamInfo[]>([]); // Replace 'any' with your actual data type
     const [searchWeek, setSearchWeek] = useState<number | string | undefined>();
     const [searchSeason, setSearchSeason] = useState<number | string | undefined>();
+    const [loading, setLoading] = useState(false); // State to track loading
     const { getRankings } = useRankings();
 
     // Reset week when season changes
@@ -228,20 +229,22 @@ const RankingsView: React.FC = () => {
     };
 
     const handleSearchRankings = async () => {
-        if (typeof searchWeek === 'string') {
-            try {
-                const data = await getRankings({season: searchSeason as number, seasonType: searchWeek as 'preseason' | 'postseason', pollType: 'AP'});
-                setData(data);
-            } catch (error) {
-                console.error("Error fetching rankings:", error);
-            }
-        } else {
-            try {
-                const data = await getRankings({season: searchSeason as number, seasonType: 'regular', week: searchWeek as number, pollType: 'AP'});
-                setData(data);
-            } catch (error) {
-                console.error("Error fetching rankings:", error);
-            }
+        setLoading(true);
+        try {
+            const params = {
+                season: searchSeason as number,
+                pollType: 'AP',
+                ...(typeof searchWeek === 'string' && (searchWeek === 'preseason' || searchWeek === 'postseason')
+                    ? { seasonType: searchWeek as SeasonType }
+                    : { seasonType: 'regular' as SeasonType, week: searchWeek as number })
+            };
+            const rankingsData = await getRankings(params);
+            setData(rankingsData);
+        } catch (error) {
+            console.error("Error fetching rankings:", error);
+            setData([]); // Clear data on error
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -323,15 +326,29 @@ const RankingsView: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row) => (
-                            <TableRow key={row.teamId}>
-                                {columns.map((column) => (
-                                    <TableCell key={column.field} align={column.align}>
-                                        {row[column.field as keyof PollTeamInfo]}
-                                    </TableCell>
-                                ))}
+                        {loading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} align="center" sx={{ py: 5 }}>
+                                    <CircularProgress />
+                                </TableCell>
                             </TableRow>
-                        ))}
+                        ) : data.length > 0 ? (
+                            data.map((row) => (
+                                <TableRow key={row.teamId}>
+                                    {columns.map((column) => (
+                                        <TableCell key={column.field} align={column.align}>
+                                            {row[column.field as keyof PollTeamInfo]}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} align="center">
+                                    No rankings found. Please select a season and week.
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
