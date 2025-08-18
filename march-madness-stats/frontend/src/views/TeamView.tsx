@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem } from '@mui/material';
 import { useTeams } from '../hooks/useTeams';
-import { TeamInfo } from '../types/api';
+import { TeamInfo, TeamRoster } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
 
 interface TeamViewProps {
@@ -12,7 +12,7 @@ interface TeamViewProps {
 
 const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName }) => {
     const [teamData, setTeamData] = useState<TeamInfo | null>(null);
-    const [teamRosterData, setTeamRosterData] = useState<any[]>([]);
+    const [teamRosterData, setTeamRosterData] = useState<TeamRoster | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const { getTeams, getTeamRoster } = useTeams();
@@ -54,7 +54,7 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                     setLoading(false);
                     return;
                 } else {
-                    setTeamRosterData(data);
+                    setTeamRosterData(data[0]);
                 }
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred while fetching team roster data.');
@@ -136,9 +136,8 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {teamRosterData.map(player => (
-                            <TableRow key={player.id}>
-                                <TableCell>{player.jersey}</TableCell>
+                        {teamRosterData?.players.map(player => (
+                            <TableRow key={player.jersey}>
                                 <TableCell>{player.name}</TableCell>
                                 <TableCell>{player.position}</TableCell>
                                 <TableCell>{player.height}</TableCell>
