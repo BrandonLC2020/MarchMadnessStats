@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem, Link } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { TeamInfo, TeamRoster } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
@@ -32,7 +33,7 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                     setLoading(false);
                     return;
                 } else {
-                    setTeamData(data.filter(team => team.id === teamId)[0]); // should only be one match
+                    setTeamData(data.filter(team => team.id === teamId)[0]);
                 }
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred while fetching team data.');
@@ -64,7 +65,7 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
         };
         fetchTeamData();
         fetchTeamRosterData();
-    }, [teamId, getTeams, getTeamRoster, season]);
+    }, [teamId, getTeams, getTeamRoster, season, conferenceName, teamName]);
 
     if (loading) {
         return (
@@ -89,46 +90,51 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                     {teamData.school} {teamData.mascot}
                 </Typography>
                 <Grid container spacing={2} direction={'row'}>
-                    <Grid container spacing={2} direction={'column'}>
+                    <Grid>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Conference: {teamData.conference}
                         </Typography>
-                        <Grid direction={'row'}>
-                            <Typography variant="body1" gutterBottom>
-                                Season:
-                            </Typography>
-                            <TextField
-                                select
-                                value={season}
-                                defaultValue={season}
-                                onChange={(e) => setSeason(Number(e.target.value))}
-                            >
-                                {SEASON_SEARCH_OPTIONS.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                        <Grid container alignItems="center" spacing={1}>
+                            <Grid>
+                                <Typography variant="body1">
+                                    Season:
+                                </Typography>
+                            </Grid>
+                            <Grid>
+                                <TextField
+                                    select
+                                    value={season}
+                                    defaultValue={season}
+                                    onChange={(e) => setSeason(Number(e.target.value))}
+                                    size="small"
+                                >
+                                    {SEASON_SEARCH_OPTIONS.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={2} direction={'column'}>
+                    <Grid>
                         <Typography variant="body1" gutterBottom>
-                            Team Venue: {teamData.currentVenue}
+                            Venue: {teamData.currentVenue}
                         </Typography>
                         <Typography variant="body1">
-                            Team Location: {teamData.currentCity}, {teamData.currentState}
+                            Location: {teamData.currentCity}, {teamData.currentState}
                         </Typography>
                     </Grid>
                 </Grid>
             </Paper>
-            <TableContainer component={Paper}>
-                <Typography variant="h6" component="h2" gutterBottom>
+            <TableContainer component={Paper} sx={{ mt: 3 }}>
+                <Typography variant="h6" component="h2" gutterBottom sx={{ p: 2 }}>
                     Team Roster
                 </Typography>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Jersey Number</TableCell>
+                            <TableCell>Jersey</TableCell>
                             <TableCell>Player</TableCell>
                             <TableCell>Position</TableCell>
                             <TableCell>Height</TableCell>
@@ -137,8 +143,13 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                     </TableHead>
                     <TableBody>
                         {teamRosterData?.players.map(player => (
-                            <TableRow key={player.jersey}>
-                                <TableCell>{player.name}</TableCell>
+                            <TableRow key={player.id}>
+                                <TableCell>{player.jersey}</TableCell>
+                                <TableCell>
+                                    <Link component={RouterLink} to={`/player/${player.id}`} state={{ player }}>
+                                        {player.name}
+                                    </Link>
+                                </TableCell>
                                 <TableCell>{player.position}</TableCell>
                                 <TableCell>{player.height}</TableCell>
                                 <TableCell>{player.weight}</TableCell>

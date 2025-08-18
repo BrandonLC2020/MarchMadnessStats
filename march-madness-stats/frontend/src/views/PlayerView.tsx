@@ -1,14 +1,18 @@
 import React from 'react';
 import { Typography, Paper } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import { TeamRosterPlayer } from '../types/api';
 
-interface PlayerViewProps {
-    player: TeamRosterPlayer
-}
+const PlayerView: React.FC = () => {
+    const location = useLocation();
+    const player = location.state?.player as TeamRosterPlayer;
 
-const PlayerView: React.FC<PlayerViewProps> = ({ player }) => {
+    if (!player) {
+        return <Typography>Player data not available.</Typography>;
+    }
+
     return (
-        <Paper>
+        <Paper sx={{ p: 3, mt: 3 }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 {player.name} - #{player.jersey}
             </Typography>
@@ -27,9 +31,11 @@ const PlayerView: React.FC<PlayerViewProps> = ({ player }) => {
             <Typography variant="body1" gutterBottom>
                 End Season: {player.endSeason}
             </Typography>
-            <Typography variant="body1" gutterBottom>
-                Hometown: {player.hometown.city}, {player.hometown.state}
-            </Typography>
+            {player.hometown && (
+                <Typography variant="body1" gutterBottom>
+                    Hometown: {player.hometown.city}, {player.hometown.state}
+                </Typography>
+            )}
         </Paper>
     );
 };
