@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem } from '@mui/material';
-import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
-import exp from 'constants';
+import React from 'react';
+import { Typography, Paper } from '@mui/material';
 import { TeamRosterPlayer } from '../types/api';
 
 interface PlayerViewProps {
