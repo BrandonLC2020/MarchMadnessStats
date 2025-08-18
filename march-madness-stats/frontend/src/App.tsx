@@ -19,6 +19,7 @@ import RankingsView from './views/RankingsView';
 import ConferencesView from './views/ConferencesView';
 import ConferenceTeamsView from './views/ConferenceTeamsView';
 import PlayerView from './views/PlayerView';
+import TeamView from './views/TeamView';
 import './App.css';
 
 const Home = () => (
@@ -78,6 +79,7 @@ function App() {
           <Route path="/conferences" element={<ConferencesView />} />
           <Route path="/conferences/:conferenceAbbreviation" element={<ConferenceTeamsView />} />
           <Route path="/player/:playerId" element={<PlayerView />} />
+          <Route path="/team/:teamId" element={<TeamView />} />
         </Routes>
       </Container>
     </Router>

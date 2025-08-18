@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem, Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { TeamInfo, TeamRoster } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
 
-interface TeamViewProps {
-    teamId: number;
-    teamName: string;
-    conferenceName: string;
-}
-
-const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName }) => {
-    const [teamData, setTeamData] = useState<TeamInfo | null>(null);
+const TeamView: React.FC = () => {
+    const location = useLocation();
+    const { teamId } = useParams<{ teamId: string }>();
+    const [teamData, setTeamData] = useState<TeamInfo | null>(location.state?.team);
     const [teamRosterData, setTeamRosterData] = useState<TeamRoster | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(!teamData);
     const [error, setError] = useState<string | null>(null);
     const { getTeams, getTeamRoster } = useTeams();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
@@ -26,14 +22,15 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                 setLoading(false);
                 return;
             }
-            try { 
-                const data = await getTeams({ season: season, conference: conferenceName });
-                if (data.length === 0) {
+            if (teamData) return; 
+
+            try {
+                const data = await getTeams({ season: season });
+                const teamInfo = data.find(team => team.id === parseInt(teamId, 10));
+                if (!teamInfo) {
                     setError("No team data found for the provided team ID.");
-                    setLoading(false);
-                    return;
                 } else {
-                    setTeamData(data.filter(team => team.id === teamId)[0]);
+                    setTeamData(teamInfo);
                 }
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred while fetching team data.');
@@ -41,31 +38,25 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                 setLoading(false);
             }
         };
+
         const fetchTeamRosterData = async () => {
-            if (!teamId) {
-                setError("Team ID not provided.");
-                setLoading(false);
-                return;
-            }
+            if (!teamData) return;
 
             try {
-                const data = await getTeamRoster(season, teamName);
-                if (!data) {
-                    setError("No roster data found for the provided team ID.");
-                    setLoading(false);
-                    return;
+                const data = await getTeamRoster(season, teamData.school);
+                if (!data || data.length === 0) {
+                    setError("No roster data found for the provided team.");
                 } else {
                     setTeamRosterData(data[0]);
                 }
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred while fetching team roster data.');
-            } finally {
-                setLoading(false);
             }
         };
+
         fetchTeamData();
         fetchTeamRosterData();
-    }, [teamId, getTeams, getTeamRoster, season, conferenceName, teamName]);
+    }, [teamId, getTeams, getTeamRoster, season, teamData]);
 
     if (loading) {
         return (
@@ -85,11 +76,11 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
 
     return (
         <Box>
-            <Paper sx={{ p: 3 }}>
+            <Paper sx={{ p: 3, mt: 3 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     {teamData.school} {teamData.mascot}
                 </Typography>
-                <Grid container spacing={2} direction={'row'}>
+                <Grid container spacing={2}>
                     <Grid>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Conference: {teamData.conference}
@@ -104,7 +95,6 @@ const TeamView: React.FC<TeamViewProps> = ({ teamId, teamName, conferenceName })
                                 <TextField
                                     select
                                     value={season}
-                                    defaultValue={season}
                                     onChange={(e) => setSeason(Number(e.target.value))}
                                     size="small"
                                 >

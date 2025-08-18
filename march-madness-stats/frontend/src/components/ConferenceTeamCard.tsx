@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import { ConferenceHistoryTeamsInner } from '../types/api';
 
 interface ConferenceTeamCardProps {
@@ -9,14 +10,16 @@ interface ConferenceTeamCardProps {
 const ConferenceTeamCard: React.FC<ConferenceTeamCardProps> = ({ team }) => {
     return (
         <Card sx={{ minWidth: 200, mb: 2 }}>
-            <CardContent>
-                <Typography variant="h6" component="div">
-                    {team.school}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    {team.mascot}
-                </Typography>
-            </CardContent>
+            <CardActionArea component={RouterLink} to={`/team/${team.id}`} state={{ team }}>
+                <CardContent>
+                    <Typography variant="h6" component="div">
+                        {team.school}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        {team.mascot}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
         </Card>
     );
 };
