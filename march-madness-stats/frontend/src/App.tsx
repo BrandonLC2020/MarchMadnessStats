@@ -23,6 +23,7 @@ import PlayerView from './views/PlayerView';
 import TeamView from './views/TeamView';
 import GameDetailsView from './views/GameDetailsView';
 import './App.css';
+import GamesView from './views/GamesView';
 
 const Home = () => (
   <Box sx={{ my: 4 }}>
@@ -30,6 +31,20 @@ const Home = () => (
       March Madness Stats Dashboard
     </Typography>
     <Grid container spacing={4} sx={{ mt: 2 }}>
+      <Grid>
+        <Card>
+          <CardActionArea component={RouterLink} to="/games">
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Games
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                View all games.
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
       <Grid>
         <Card>
           <CardActionArea component={RouterLink} to="/conferences">
@@ -78,7 +93,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rankings" element={<RankingsView />} />
-          <Route path="/conferences" element={<ConferencesView />} />
+          <Route path="/conferences" element={<ConferencesView />}  />
+          <Route path="/games" element={<GamesView />} />
           <Route path="/conferences/:conferenceAbbreviation" element={<ConferenceTeamsView />} />
           <Route path="/player/:playerId" element={<PlayerView />} />
           <Route path="/team/:teamId" element={<TeamView />} />
