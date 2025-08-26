@@ -1,35 +1,18 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+// frontend/src/views/GameDetailsView.tsx
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { Typography, Box, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { GameInfo, GameBoxScoreTeam, GameBoxScorePlayers } from '../types/api';
 
-interface GameDetailsProps {
-    gameInfo: GameInfo | null;
-    boxScoreTeam: GameBoxScoreTeam | null;
-    boxScorePlayers: GameBoxScorePlayers | null;
-}
-
 const GameDetailsView: React.FC = () => {
-    const { gameId } = useParams<{ gameId: string }>();
-    const [gameInfo, setGameInfo] = useState<GameInfo | null>(null);
-    const [gameBoxScoreTeam, setBoxScoreTeam] = useState<GameBoxScoreTeam | null>(null);
-    const [gameBoxScorePlayers, setBoxScorePlayers] = useState<GameBoxScorePlayers | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const location = useLocation();
+    const { game, boxScoreTeam, boxScorePlayers } = location.state as {
+        game: GameInfo;
+        boxScoreTeam: GameBoxScoreTeam;
+        boxScorePlayers: GameBoxScorePlayers;
+    };
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>;
-    }
-
-    if (!gameInfo) {
+    if (!game) {
         return <Typography>Game data not available.</Typography>;
     }
 
@@ -40,47 +23,84 @@ const GameDetailsView: React.FC = () => {
             </Typography>
             <Paper sx={{ p: 3, mb: 3 }}>
                 <Typography variant="h5" component="h2" gutterBottom>
-                    {gameInfo.awayTeam} vs. {gameInfo.homeTeam}
+                    {game.awayTeam} vs. {game.homeTeam}
                 </Typography>
                 <Typography variant="body1">
-                    Date: {gameInfo.startDate}
+                    Date: {new Date(game.startDate).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body1">
-                    Venue: {gameInfo.venue}
+                    Venue: {game.venue}
                 </Typography>
                 <Typography variant="body1">
-                    Score: {gameInfo.awayPoints} - {gameInfo.homePoints}
+                    Score: {game.awayPoints} - {game.homePoints}
                 </Typography>
             </Paper>
 
-            {gameBoxScoreTeam && (
-                <Paper sx={{ p: 3 }}>
+            {boxScoreTeam && (
+                <Paper sx={{ p: 3, mb: 3 }}>
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Box Score
+                        Team Box Score
                     </Typography>
                     <TableContainer>
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Team</TableCell>
-                                    <TableCell align="right">1H</TableCell>
-                                    <TableCell align="right">2H</TableCell>
-                                    <TableCell align="right">Final</TableCell>
+                                    <TableCell align="right">Points</TableCell>
+                                    <TableCell align="right">Assists</TableCell>
+                                    <TableCell align="right">Rebounds</TableCell>
+                                    <TableCell align="right">Turnovers</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell>{gameBoxScoreTeam.opponent}</TableCell> 
-                                    <TableCell align="right">{gameBoxScoreTeam.opponentStats.points.byPeriod?.[0]}</TableCell>
-                                    <TableCell align="right">{gameBoxScoreTeam.opponentStats.points.byPeriod?.[1]}</TableCell>
-                                    <TableCell align="right">{gameBoxScoreTeam.opponentStats.points.total}</TableCell>
+                                    <TableCell>{boxScoreTeam.team}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.teamStats.points.total}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.teamStats.assists}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.teamStats.rebounds.total}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.teamStats.turnovers.total}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>{gameBoxScoreTeam.team}</TableCell>
-                                    <TableCell align="right">{gameBoxScoreTeam.teamStats.points.byPeriod?.[0]}</TableCell>
-                                    <TableCell align="right">{gameBoxScoreTeam.teamStats.points.byPeriod?.[1]}</TableCell>
-                                    <TableCell align="right">{gameBoxScoreTeam.teamStats.points.total}</TableCell>
+                                    <TableCell>{boxScoreTeam.opponent}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.opponentStats.points.total}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.opponentStats.assists}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.opponentStats.rebounds.total}</TableCell>
+                                    <TableCell align="right">{boxScoreTeam.opponentStats.turnovers.total}</TableCell>
                                 </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
+            )}
+
+            {boxScorePlayers && (
+                <Paper sx={{ p: 3 }}>
+                    <Typography variant="h5" component="h2" gutterBottom>
+                        Player Box Score
+                    </Typography>
+                    <TableContainer>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Player</TableCell>
+                                    <TableCell align="right">Points</TableCell>
+                                    <TableCell align="right">Rebounds</TableCell>
+                                    <TableCell align="right">Assists</TableCell>
+                                    <TableCell align="right">Steals</TableCell>
+                                    <TableCell align="right">Blocks</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {boxScorePlayers.players.map((player) => (
+                                <TableRow key={player.athleteId}>
+                                    <TableCell>{player.name}</TableCell>
+                                    <TableCell align="right">{player.points}</TableCell>
+                                    <TableCell align="right">{player.rebounds.total}</TableCell>
+                                    <TableCell align="right">{player.assists}</TableCell>
+                                    <TableCell align="right">{player.steals}</TableCell>
+                                    <TableCell align="right">{player.blocks}</TableCell>
+                                </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

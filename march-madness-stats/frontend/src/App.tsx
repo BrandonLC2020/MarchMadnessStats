@@ -1,3 +1,4 @@
+// frontend/src/App.tsx
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +21,7 @@ import ConferencesView from './views/ConferencesView';
 import ConferenceTeamsView from './views/ConferenceTeamsView';
 import PlayerView from './views/PlayerView';
 import TeamView from './views/TeamView';
+import GameDetailsView from './views/GameDetailsView';
 import './App.css';
 
 const Home = () => (
@@ -80,6 +82,7 @@ function App() {
           <Route path="/conferences/:conferenceAbbreviation" element={<ConferenceTeamsView />} />
           <Route path="/player/:playerId" element={<PlayerView />} />
           <Route path="/team/:teamId" element={<TeamView />} />
+          <Route path="/game/:gameId" element={<GameDetailsView />} />
         </Routes>
       </Container>
     </Router>

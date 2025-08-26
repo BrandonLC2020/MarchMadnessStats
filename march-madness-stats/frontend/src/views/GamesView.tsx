@@ -1,7 +1,8 @@
+// frontend/src/views/GamesView.tsx
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import GameCard from '../components/GameCard'; // Assuming GameCard is correctly imported
+import GameCard from '../components/GameCard';
 import { useGames } from '../hooks/useGames';
 import { GameBoxScorePlayers, GameBoxScoreTeam, GameInfo, SeasonType } from '../types/api';
 
@@ -15,21 +16,28 @@ const GamesView: React.FC = () => {
     const [gameStartDate, setGameStartDate] = useState<string | null>(new Date().toISOString().split('T')[0]);
     const [gameEndDate, setGameEndDate] = useState<string | null>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
     const [seasonType, setSeasonType] = useState<SeasonType>('regular');
-    const [gamePlayers, setGamePlayers] = useState<GameBoxScorePlayers[]>([]); // This state is not currently used in the component's render or logic
+    const [gamePlayers, setGamePlayers] = useState<GameBoxScorePlayers[]>([]);
     const [gameTeams, setGameTeams] = useState<GameBoxScoreTeam[]>([]);
-    const { getGames, getGamePlayers, getGameTeams} = useGames();
+    const { getGames, getGamePlayers, getGameTeams } = useGames();
 
     const fetchGames = async () => {
         setLoading(true);
-        setError(null); // Clear previous errors
+        setError(null);
         try {
-            if (searchDateType === 'range') {
-                const data = await getGames({ startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType});
-                setGames(data);
-            } else {
-                const data = await getGames({ startDateRange: gameDate || undefined, endDateRange: gameDateBound ? gameDateBound : undefined, seasonType });
-                setGames(data);
-            }
+            const params = searchDateType === 'range'
+                ? { startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType }
+                : { startDateRange: gameDate || undefined, endDateRange: gameDateBound || undefined, seasonType };
+
+            const [gamesData, teamsData, playersData] = await Promise.all([
+                getGames(params),
+                getGameTeams(params),
+                getGamePlayers(params)
+            ]);
+
+            setGames(gamesData);
+            setGameTeams(teamsData);
+            setGamePlayers(playersData);
+
         } catch (err: any) {
             setError(err.message || 'An unexpected error occurred');
         } finally {
@@ -37,37 +45,9 @@ const GamesView: React.FC = () => {
         }
     };
 
-    const fetchGamePlayers = async (gameId: number) => {
-        try {
-            if (searchDateType === 'range') {
-                const data = await getGamePlayers({ startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType});
-                setGamePlayers(data);
-            } else {
-                const data = await getGamePlayers({ startDateRange: gameDate || undefined, endDateRange: gameDateBound ? gameDateBound : undefined, seasonType });
-                setGamePlayers(data);
-            }
-        } catch (err: any) {
-            setError(err.message || 'An unexpected error occurred while fetching game players.');
-        }
-    };
-
-    const fetchGameTeams = async (gameId: number) => {
-        try {
-            if (searchDateType === 'range') {
-                const data = await getGameTeams({ startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType});
-                setGameTeams(data);
-            } else {
-                const data = await getGameTeams({ startDateRange: gameDate || undefined, endDateRange: gameDateBound ? gameDateBound : undefined, seasonType });
-                setGameTeams(data);
-            }
-        } catch (err: any) {
-            setError(err.message || 'An unexpected error occurred while fetching game teams.');
-        }
-    };
-
     useEffect(() => {
-        fetchGames(); // Initial fetch
-    }, []); // Fetch games initially when component mounts
+        fetchGames();
+    }, []);
 
     return (
         <Box sx={{ p: 3 }}>
@@ -113,7 +93,7 @@ const GamesView: React.FC = () => {
                     </>
                 ) : (
                     <DatePicker
-                        label="Game Date" // The type of `value` prop in DatePicker is `TDate | null` where `TDate` is the generic type parameter.
+                        label="Game Date"
                         value={gameDate ? new Date(gameDate) : null}
                         onChange={(newValue) => {
                             setGameDate(newValue ? newValue.toISOString().split('T')[0] : null);
@@ -127,7 +107,7 @@ const GamesView: React.FC = () => {
                 </Button>
             </Box>
 
-            {loading ? (                
+            {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
                     <CircularProgress />
                 </Box>
@@ -135,11 +115,19 @@ const GamesView: React.FC = () => {
                 <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>
             ) : games.length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
-                    {games.map((game: GameInfo) => (
-                        <Grid key={game.id}>
-                            <GameCard game={game} />
-                        </Grid>
-                    ))}
+                    {games.map((game: GameInfo) => {
+                        const boxScoreTeam = gameTeams.find(team => team.gameId === game.id);
+                        const boxScorePlayers = gamePlayers.find(players => players.gameId === game.id);
+                        return (
+                            <Grid key={game.id}>
+                                <GameCard
+                                    game={game}
+                                    boxScoreTeam={boxScoreTeam}
+                                    boxScorePlayers={boxScorePlayers}
+                                />
+                            </Grid>
+                        );
+                    })}
                 </Grid>
             ) : (
                 <Typography>No games found.</Typography>
