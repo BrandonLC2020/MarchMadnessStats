@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import GameCard from '../components/GameCard';
+import GameCard from '../components/GameCard'; // Assuming GameCard is correctly imported
 import { useGames } from '../hooks/useGames';
-import { GameInfo, SeasonType } from '../types/api';
+import { GameBoxScorePlayers, GameBoxScoreTeam, GameInfo, SeasonType } from '../types/api';
 
 const GamesView: React.FC = () => {
     const [games, setGames] = useState<GameInfo[]>([]);
@@ -15,7 +15,9 @@ const GamesView: React.FC = () => {
     const [gameStartDate, setGameStartDate] = useState<string | null>(new Date().toISOString().split('T')[0]);
     const [gameEndDate, setGameEndDate] = useState<string | null>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
     const [seasonType, setSeasonType] = useState<SeasonType>('regular');
-    const { getGames } = useGames();
+    const [gamePlayers, setGamePlayers] = useState<GameBoxScorePlayers[]>([]); // This state is not currently used in the component's render or logic
+    const [gameTeams, setGameTeams] = useState<GameBoxScoreTeam[]>([]);
+    const { getGames, getGamePlayers, getGameTeams} = useGames();
 
     const fetchGames = async () => {
         setLoading(true);
@@ -32,6 +34,34 @@ const GamesView: React.FC = () => {
             setError(err.message || 'An unexpected error occurred');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchGamePlayers = async (gameId: number) => {
+        try {
+            if (searchDateType === 'range') {
+                const data = await getGamePlayers({ startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType});
+                setGamePlayers(data);
+            } else {
+                const data = await getGamePlayers({ startDateRange: gameDate || undefined, endDateRange: gameDateBound ? gameDateBound : undefined, seasonType });
+                setGamePlayers(data);
+            }
+        } catch (err: any) {
+            setError(err.message || 'An unexpected error occurred while fetching game players.');
+        }
+    };
+
+    const fetchGameTeams = async (gameId: number) => {
+        try {
+            if (searchDateType === 'range') {
+                const data = await getGameTeams({ startDateRange: gameStartDate || undefined, endDateRange: gameEndDate || undefined, seasonType});
+                setGameTeams(data);
+            } else {
+                const data = await getGameTeams({ startDateRange: gameDate || undefined, endDateRange: gameDateBound ? gameDateBound : undefined, seasonType });
+                setGameTeams(data);
+            }
+        } catch (err: any) {
+            setError(err.message || 'An unexpected error occurred while fetching game teams.');
         }
     };
 
