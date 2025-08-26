@@ -77,7 +77,7 @@ const GamesView: React.FC = () => {
                         <DatePicker
                             label="End Date"
                             value={gameEndDate ? new Date(gameEndDate) : null}
-                            onChange={(newValue) => setGameEndDate(newValue ? newValue.toISOString().split('T')[0] : null)}
+                            onChange={(newValue) => setGameEndDate(newValue ? (newValue.setDate(newValue.getDate() + 1), newValue.toISOString().split('T')[0]) : null)}
                             slotProps={{ textField: { variant: 'outlined' } }}
                         />
                     </>
