@@ -112,7 +112,7 @@ const GamesView: React.FC = () => {
                     ))}
                 </Grid>
             ) : (
-                <Typography>No games found for the selected season.</Typography>
+                <Typography>No games found.</Typography>
             )}
         </Box>
     );
