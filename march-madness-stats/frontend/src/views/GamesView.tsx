@@ -53,7 +53,8 @@ const GamesView: React.FC = () => {
                 </Button>
             </Box>
 
-            {loading ? (                <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+            {loading ? (                
+                <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
                     <CircularProgress />
                 </Box>
             ) : error ? (
