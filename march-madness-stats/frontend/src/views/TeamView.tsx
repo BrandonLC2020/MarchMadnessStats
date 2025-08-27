@@ -3,12 +3,11 @@ import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table,
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { useStats } from '../hooks/useStats';
-import { SeasonShootingStats, TeamInfo, TeamRoster } from '../types/api';
+import { SeasonShootingStats, TeamInfo, TeamRoster, PlayerSeasonStats, PlayerSeasonShootingStats } from '../types/api';
 import { TeamSeasonStats } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
 import TeamSeasonStatsCard from '../components/TeamSeasonStatsCard';
 import TeamSeasonShootingStatsCard from '../components/TeamSeasonShootingStatsCard';
-import { get } from 'node:https';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -19,8 +18,10 @@ const TeamView: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [teamSeasonStatsData, setTeamSeasonStatsData] = useState<TeamSeasonStats | null>(null);
     const [teamSeasonShootingStatsData, setTeamSeasonShootingStatsData] = useState<SeasonShootingStats | null>(null);
+    const [playerSeasonStatsData, setPlayerSeasonStatsData] = useState<PlayerSeasonStats[]>([]);
+    const [playerSeasonShootingStatsData, setPlayerSeasonShootingStatsData] = useState<PlayerSeasonShootingStats[]>([]);
     const { getTeams, getTeamRoster } = useTeams();
-    const { getTeamSeasonStats, getTeamSeasonShootingStats } = useStats();
+    const { getTeamSeasonStats, getTeamSeasonShootingStats, getPlayerSeasonStats, getPlayerSeasonShootingStats } = useStats();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
 
     useEffect(() => {
@@ -92,10 +93,42 @@ const TeamView: React.FC = () => {
             }
         };
 
+        const fetchPlayerSeasonStatsData = async () => {
+            if (!teamData) return;
+
+            try {
+                const data = await getPlayerSeasonStats({ season, team: teamData.school });
+                if (!data) {
+                    setError("No player season stats found for the provided team.");
+                } else {
+                    setPlayerSeasonStatsData(data);
+                }
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred while fetching player season stats data.');
+            }
+        };
+
+        const fetchPlayerSeasonShootingStatsData = async () => {
+            if (!teamData) return;
+
+            try {
+                const data = await getPlayerSeasonShootingStats({ season, team: teamData.school });
+                if (!data) {
+                    setError("No player season shooting stats found for the provided team.");
+                } else {
+                    setPlayerSeasonShootingStatsData(data);
+                }
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred while fetching player season shooting stats data.');
+            }
+        };
+
         fetchTeamData();
         fetchTeamRosterData();
         fetchTeamSeasonStatsData();
         fetchTeamSeasonShootingStatsData();
+        fetchPlayerSeasonStatsData();
+        fetchPlayerSeasonShootingStatsData();
     }, [teamId, getTeams, getTeamRoster, season, teamData, getTeamSeasonStats, teamSeasonStatsData, getTeamSeasonShootingStats]);
 
     if (loading) {
@@ -204,7 +237,7 @@ const TeamView: React.FC = () => {
                             <TableRow key={player.id}>
                                 <TableCell>{player.jersey}</TableCell>
                                 <TableCell>
-                                    <Link component={RouterLink} to={`/player/${player.id}`} state={{ player }}>
+                                    <Link component={RouterLink} to={`/player/${player.id}`} state={{ player, playerSeasonStatsData: playerSeasonStatsData.filter((data) => data.athleteId === player.id), playerSeasonShootingStatsData: playerSeasonShootingStatsData.filter((data) => data.athleteId === player.id) }}>
                                         {player.name}
                                     </Link>
                                 </TableCell>

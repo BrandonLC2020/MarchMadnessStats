@@ -1,11 +1,13 @@
 import React from 'react';
 import { Typography, Paper } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { TeamRosterPlayer } from '../types/api';
+import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
     const player = location.state?.player as TeamRosterPlayer;
+    const playerSeasonStatsData = location.state?.playerSeasonStatsData as PlayerSeasonStats;
+    const playerSeasonShootingStatsData = location.state?.playerSeasonShootingStatsData as PlayerSeasonShootingStats;
 
     if (!player) {
         return <Typography>Player data not available.</Typography>;
