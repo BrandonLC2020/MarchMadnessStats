@@ -3,9 +3,12 @@ import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table,
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { useStats } from '../hooks/useStats';
-import { TeamInfo, TeamRoster } from '../types/api';
+import { SeasonShootingStats, TeamInfo, TeamRoster } from '../types/api';
 import { TeamSeasonStats } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
+import TeamSeasonStatsCard from '../components/TeamSeasonStatsCard';
+import TeamSeasonShootingStatsCard from '../components/TeamSeasonShootingStatsCard';
+import { get } from 'node:https';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -15,8 +18,9 @@ const TeamView: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(!teamData);
     const [error, setError] = useState<string | null>(null);
     const [teamSeasonStatsData, setTeamSeasonStatsData] = useState<TeamSeasonStats | null>(null);
+    const [teamSeasonShootingStatsData, setTeamSeasonShootingStatsData] = useState<SeasonShootingStats | null>(null);
     const { getTeams, getTeamRoster } = useTeams();
-    const { getTeamSeasonStats } = useStats();
+    const { getTeamSeasonStats, getTeamSeasonShootingStats } = useStats();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
 
     useEffect(() => {
@@ -73,10 +77,26 @@ const TeamView: React.FC = () => {
             }
         };
 
+        const fetchTeamSeasonShootingStatsData = async () => {
+            if (!teamData) return;
+
+            try {
+                const data = await getTeamSeasonShootingStats({ season, team: teamData.school, conference: teamData.conference ? teamData.conference : undefined });
+                if (!data) {
+                    setError("No season shooting stats found for the provided team.");
+                } else {
+                    setTeamSeasonShootingStatsData(data[0]);
+                }
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred while fetching team season shooting stats data.');
+            }
+        };
+
         fetchTeamData();
         fetchTeamRosterData();
         fetchTeamSeasonStatsData();
-    }, [teamId, getTeams, getTeamRoster, season, teamData, getTeamSeasonStats, teamSeasonStatsData]);
+        fetchTeamSeasonShootingStatsData();
+    }, [teamId, getTeams, getTeamRoster, season, teamData, getTeamSeasonStats, teamSeasonStatsData, getTeamSeasonShootingStats]);
 
     if (loading) {
         return (
@@ -139,21 +159,32 @@ const TeamView: React.FC = () => {
                 <Box>
                     <Card sx={{ minWidth: 275, mb: 2 }}>
                         <CardContent>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                            <Typography variant="body1">
-                            Wins: {teamSeasonStatsData?.wins ?? 0}
-                            </Typography>
-                            <Typography variant="body1">
-                            Losses: {teamSeasonStatsData?.losses ?? 0}
-                            </Typography>
-                            <Typography variant="body1">
-                            Games: {teamSeasonStatsData?.games ?? 0}
-                            </Typography>
-                        </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                <Typography variant="body1">
+                                Wins: {teamSeasonStatsData?.wins ?? 0}
+                                </Typography>
+                                <Typography variant="body1">
+                                Losses: {teamSeasonStatsData?.losses ?? 0}
+                                </Typography>
+                                <Typography variant="body1">
+                                Games: {teamSeasonStatsData?.games ?? 0}
+                                </Typography>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Box>
             </Paper>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid>
+                    {teamSeasonStatsData?.teamStats && <TeamSeasonStatsCard stats={teamSeasonStatsData.teamStats} team={teamData.school} />}
+                </Grid>
+                <Grid>
+                    {teamSeasonStatsData?.opponentStats && <TeamSeasonStatsCard stats={teamSeasonStatsData.opponentStats} team={'Opponent'} />}
+                </Grid>
+            </Grid>
+            <Grid>
+                {teamSeasonShootingStatsData && <TeamSeasonShootingStatsCard stats={teamSeasonShootingStatsData} team={teamData.school} />}
+            </Grid>
             <TableContainer component={Paper} sx={{ mt: 3 }}>
                 <Typography variant="h6" component="h2" gutterBottom sx={{ p: 2 }}>
                     Team Roster
