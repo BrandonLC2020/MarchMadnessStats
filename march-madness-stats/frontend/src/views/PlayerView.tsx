@@ -1,7 +1,9 @@
 import React from 'react';
-import { Typography, Paper } from '@mui/material';
+import { Typography, Paper, Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
+import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
+import PlayerSeasonShootingStatsCard from '../components/PlayerSeasonShootingStatsCard';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
@@ -14,31 +16,47 @@ const PlayerView: React.FC = () => {
     }
 
     return (
-        <Paper sx={{ p: 3, mt: 3 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                {player.name} - #{player.jersey}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                Position: {player.position}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                Height: {player.height}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                Weight: {player.weight}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                Start Season: {player.startSeason}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                End Season: {player.endSeason}
-            </Typography>
-            {player.hometown && (
-                <Typography variant="body1" gutterBottom>
-                    Hometown: {player.hometown.city}, {player.hometown.state}
+        <div>
+            <Paper sx={{ p: 3, mt: 3 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    {player.name} - #{player.jersey}
                 </Typography>
-            )}
-        </Paper>
+                <Typography variant="body1" gutterBottom>
+                    Position: {player.position}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Height: {player.height}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Weight: {player.weight}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Start Season: {player.startSeason}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    End Season: {player.endSeason}
+                </Typography>
+                {player.hometown && (
+                    <Typography variant="body1" gutterBottom>
+                        Hometown: {player.hometown.city}, {player.hometown.state}
+                    </Typography>
+                )}
+            </Paper>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+                {playerSeasonStatsData && (
+                    <Grid key={playerSeasonStatsData.season}>
+                        <PlayerSeasonStatsCard stats={playerSeasonStatsData} />
+                    </Grid>
+                )}
+            </Grid>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+                {playerSeasonShootingStatsData &&
+                    <Grid key={playerSeasonShootingStatsData.season}>
+                        <PlayerSeasonShootingStatsCard stats={playerSeasonShootingStatsData} />
+                    </Grid>
+                }
+            </Grid>
+        </div>
     );
 };
 
