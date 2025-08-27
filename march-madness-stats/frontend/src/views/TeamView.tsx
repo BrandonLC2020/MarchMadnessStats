@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem, Link } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Grid, TextField, MenuItem, Link, Card, CardContent } from '@mui/material';
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
+import { useStats } from '../hooks/useStats';
 import { TeamInfo, TeamRoster } from '../types/api';
+import { TeamSeasonStats } from '../types/api';
 import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
 
 const TeamView: React.FC = () => {
@@ -12,7 +14,9 @@ const TeamView: React.FC = () => {
     const [teamRosterData, setTeamRosterData] = useState<TeamRoster | null>(null);
     const [loading, setLoading] = useState<boolean>(!teamData);
     const [error, setError] = useState<string | null>(null);
+    const [teamSeasonStatsData, setTeamSeasonStatsData] = useState<TeamSeasonStats | null>(null);
     const { getTeams, getTeamRoster } = useTeams();
+    const { getTeamSeasonStats } = useStats();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
 
     useEffect(() => {
@@ -54,9 +58,25 @@ const TeamView: React.FC = () => {
             }
         };
 
+        const fetchTeamSeasonStatsData = async () => {
+            if (!teamData) return;
+
+            try {
+                const data = await getTeamSeasonStats({ season, team: teamData.school, conference: teamData.conference ? teamData.conference : undefined });
+                if (!data) {
+                    setError("No season stats found for the provided team.");
+                } else {
+                    setTeamSeasonStatsData(data[0]);
+                }
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred while fetching team season stats data.');
+            }
+        };
+
         fetchTeamData();
         fetchTeamRosterData();
-    }, [teamId, getTeams, getTeamRoster, season, teamData]);
+        fetchTeamSeasonStatsData();
+    }, [teamId, getTeams, getTeamRoster, season, teamData, getTeamSeasonStats, teamSeasonStatsData]);
 
     if (loading) {
         return (
@@ -116,6 +136,23 @@ const TeamView: React.FC = () => {
                         </Typography>
                     </Grid>
                 </Grid>
+                <Box>
+                    <Card sx={{ minWidth: 275, mb: 2 }}>
+                        <CardContent>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                            <Typography variant="body1">
+                            Wins: {teamSeasonStatsData?.wins ?? 0}
+                            </Typography>
+                            <Typography variant="body1">
+                            Losses: {teamSeasonStatsData?.losses ?? 0}
+                            </Typography>
+                            <Typography variant="body1">
+                            Games: {teamSeasonStatsData?.games ?? 0}
+                            </Typography>
+                        </Box>
+                        </CardContent>
+                    </Card>
+                </Box>
             </Paper>
             <TableContainer component={Paper} sx={{ mt: 3 }}>
                 <Typography variant="h6" component="h2" gutterBottom sx={{ p: 2 }}>
