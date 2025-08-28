@@ -1,5 +1,5 @@
-const BASE_URL = process.env.REACT_APP_API_URL || '';
-const API_KEY = process.env.API_KEY || '';
+const CBB_BASE_URL = process.env.CBB_BASE_URL || '';
+const CBB_API_KEY = process.env.CBB_API_KEY || '';
 
 export const handleResponse = async <T>(response: Response): Promise<T> => {
     if (!response.ok) {
@@ -14,11 +14,11 @@ export const fetchData = async <T>(endpoint: string, params: Record<string, any>
   const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v != null));
   const query = new URLSearchParams(filteredParams).toString();
 
-  const response = await fetch(`${BASE_URL}${endpoint}?${query}`, {
+  const response = await fetch(`${CBB_BASE_URL}${endpoint}?${query}`, {
         headers: {
             'Content-Type': 'application/json',
             // Add your API key header here if needed
-            'Authorization': `Bearer ${API_KEY}`
+            'Authorization': `Bearer ${CBB_API_KEY}`
         },
   });
   return handleResponse<T>(response);
