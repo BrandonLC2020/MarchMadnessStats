@@ -19,8 +19,8 @@ public class StatsController implements StatsApi {
     }
 
     @Override
-    public ResponseEntity<List<TeamSeasonStats>> getTeamSeasonStats(Double season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
-        List<TeamSeasonStats> result = cbbApiService.getTeamSeasonStats(season != null ? season.intValue() : null, team, conference).collectList().block();
+    public ResponseEntity<List<TeamSeasonStats>> getTeamSeasonStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
+        List<TeamSeasonStats> result = cbbApiService.getTeamSeasonStats(season, team, conference).collectList().block();
         return ResponseEntity.ok(result);
     }
 
@@ -31,8 +31,8 @@ public class StatsController implements StatsApi {
     }
 
     @Override
-    public ResponseEntity<List<PlayerSeasonStats>> getPlayerSeasonStats(Double season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
-        List<PlayerSeasonStats> result = cbbApiService.getPlayerSeasonStats(season.intValue(), team).collectList().block();
+    public ResponseEntity<List<PlayerSeasonStats>> getPlayerSeasonStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
+        List<PlayerSeasonStats> result = cbbApiService.getPlayerSeasonStats(season, team).collectList().block();
         return ResponseEntity.ok(result);
     }
 
