@@ -7,17 +7,30 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.blc.backend.model.AdjustedEfficiencyInfo;
 import com.blc.backend.model.ConferenceHistory;
+import com.blc.backend.model.ConferenceInfo;
+import com.blc.backend.model.DraftPick;
+import com.blc.backend.model.DraftPosition;
+import com.blc.backend.model.DraftTeam;
 import com.blc.backend.model.GameBoxScorePlayers;
 import com.blc.backend.model.GameBoxScoreTeam;
 import com.blc.backend.model.GameInfo;
+import com.blc.backend.model.GameLines;
+import com.blc.backend.model.LineProviderInfo;
+import com.blc.backend.model.PlayInfo;
+import com.blc.backend.model.PlayTypeInfo;
 import com.blc.backend.model.PlayerSeasonShootingStats;
 import com.blc.backend.model.PlayerSeasonStats;
+import com.blc.backend.model.PlayerSubsititution;
 import com.blc.backend.model.PollTeamInfo;
+import com.blc.backend.model.Recruit;
 import com.blc.backend.model.SeasonShootingStats;
+import com.blc.backend.model.SrsInfo;
 import com.blc.backend.model.TeamInfo;
 import com.blc.backend.model.TeamRoster;
 import com.blc.backend.model.TeamSeasonStats;
+import com.blc.backend.model.VenueInfo;
 
 import reactor.core.publisher.Flux;
 
@@ -50,8 +63,30 @@ public class CbbApiService {
     }
 
     // --- Conferences ---
+    public Flux<ConferenceInfo> getConferences() {
+        return performGetRequest("/conferences", Map.of(), ConferenceInfo.class);
+    }
+
     public Flux<ConferenceHistory> getConferenceHistory(String conference) {
         return performGetRequest("/conferences/history", Map.of("conference", conference), ConferenceHistory.class);
+    }
+
+    // --- Draft ---
+    public Flux<DraftPick> getDraftPicks(Integer year, String draftTeam, String sourceTeam, String position) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("year", year);
+        params.put("draftTeam", draftTeam);
+        params.put("sourceTeam", sourceTeam);
+        params.put("position", position);
+        return performGetRequest("/draft/picks", params, DraftPick.class);
+    }
+
+    public Flux<DraftPosition> getDraftPositions() {
+        return performGetRequest("/draft/positions", Map.of(), DraftPosition.class);
+    }
+
+    public Flux<DraftTeam> getDraftTeams() {
+        return performGetRequest("/draft/teams", Map.of(), DraftTeam.class);
     }
 
     // --- Games ---
@@ -92,9 +127,60 @@ public class CbbApiService {
         return performGetRequest("/games/players", params, GameBoxScorePlayers.class);
     }
 
+    // --- Lines ---
+    public Flux<GameLines> getLines(Integer season, String team, String conference, String startDateRange, String endDateRange) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        params.put("conference", conference);
+        params.put("startDateRange", startDateRange);
+        params.put("endDateRange", endDateRange);
+        return performGetRequest("/lines", params, GameLines.class);
+    }
+
+    public Flux<LineProviderInfo> getProviders() {
+        return performGetRequest("/lines/providers", Map.of(), LineProviderInfo.class);
+    }
+
+    // --- Plays ---
+    public Flux<PlayInfo> getPlays(Integer gameId, Boolean shootingPlaysOnly) {
+        return performGetRequest("/plays/game/" + gameId, Map.of("shootingPlaysOnly", shootingPlaysOnly), PlayInfo.class);
+    }
+
+    public Flux<PlayTypeInfo> getPlayTypes() {
+        return performGetRequest("/plays/types", Map.of(), PlayTypeInfo.class);
+    }
+
     // --- Rankings ---
     public Flux<PollTeamInfo> getRankings(Integer season, String seasonType, Integer week) {
         return performGetRequest("/rankings", Map.of("season", season, "seasonType", seasonType, "week", week, "pollType", "AP"), PollTeamInfo.class);
+    }
+
+    // --- Ratings ---
+    public Flux<SrsInfo> getSrs(Integer season, String team, String conference) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        params.put("conference", conference);
+        return performGetRequest("/ratings/srs", params, SrsInfo.class);
+    }
+
+    public Flux<AdjustedEfficiencyInfo> getAdjustedEfficiency(Integer season, String team, String conference) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        params.put("conference", conference);
+        return performGetRequest("/ratings/adjusted", params, AdjustedEfficiencyInfo.class);
+    }
+
+    // --- Recruiting ---
+    public Flux<Recruit> getRecruits(Integer year, String team, String conference, String position) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("year", year);
+        params.put("team", team);
+        params.put("conference", conference);
+        params.put("position", position);
+        return performGetRequest("/recruiting/players", params, Recruit.class);
     }
 
     // --- Stats ---
@@ -114,6 +200,19 @@ public class CbbApiService {
         return performGetRequest("/stats/player/shooting/season", Map.of("season", season, "team", team), PlayerSeasonShootingStats.class);
     }
 
+    // --- Substitutions ---
+    public Flux<PlayerSubsititution> getSubstitutionsByGame(Integer gameId) {
+        return performGetRequest("/substitutions/game/" + gameId, Map.of(), PlayerSubsititution.class);
+    }
+
+    public Flux<PlayerSubsititution> getSubstitutionsByPlayerId(Integer playerId, Integer season) {
+        return performGetRequest("/substitutions/player/" + playerId, Map.of("season", season), PlayerSubsititution.class);
+    }
+
+    public Flux<PlayerSubsititution> getSubstitutionsByTeam(Integer season, String team) {
+        return performGetRequest("/substitutions/team", Map.of("season", season, "team", team), PlayerSubsititution.class);
+    }
+
     // --- Teams ---
     public Flux<TeamInfo> getTeams(String conference, Integer season) {
         return performGetRequest("/teams", Map.of("conference", conference, "season", season), TeamInfo.class);
@@ -121,5 +220,10 @@ public class CbbApiService {
 
     public Flux<TeamRoster> getTeamRoster(Integer season, String team) {
         return performGetRequest("/teams/roster", Map.of("season", season, "team", team), TeamRoster.class);
+    }
+
+    // --- Venues ---
+    public Flux<VenueInfo> getVenues() {
+        return performGetRequest("/venues", Map.of(), VenueInfo.class);
     }
 }
