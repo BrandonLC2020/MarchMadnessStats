@@ -1,10 +1,13 @@
 package com.blc.backend.api;
 
-import com.blc.backend.model.PollTeamInfo;
-import com.blc.backend.service.CbbApiService;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+
+import com.blc.backend.model.PollTeamInfo;
+import com.blc.backend.model.SeasonType;
+import com.blc.backend.service.CbbApiService;
 
 @RestController
 public class RankingsController implements RankingsApi {
@@ -16,8 +19,13 @@ public class RankingsController implements RankingsApi {
     }
 
     @Override
-    public ResponseEntity<List<PollTeamInfo>> getRankings(Integer season, String seasonType, Integer week, String pollType, String team, String conference) {
-        List<PollTeamInfo> result = cbbApiService.getRankings(season, seasonType, week).collectList().block();
+    public ResponseEntity<List<PollTeamInfo>> getRankings(Integer season, SeasonType seasonType, Integer week, String pollType, String team, String conference) {
+        String seasonTypeString = (seasonType != null) ? seasonType.getValue() : null;
+        
+        // The cbbApiService.getRankings method only accepts season, seasonType, and week.
+        // The other parameters (pollType, team, conference) are not used in the service layer.
+        List<PollTeamInfo> result = cbbApiService.getRankings(season, seasonTypeString, week).collectList().block();
+        
         return ResponseEntity.ok(result);
     }
 }
