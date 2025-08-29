@@ -8,6 +8,8 @@ import com.blc.backend.service.CbbApiService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.time.OffsetDateTime;
+
 
 @RestController
 public class StatsController implements StatsApi {
@@ -19,25 +21,25 @@ public class StatsController implements StatsApi {
     }
 
     @Override
-    public ResponseEntity<List<TeamSeasonStats>> getTeamSeasonStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
-        List<TeamSeasonStats> result = cbbApiService.getTeamSeasonStats(season, team, conference).collectList().block();
+    public ResponseEntity<List<TeamSeasonStats>> getTeamSeasonStats(Double season, String seasonType, String team, String conference, OffsetDateTime startDateRange, OffsetDateTime endDateRange) {
+        List<TeamSeasonStats> result = cbbApiService.getTeamSeasonStats(season.intValue(), team, conference).collectList().block();
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<List<SeasonShootingStats>> getTeamSeasonShootingStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
+    public ResponseEntity<List<SeasonShootingStats>> getTeamSeasonShootingStats(Integer season, String seasonType, String team, String conference, OffsetDateTime startDateRange, OffsetDateTime endDateRange) {
         List<SeasonShootingStats> result = cbbApiService.getTeamSeasonShootingStats(season, team, conference).collectList().block();
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<List<PlayerSeasonStats>> getPlayerSeasonStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
-        List<PlayerSeasonStats> result = cbbApiService.getPlayerSeasonStats(season, team).collectList().block();
+    public ResponseEntity<List<PlayerSeasonStats>> getPlayerSeasonStats(Double season, String seasonType, String team, String conference, OffsetDateTime startDateRange, OffsetDateTime endDateRange) {
+        List<PlayerSeasonStats> result = cbbApiService.getPlayerSeasonStats(season.intValue(), team).collectList().block();
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<List<PlayerSeasonShootingStats>> getPlayerSeasonShootingStats(Integer season, String seasonType, String team, String conference, String startDateRange, String endDateRange) {
+    public ResponseEntity<List<PlayerSeasonShootingStats>> getPlayerSeasonShootingStats(Integer season, String seasonType, String team, String conference, OffsetDateTime startDateRange, OffsetDateTime endDateRange) {
         List<PlayerSeasonShootingStats> result = cbbApiService.getPlayerSeasonShootingStats(season, team).collectList().block();
         return ResponseEntity.ok(result);
     }

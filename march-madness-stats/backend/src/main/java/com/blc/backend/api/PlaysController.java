@@ -1,11 +1,15 @@
 package com.blc.backend.api;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.blc.backend.model.PlayInfo;
 import com.blc.backend.model.PlayTypeInfo;
 import com.blc.backend.service.CbbApiService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+
 
 @RestController
 public class PlaysController implements PlaysApi {
@@ -29,7 +33,7 @@ public class PlaysController implements PlaysApi {
     }
 
     @Override
-    public ResponseEntity<List<PlayInfo>> getPlaysByDate(String date, Boolean shootingPlaysOnly) {
+    public ResponseEntity<List<PlayInfo>> getPlaysByDate(OffsetDateTime date, Boolean shootingPlaysOnly) {
         // This endpoint doesn't exist in your service yet, so we'll return an empty list for now.
         return ResponseEntity.ok(List.of());
     }

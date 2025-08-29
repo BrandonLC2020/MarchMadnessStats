@@ -25,19 +25,19 @@ public class GamesController implements GamesApi {
     }
 
     @Override
-    public ResponseEntity<List<GameBoxScoreTeam>> getGameTeams(String startDateRange, String endDateRange, String team, String conference, Integer season, String seasonType, String tournament) {
-        List<GameBoxScoreTeam> result = cbbApiService.getGameTeams(startDateRange, endDateRange, team, conference, Double.valueOf(season), seasonType, tournament).collectList().block();
+    public ResponseEntity<List<GameBoxScoreTeam>> getGameTeams(String startDateRange, String endDateRange, String team, String conference, Double season, String seasonType, String tournament) {
+        List<GameBoxScoreTeam> result = cbbApiService.getGameTeams(startDateRange, endDateRange, team, conference, season, seasonType, tournament).collectList().block();
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<List<GameBoxScorePlayers>> getGamePlayers(String startDateRange, String endDateRange, String team, String conference, Integer season, String seasonType, String tournament) {
-        List<GameBoxScorePlayers> result = cbbApiService.getGamePlayers(startDateRange, endDateRange, team, conference, Double.valueOf(season), seasonType, tournament).collectList().block();
+    public ResponseEntity<List<GameBoxScorePlayers>> getGamePlayers(String startDateRange, String endDateRange, String team, String conference, Double season, String seasonType, String tournament) {
+        List<GameBoxScorePlayers> result = cbbApiService.getGamePlayers(startDateRange, endDateRange, team, conference, season, seasonType, tournament).collectList().block();
         return ResponseEntity.ok(result);
     }
 
     @Override
-    public ResponseEntity<List<GameMediaInfo>> getBroadcasts(String startDateRange, String endDateRange, String team, String conference, Integer season, String seasonType, String tournament) {
+    public ResponseEntity<List<GameMediaInfo>> getBroadcasts(String startDateRange, String endDateRange, String team, String conference, Double season, String seasonType, String tournament) {
         // This endpoint doesn't exist in your service yet, so we'll return an empty list for now.
         return ResponseEntity.ok(List.of());
     }
