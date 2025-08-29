@@ -1,11 +1,14 @@
 package com.blc.backend.api;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.blc.backend.model.GameLines;
 import com.blc.backend.model.LineProviderInfo;
 import com.blc.backend.service.CbbApiService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 @RestController
 public class LinesController implements LinesApi {
@@ -17,8 +20,10 @@ public class LinesController implements LinesApi {
     }
 
     @Override
-    public ResponseEntity<List<GameLines>> getLines(Integer season, String team, String conference, String startDateRange, String endDateRange) {
-        List<GameLines> result = cbbApiService.getLines(season, team, conference, startDateRange, endDateRange).collectList().block();
+    public ResponseEntity<List<GameLines>> getLines(Integer season, String team, String conference, OffsetDateTime startDateRange, OffsetDateTime endDateRange) {
+        String startDateString = (startDateRange != null) ? startDateRange.toString() : null;
+        String endDateString = (endDateRange != null) ? endDateRange.toString() : null;
+        List<GameLines> result = cbbApiService.getLines(season, team, conference, startDateString, endDateString).collectList().block();
         return ResponseEntity.ok(result);
     }
 
