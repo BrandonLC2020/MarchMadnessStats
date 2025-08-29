@@ -1,4 +1,4 @@
-const CBB_BASE_URL = process.env.CBB_BASE_URL || '';
+const LOCAL_BASE_URL = process.env.LOCAL_BASE_URL || '';
 const CBB_API_KEY = process.env.CBB_API_KEY || '';
 
 export const handleResponse = async <T>(response: Response): Promise<T> => {
@@ -14,7 +14,7 @@ export const fetchData = async <T>(endpoint: string, params: Record<string, any>
   const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v != null));
   const query = new URLSearchParams(filteredParams).toString();
 
-  const response = await fetch(`${CBB_BASE_URL}${endpoint}?${query}`, {
+  const response = await fetch(`${LOCAL_BASE_URL}${endpoint}?${query}`, {
         headers: {
             'Content-Type': 'application/json',
             // Add your API key header here if needed
