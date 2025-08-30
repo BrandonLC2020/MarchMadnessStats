@@ -18,12 +18,12 @@ public class RankingsController implements RankingsApi {
         this.cbbApiService = cbbApiService;
     }
 
-    @Override
+   @Override
     public ResponseEntity<List<PollTeamInfo>> getRankings(Integer season, SeasonType seasonType, Integer week, String pollType, String team, String conference) {
         String seasonTypeString = (seasonType != null) ? seasonType.getValue() : null;
-        
-        List<PollTeamInfo> result = cbbApiService.getRankings(season, seasonTypeString, week).collectList().block();
-        
+
+        List<PollTeamInfo> result = cbbApiService.getRankings(season, seasonTypeString, week, pollType).collectList().block();
+
         return ResponseEntity.ok(result);
     }
 }

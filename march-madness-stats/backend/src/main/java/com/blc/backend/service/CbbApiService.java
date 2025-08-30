@@ -154,14 +154,17 @@ public class CbbApiService {
     }
 
     // --- Rankings ---
-    public Flux<PollTeamInfo> getRankings(Integer season, String seasonType, Integer week) {
+    public Flux<PollTeamInfo> getRankings(Integer season, String seasonType, Integer week, String pollType) {
         Map<String, Object> params = new HashMap<>();
         params.put("season", season);
         params.put("seasonType", seasonType);
         params.put("week", week);
-        params.put("pollType", "AP");
+        if (pollType != null) {
+            params.put("pollType", pollType.toLowerCase());
+        }
         return performGetRequest("/rankings", params, PollTeamInfo.class);
     }
+
 
     // --- Ratings ---
     public Flux<SrsInfo> getSrs(Integer season, String team, String conference) {
