@@ -68,7 +68,9 @@ public class CbbApiService {
     }
 
     public Flux<ConferenceHistory> getConferenceHistory(String conference) {
-        return performGetRequest("/conferences/history", Map.of("conference", conference), ConferenceHistory.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("conference", conference);
+        return performGetRequest("/conferences/history", params, ConferenceHistory.class);
     }
 
     // --- Draft ---

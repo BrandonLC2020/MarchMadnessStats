@@ -22,7 +22,7 @@ const ConferencesView: React.FC = () => {
             }
         };
         fetchConferences();
-    }, [getConferenceHistory]);
+    }, []);
 
     if (loading) {
         return (
