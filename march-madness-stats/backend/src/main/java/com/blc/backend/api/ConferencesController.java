@@ -24,11 +24,9 @@ public class ConferencesController implements ConferencesApi {
         return ResponseEntity.ok(result);
     }
 
-    // This method was missing from the previous version, but is required by the ConferencesApi interface
     @Override
     public ResponseEntity<List<ConferenceInfo>> getConferences() {
-        // This endpoint doesn't exist in your service yet, so we'll return an empty list for now.
-        // You can implement getConferences in CbbApiService later if needed.
-        return ResponseEntity.ok(List.of());
+        List<ConferenceInfo> result = cbbApiService.getConferences().collectList().block();
+        return ResponseEntity.ok(result);
     }
 }
