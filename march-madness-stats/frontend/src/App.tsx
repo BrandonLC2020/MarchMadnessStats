@@ -24,11 +24,12 @@ import TeamView from './views/TeamView';
 import GameDetailsView from './views/GameDetailsView';
 import './App.css';
 import GamesView from './views/GamesView';
+import logo from './logo.svg';
 
 const Home = () => (
   <Box sx={{ my: 4 }}>
     <Typography variant="h4" component="h1" gutterBottom>
-      March Madness Stats Dashboard
+      Home Dashboard
     </Typography>
     <Grid container spacing={4} sx={{ mt: 2 }}>
       <Grid>
@@ -82,9 +83,10 @@ function App() {
     <Router>
       <AppBar position="static">
         <Toolbar>
+          <img src={logo} className="App-logo" alt="logo" style={{ height: '40px', marginRight: '10px' }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <RouterLink to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              March Madness Stats
+              Men's College Basketball Stats
             </RouterLink>
           </Typography>
         </Toolbar>
@@ -93,7 +95,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rankings" element={<RankingsView />} />
-          <Route path="/conferences" element={<ConferencesView />}  />
+          <Route path="/conferences" element={<ConferencesView />} />
           <Route path="/games" element={<GamesView />} />
           <Route path="/conferences/:conferenceAbbreviation" element={<ConferenceTeamsView />} />
           <Route path="/player/:playerId" element={<PlayerView />} />

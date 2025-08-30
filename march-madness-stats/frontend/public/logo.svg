@@ -1,0 +1,42 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Simple background for visibility -->
+    <rect width="256" height="256" rx="48" fill="url(#background_gradient)"/>
+    
+    <!-- Basketball -->
+    <circle cx="128" cy="128" r="90" fill="url(#basketball_gradient)"/>
+    
+    <!-- Basketball Seams -->
+    <path d="M128 38 L128 218" stroke="black" stroke-opacity="0.8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M38 128 L218 128" stroke="black" stroke-opacity="0.8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M88 55.7 C 65 98, 65 158, 88 200.3" stroke="black" stroke-opacity="0.8" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M168 55.7 C 191 98, 191 158, 168 200.3" stroke="black" stroke-opacity="0.8" stroke-width="4" stroke-linecap="round" fill="none"/>
+    
+    <!-- Chart Axes -->
+    <polyline points="50,90 50,155 210,155" fill="none" stroke="white" stroke-opacity="0.7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Line Graph Overlay -->
+    <polyline points="60,150 95,120 130,140 165,100 200,115" fill="none" stroke="url(#line_gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Data Points on Graph -->
+    <circle cx="60" cy="150" r="6" fill="#00AEEF" stroke="white" stroke-width="2"/>
+    <circle cx="95" cy="120" r="6" fill="#00AEEF" stroke="white" stroke-width="2"/>
+    <circle cx="130" cy="140" r="6" fill="#00AEEF" stroke="white" stroke-width="2"/>
+    <circle cx="165" cy="100" r="6" fill="#00AEEF" stroke="white" stroke-width="2"/>
+    <circle cx="200" cy="115" r="6" fill="#00AEEF" stroke="white" stroke-width="2"/>
+    
+    <defs>
+        <!-- Gradients for a more polished look -->
+        <linearGradient id="background_gradient" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#2C3E50"/>
+            <stop offset="1" stop-color="#4A6E8A"/>
+        </linearGradient>
+        <radialGradient id="basketball_gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(128 128) rotate(90) scale(90)">
+            <stop stop-color="#FF8C00"/>
+            <stop offset="1" stop-color="#E67E22"/>
+        </radialGradient>
+        <linearGradient id="line_gradient" x1="60" y1="150" x2="200" y2="115" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34D399"/>
+            <stop offset="1" stop-color="#00AEEF"/>
+        </linearGradient>
+    </defs>
+</svg>
