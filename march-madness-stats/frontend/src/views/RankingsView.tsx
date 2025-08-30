@@ -1,19 +1,18 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead, CircularProgress } from '@mui/material';
-import { GridColDef, GridFilterModel } from '@mui/x-data-grid';
+import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead, CircularProgress, TableCellProps } from '@mui/material';
 import { useRankings } from '../hooks/useRankings';
 import { PollTeamInfo, SeasonType } from '../types/api';
 import { SEASON_MAX_WEEKS, SEASON_MIN_WEEKS, SEASON_SEARCH_OPTIONS, SEASON_WITH_PRESEASONS, SEASON_WITH_POSTSEASONS, CURRENT_SEASON, WEEK_SEARCH_OPTIONS } from '../types/currentData';
 
-const columns: GridColDef[] = [
+const columns = [
     { field: 'ranking', headerName: 'Rank', type: 'number', width: 150 },
     { field: 'team', headerName: 'Team', width: 110 },
-    { field: 'conference', headerName: 'Conference', width: 160 },
-    { field: 'points', headerName: 'Points', width: 160 },
-    { field: 'firstPlaceVotes', headerName: 'First Place Votes', width: 160 }
+    { field: 'conference', headerName: 'Conference', width: 160, align: 'left' as TableCellProps['align'] },
+    { field: 'points', headerName: 'Points', width: 160, align: 'right' as TableCellProps['align'] },
+    { field: 'firstPlaceVotes', headerName: 'First Place Votes', width: 160, align: 'right' as TableCellProps['align'] }
 ];
-
-const conferenceFilterOptions: { value: string; label: string }[] = [
+ 
+const conferenceFilterOptions = [
     { value: 'ACC', label: 'ACC' },
     { value: 'Big 12', label: 'Big 12' },
     { value: 'Big Ten', label: 'Big Ten' },
@@ -24,26 +23,23 @@ const conferenceFilterOptions: { value: string; label: string }[] = [
 
 const RankingsView: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
     const [filterConference, setFilterConference] = useState('');
     const [data, setData] = useState<PollTeamInfo[]>([]);
     const [searchWeek, setSearchWeek] = useState<number | string>('');
     const [searchSeason, setSearchSeason] = useState<number | string>(CURRENT_SEASON);
-    const [loading, setLoading] = useState(false); // State to track loading
+    const [loading, setLoading] = useState(false);
     const { getRankings } = useRankings();
 
-    // Reset week when season changes
     useEffect(() => {
         setSearchWeek('');
     }, [searchSeason]);
-    
-    // Filter the week options based on the selected season
+
     const filteredWeekOptions = useMemo(() => {
         if (!searchSeason) {
-            return []; // No season selected, so no weeks to show
+            return [];
         }
-        const maxWeek = SEASON_MAX_WEEKS[searchSeason as number] || 20; // Default to 20 if season not in our map
-        const minWeek = SEASON_MIN_WEEKS[searchSeason as number] || 2; // Default to 2 if season not in our map
+        const maxWeek = SEASON_MAX_WEEKS[searchSeason as number] || 20;
+        const minWeek = SEASON_MIN_WEEKS[searchSeason as number] || 2;
         return WEEK_SEARCH_OPTIONS.filter(option => {
             if (typeof option.value === 'string') {
                 if (option.value === 'preseason' && SEASON_WITH_PRESEASONS[searchSeason as number]) {
@@ -56,6 +52,13 @@ const RankingsView: React.FC = () => {
         });
     }, [searchSeason]);
 
+    const filteredData = useMemo(() => {
+        if (filterConference) {
+            return data.filter(item => item.conference === filterConference);
+        }
+        return data;
+    }, [data, filterConference]);
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -65,13 +68,6 @@ const RankingsView: React.FC = () => {
     };
 
     const handleApplyFilter = () => {
-        if (filterConference) {
-            setFilterModel({
-                items: [{ field: 'conference', operator: 'equals', value: filterConference }],
-            });
-        } else {
-            setFilterModel({ items: [] });
-        }
         handleClose();
     };
 
@@ -89,7 +85,7 @@ const RankingsView: React.FC = () => {
             setData(rankingsData);
         } catch (error) {
             console.error("Error fetching rankings:", error);
-            setData([]); // Clear data on error
+            setData([]);
         } finally {
             setLoading(false);
         }
@@ -123,7 +119,6 @@ const RankingsView: React.FC = () => {
                     onChange={(e) => setSearchWeek(e.target.value)}
                     disabled={!searchSeason}
                 >
-                    {/* Use the new filtered list of options */}
                     {filteredWeekOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
@@ -133,7 +128,7 @@ const RankingsView: React.FC = () => {
                 <Button variant="contained" color="primary" onClick={handleSearchRankings} disabled={!searchWeek || !searchSeason}>
                     Get Rankings
                 </Button>
-                <Button aria-describedby={id} variant="contained" onClick={handleClick} disabled={!searchWeek || !searchSeason}>
+                <Button aria-describedby={id} variant="contained" onClick={handleClick} disabled={!data.length}>
                     Filter By Conference
                 </Button>
                 <Popover
@@ -155,6 +150,9 @@ const RankingsView: React.FC = () => {
                                 color={filterConference === option.value ? 'primary' : 'default'}
                             />
                         ))}
+                        <Button onClick={() => setFilterConference('')} variant="outlined">
+                            Clear Filter
+                        </Button>
                         <Button onClick={handleApplyFilter} variant="contained">
                             Apply
                         </Button>
@@ -166,7 +164,7 @@ const RankingsView: React.FC = () => {
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
-                                <TableCell key={column.field} align={column.align}>
+                                <TableCell key={column.field} align={column.align || 'left'}>
                                     {column.headerName}
                                 </TableCell>
                             ))}
@@ -179,10 +177,10 @@ const RankingsView: React.FC = () => {
                                     <CircularProgress />
                                 </TableCell>
                             </TableRow>
-                        ) : data.length > 0 ? (
-                            data.map((row) => (
+                        ) : filteredData.length > 0 ? (
+                            filteredData.map((row) => (
                                 <TableRow key={row.teamId}>
-                                    {columns.map((column) => (
+                                    {columns.map((column: any) => (
                                         <TableCell key={column.field} align={column.align}>
                                             {row[column.field as keyof PollTeamInfo]}
                                         </TableCell>
@@ -192,7 +190,7 @@ const RankingsView: React.FC = () => {
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} align="center">
-                                    No rankings found. Please select a season and week.
+                                    No rankings found.
                                 </TableCell>
                             </TableRow>
                         )}
