@@ -187,11 +187,19 @@ public class CbbApiService {
 
     // --- Stats ---
     public Flux<TeamSeasonStats> getTeamSeasonStats(Integer season, String team, String conference) {
-        return performGetRequest("/stats/team/season", Map.of("season", season, "team", team, "conference", conference), TeamSeasonStats.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        params.put("conference", conference);
+        return performGetRequest("/stats/team/season", params, TeamSeasonStats.class);
     }
 
     public Flux<SeasonShootingStats> getTeamSeasonShootingStats(Integer season, String team, String conference) {
-        return performGetRequest("/stats/team/shooting/season", Map.of("season", season, "team", team, "conference", conference), SeasonShootingStats.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        params.put("conference", conference);
+        return performGetRequest("/stats/team/shooting/season", params, SeasonShootingStats.class);
     }
 
     public Flux<PlayerSeasonStats> getPlayerSeasonStats(Integer season, String team) {
