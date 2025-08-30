@@ -155,7 +155,12 @@ public class CbbApiService {
 
     // --- Rankings ---
     public Flux<PollTeamInfo> getRankings(Integer season, String seasonType, Integer week) {
-        return performGetRequest("/rankings", Map.of("season", season, "seasonType", seasonType, "week", week, "pollType", "AP"), PollTeamInfo.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("seasonType", seasonType);
+        params.put("week", week);
+        params.put("pollType", "AP");
+        return performGetRequest("/rankings", params, PollTeamInfo.class);
     }
 
     // --- Ratings ---

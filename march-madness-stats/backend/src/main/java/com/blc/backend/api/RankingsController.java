@@ -22,8 +22,6 @@ public class RankingsController implements RankingsApi {
     public ResponseEntity<List<PollTeamInfo>> getRankings(Integer season, SeasonType seasonType, Integer week, String pollType, String team, String conference) {
         String seasonTypeString = (seasonType != null) ? seasonType.getValue() : null;
         
-        // The cbbApiService.getRankings method only accepts season, seasonType, and week.
-        // The other parameters (pollType, team, conference) are not used in the service layer.
         List<PollTeamInfo> result = cbbApiService.getRankings(season, seasonTypeString, week).collectList().block();
         
         return ResponseEntity.ok(result);
