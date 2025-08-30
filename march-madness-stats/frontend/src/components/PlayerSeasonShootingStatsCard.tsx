@@ -23,19 +23,19 @@ const PlayerSeasonShootingStatsCard: React.FC<PlayerSeasonShootingStatsCardProps
           </Grid>
           <Grid>
             <Typography variant="subtitle1">Shot Types</Typography>
-            <Typography variant="body2">Dunks: {shootingStats.dunks.made}/{shootingStats.dunks.attempted} ({shootingStats.dunks.pct}%) - {shootingStats.dunks.assistedPct}% Assisted</Typography>
-            <Typography variant="body2">Layups: {shootingStats.layups.made}/{shootingStats.layups.attempted} ({shootingStats.layups.pct}%) - {shootingStats.layups.assistedPct}% Assisted</Typography>
-            <Typography variant="body2">Tip Ins: {shootingStats.tipIns.made}/{shootingStats.tipIns.attempted} ({shootingStats.tipIns.pct}%)</Typography>
-            <Typography variant="body2">2-Point Jumpers: {shootingStats.twoPointJumpers.made}/{shootingStats.twoPointJumpers.attempted} ({shootingStats.twoPointJumpers.pct}%) - {shootingStats.twoPointJumpers.assistedPct}% Assisted</Typography>
-            <Typography variant="body2">3-Point Jumpers: {shootingStats.threePointJumpers.made}/{shootingStats.threePointJumpers.attempted} ({shootingStats.threePointJumpers.pct}%) - {shootingStats.threePointJumpers.assistedPct}% Assisted</Typography>
+            <Typography variant="body2">Dunks: {shootingStats.dunks?.made ?? 0}/{shootingStats.dunks?.attempted ?? 0} ({shootingStats.dunks?.pct}%) - {shootingStats.dunks?.assistedPct}% Assisted</Typography>
+            <Typography variant="body2">Layups: {shootingStats.layups?.made ?? 0}/{shootingStats.layups?.attempted ?? 0} ({shootingStats.layups?.pct}%) - {shootingStats.layups?.assistedPct}% Assisted</Typography>
+            <Typography variant="body2">Tip Ins: {shootingStats.tipIns?.made ?? 0}/{shootingStats.tipIns?.attempted ?? 0} ({shootingStats.tipIns?.pct}%)</Typography>
+            <Typography variant="body2">2-Point Jumpers: {shootingStats.twoPointJumpers?.made ?? 0}/{shootingStats.twoPointJumpers?.attempted ?? 0} ({shootingStats.twoPointJumpers?.pct}%) - {shootingStats.twoPointJumpers?.assistedPct}% Assisted</Typography>
+            <Typography variant="body2">3-Point Jumpers: {shootingStats.threePointJumpers?.made ?? 0}/{shootingStats.threePointJumpers?.attempted ?? 0} ({shootingStats.threePointJumpers?.pct}%) - {shootingStats.threePointJumpers?.assistedPct}% Assisted</Typography>
           </Grid>
           <Grid>
             <Typography variant="subtitle1">Shot Distribution</Typography>
-            <Typography variant="body2">Dunks: {shootingStats.attemptsBreakdown.dunks}%</Typography>
-            <Typography variant="body2">Layups: {shootingStats.attemptsBreakdown.layups}%</Typography>
-            <Typography variant="body2">Tip Ins: {shootingStats.attemptsBreakdown.tipIns}%</Typography>
-            <Typography variant="body2">2-Point Jumpers: {shootingStats.attemptsBreakdown.twoPointJumpers}%</Typography>
-            <Typography variant="body2">3-Point Jumpers: {shootingStats.attemptsBreakdown.threePointJumpers}%</Typography>
+            <Typography variant="body2">Dunks: {shootingStats.attemptsBreakdown?.dunks ?? 0}%</Typography>
+            <Typography variant="body2">Layups: {shootingStats.attemptsBreakdown?.layups ?? 0}%</Typography>
+            <Typography variant="body2">Tip Ins: {shootingStats.attemptsBreakdown?.tipIns ?? 0}%</Typography>
+            <Typography variant="body2">2-Point Jumpers: {shootingStats.attemptsBreakdown?.twoPointJumpers ?? 0}%</Typography>
+            <Typography variant="body2">3-Point Jumpers: {shootingStats.attemptsBreakdown?.threePointJumpers ?? 0}%</Typography>
           </Grid>
         </Grid>
       </CardContent>
