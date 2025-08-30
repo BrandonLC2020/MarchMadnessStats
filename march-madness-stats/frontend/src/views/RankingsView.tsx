@@ -3,7 +3,7 @@ import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, Tab
 import { GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { useRankings } from '../hooks/useRankings';
 import { PollTeamInfo, SeasonType } from '../types/api';
-import { SEASON_MAX_WEEKS, SEASON_MIN_WEEKS, SEASON_SEARCH_OPTIONS, SEASON_WITH_PRESEASONS, SEASON_WITH_POSTSEASONS } from '../types/currentData';
+import { SEASON_MAX_WEEKS, SEASON_MIN_WEEKS, SEASON_SEARCH_OPTIONS, SEASON_WITH_PRESEASONS, SEASON_WITH_POSTSEASONS, CURRENT_SEASON, WEEK_SEARCH_OPTIONS } from '../types/currentData';
 
 const columns: GridColDef[] = [
     { field: 'ranking', headerName: 'Rank', type: 'number', width: 150 },
@@ -26,15 +26,15 @@ const RankingsView: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
     const [filterConference, setFilterConference] = useState('');
-    const [data, setData] = useState<PollTeamInfo[]>([]); // Replace 'any' with your actual data type
-    const [searchWeek, setSearchWeek] = useState<number | string | undefined>();
-    const [searchSeason, setSearchSeason] = useState<number | string | undefined>();
+    const [data, setData] = useState<PollTeamInfo[]>([]);
+    const [searchWeek, setSearchWeek] = useState<number | string>('');
+    const [searchSeason, setSearchSeason] = useState<number | string>(CURRENT_SEASON);
     const [loading, setLoading] = useState(false); // State to track loading
     const { getRankings } = useRankings();
 
     // Reset week when season changes
     useEffect(() => {
-        setSearchWeek(undefined);
+        setSearchWeek('');
     }, [searchSeason]);
     
     // Filter the week options based on the selected season
@@ -44,7 +44,7 @@ const RankingsView: React.FC = () => {
         }
         const maxWeek = SEASON_MAX_WEEKS[searchSeason as number] || 20; // Default to 20 if season not in our map
         const minWeek = SEASON_MIN_WEEKS[searchSeason as number] || 2; // Default to 2 if season not in our map
-        return SEASON_SEARCH_OPTIONS.filter(option => {
+        return WEEK_SEARCH_OPTIONS.filter(option => {
             if (typeof option.value === 'string') {
                 if (option.value === 'preseason' && SEASON_WITH_PRESEASONS[searchSeason as number]) {
                     return true;
