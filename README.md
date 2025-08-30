@@ -1,6 +1,6 @@
 # March Madness Stats 🏀
 
-Welcome to March Madness Stats, a full-stack web application designed to provide detailed statistics and information for NCAA Men's College Basketball. This application features a React frontend and a Spring Boot backend, allowing users to browse through data on games, teams, players, conferences, and historical rankings.
+Welcome to March Madness Stats, a full-stack web application designed to provide detailed statistics and information for NCAA Men's College Basketball. This application features a React frontend that communicates with a Spring Boot backend, which in turn retrieves data from the College Basketball Data API. This architecture allows for a robust and scalable application where users can browse through data on games, teams, players, conferences, and historical rankings.
 
 ## Features ✨
 
@@ -25,7 +25,7 @@ This project is a full-stack application with the following technologies:
 ### Backend
 
   * **Java 21**
-  * **Spring Boot 3**
+  * **Spring Boot 3**: Acts as a middleware, fetching data from the CBB API and serving it to the React frontend.
   * **Maven** for dependency management
   * **JPA (Hibernate)** for data persistence
   * **OpenAPI Generator** to create REST API definitions from a Swagger/OpenAPI specification.
@@ -36,8 +36,8 @@ This project is a full-stack application with the following technologies:
 
 The project is organized into two main directories:
 
-  - `march-madness-stats/backend/`: Contains the Spring Boot application that serves the REST API.
-  - `march-madness-stats/frontend/`: Contains the React single-page application.
+  * `march-madness-stats/backend/`: Contains the Spring Boot application that serves as the middleman between the frontend and the CBB API.
+  * `march-madness-stats/frontend/`: Contains the React single-page application that consumes data from the Spring Boot backend.
 
 -----
 
