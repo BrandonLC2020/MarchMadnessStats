@@ -3,6 +3,7 @@ package com.blc.backend.api;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blc.backend.model.ConferenceHistory;
@@ -19,7 +20,7 @@ public class ConferencesController implements ConferencesApi {
     }
 
     @Override
-    public ResponseEntity<List<ConferenceHistory>> getConferenceHistory(String conference) {
+    public ResponseEntity<List<ConferenceHistory>> getConferenceHistory(@RequestParam(required = false) String conference) {
         List<ConferenceHistory> result = cbbApiService.getConferenceHistory(conference).collectList().block();
         return ResponseEntity.ok(result);
     }

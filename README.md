@@ -84,8 +84,8 @@ To get this project up and running on your local machine, follow these steps.
 2.  **Create a `.env` file**: In the `march-madness-stats/frontend/` directory, create a `.env` file to specify the backend API URL.
 
     ```env
-    REACT_APP_API_URL=http://localhost:8080
-    API_KEY=your_api_key_if_needed 
+    LOCAL_BASE_URL=http://localhost:8080
+    CBB_API_KEY=your_api_key_if_needed 
     ```
 
 3.  **Install dependencies**:

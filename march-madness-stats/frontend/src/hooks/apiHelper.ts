@@ -17,7 +17,6 @@ export const fetchData = async <T>(endpoint: string, params: Record<string, any>
   const response = await fetch(`${LOCAL_BASE_URL}${endpoint}?${query}`, {
         headers: {
             'Content-Type': 'application/json',
-            // Add your API key header here if needed
             'Authorization': `Bearer ${CBB_API_KEY}`
         },
   });
