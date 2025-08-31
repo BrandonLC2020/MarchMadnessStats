@@ -8,8 +8,8 @@ import PlayerSeasonShootingStatsCard from '../components/PlayerSeasonShootingSta
 const PlayerView: React.FC = () => {
     const location = useLocation();
     const player = location.state?.player as TeamRosterPlayer;
-    const playerSeasonStatsData = location.state?.playerSeasonStatsData as PlayerSeasonStats;
-    const playerSeasonShootingStatsData = location.state?.playerSeasonShootingStatsData as PlayerSeasonShootingStats;
+    const playerSeasonStatsData = location.state?.playerSeasonStatsData as PlayerSeasonStats[];
+    const playerSeasonShootingStatsData = location.state?.playerSeasonShootingStatsData as PlayerSeasonShootingStats[];
 
     if (!player) {
         return <Typography>Player data not available.</Typography>;
@@ -43,18 +43,18 @@ const PlayerView: React.FC = () => {
                 )}
             </Paper>
             <Grid container spacing={2} sx={{ mt: 2 }}>
-                {playerSeasonStatsData && (
-                    <Grid key={playerSeasonStatsData.season}>
-                        <PlayerSeasonStatsCard stats={playerSeasonStatsData} />
+                {playerSeasonStatsData && playerSeasonStatsData.map((stats) => (
+                    <Grid key={stats.season}>
+                        <PlayerSeasonStatsCard stats={stats} />
                     </Grid>
-                )}
+                ))}
             </Grid>
             <Grid container spacing={2} sx={{ mt: 2 }}>
-                {playerSeasonShootingStatsData &&
-                    <Grid key={playerSeasonShootingStatsData.season}>
-                        <PlayerSeasonShootingStatsCard stats={playerSeasonShootingStatsData} />
+                {playerSeasonShootingStatsData && playerSeasonShootingStatsData.map((stats) => (
+                    <Grid key={stats.season}>
+                        <PlayerSeasonShootingStatsCard stats={stats} />
                     </Grid>
-                }
+                ))}
             </Grid>
         </div>
     );
