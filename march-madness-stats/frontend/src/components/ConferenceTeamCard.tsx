@@ -1,3 +1,4 @@
+// frontend/src/components/ConferenceTeamCard.tsx
 import React from 'react';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -9,7 +10,7 @@ interface ConferenceTeamCardProps {
 
 const ConferenceTeamCard: React.FC<ConferenceTeamCardProps> = ({ team }) => {
     return (
-        <Card sx={{ minWidth: 200, mb: 2 }}>
+        <Card sx={{ minWidth: 275, mb: 2 }}>
             <CardActionArea component={RouterLink} to={`/team/${team.id}`} state={{ team }}>
                 <CardContent>
                     <Typography variant="h6" component="div">

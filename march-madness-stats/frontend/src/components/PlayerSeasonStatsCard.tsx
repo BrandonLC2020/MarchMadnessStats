@@ -1,3 +1,4 @@
+// frontend/src/components/PlayerSeasonStatsCard.tsx
 import React from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 import { PlayerSeasonStats } from '../types/api';

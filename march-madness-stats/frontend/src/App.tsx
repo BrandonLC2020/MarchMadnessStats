@@ -33,7 +33,7 @@ const Home = () => (
     </Typography>
     <Grid container spacing={4} sx={{ mt: 2 }}>
       <Grid>
-        <Card>
+        <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/games">
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
@@ -47,7 +47,7 @@ const Home = () => (
         </Card>
       </Grid>
       <Grid>
-        <Card>
+        <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/conferences">
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
@@ -61,7 +61,7 @@ const Home = () => (
         </Card>
       </Grid>
       <Grid>
-        <Card>
+        <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/rankings">
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
