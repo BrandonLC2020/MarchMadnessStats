@@ -10,7 +10,7 @@ const useGemini = () => {
     setLoading(true);
     setError(null);
     try {
-      const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY || "");
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const prompt = `Analyze the following basketball data and provide a summary: ${JSON.stringify(data)}`;
       const result = await model.generateContent(prompt);
