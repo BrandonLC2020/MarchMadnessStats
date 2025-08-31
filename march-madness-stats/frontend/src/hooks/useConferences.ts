@@ -1,10 +1,14 @@
 import { fetchData } from './apiHelper';
-import { ConferenceHistory } from '../types/api'; // Assuming you create a types file
+import { ConferenceHistory, ConferenceInfo } from '../types/api';
 
 export const useConferences = () => {
-  const getConferenceHistory = (conference?: string): Promise<ConferenceHistory[]> => { // Replace 'any' with a proper type
+  const getConferenceHistory = (conference?: string): Promise<ConferenceHistory[]> => {
     return fetchData<ConferenceHistory[]>('/conferences/history', { conference });
   };
 
-  return { getConferenceHistory };
+  const getConferences = (): Promise<ConferenceInfo[]> => {
+    return fetchData<ConferenceInfo[]>('/conferences');
+  };
+
+  return { getConferenceHistory, getConferences };
 };

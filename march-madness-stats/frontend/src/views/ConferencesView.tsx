@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, CircularProgress, Alert } from '@mui/material';
 import ConferenceCard from '../components/ConferenceCard';
 import { useConferences } from '../hooks/useConferences';
-import { ConferenceHistory } from '../types/api';
+import { ConferenceInfo } from '../types/api';
 
 const ConferencesView: React.FC = () => {
-    const [conferences, setConferences] = useState<ConferenceHistory[]>([]);
+    const [conferences, setConferences] = useState<ConferenceInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const { getConferenceHistory } = useConferences();
+    const { getConferences } = useConferences();
 
     useEffect(() => {
         const fetchConferences = async () => {
             try {
-                const data = await getConferenceHistory();
+                const data = await getConferences();
                 setConferences(data);
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred');
@@ -42,7 +42,7 @@ const ConferencesView: React.FC = () => {
                 Conferences
             </Typography>
             <Grid container spacing={2}>
-                {conferences.map((conference: ConferenceHistory) => (
+                {conferences.map((conference: ConferenceInfo) => (
                     <Grid key={conference.id}>
                         <ConferenceCard conference={conference} />
                     </Grid>

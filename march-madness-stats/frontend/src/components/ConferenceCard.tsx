@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { ConferenceHistory } from '../types/api';
+import { ConferenceHistory, ConferenceInfo } from '../types/api';
 
 interface ConferenceCardProps {
-  conference: ConferenceHistory
+  conference: ConferenceHistory | ConferenceInfo;
 }
 
 const ConferenceCard: React.FC<ConferenceCardProps> = ({ conference }) => {
@@ -15,7 +15,7 @@ const ConferenceCard: React.FC<ConferenceCardProps> = ({ conference }) => {
           <Typography variant="h5" component="div">
             {conference.name} ({conference.abbreviation})
           </Typography>
-          {!!conference.teams &&
+          {'teams' in conference && !!conference.teams &&
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {conference.teams?.length} teams
               </Typography>
