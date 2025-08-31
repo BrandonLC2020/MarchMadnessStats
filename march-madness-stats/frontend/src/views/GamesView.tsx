@@ -5,16 +5,17 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import GameCard from '../components/GameCard';
 import { useGames } from '../hooks/useGames';
 import { GameBoxScorePlayers, GameBoxScoreTeam, GameInfo, SeasonType } from '../types/api';
+import dayjs from 'dayjs';
 
 const GamesView: React.FC = () => {
     const [games, setGames] = useState<GameInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [searchDateType, setSearchDateType] = useState<'single' | 'range'>('single');
-    const [gameDate, setGameDate] = useState<string | null>(new Date().toISOString().split('T')[0]);
-    const [gameDateBound, setGameDateBound] = useState<string | null>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
-    const [gameStartDate, setGameStartDate] = useState<string | null>(new Date().toISOString().split('T')[0]);
-    const [gameEndDate, setGameEndDate] = useState<string | null>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
+    const [gameDate, setGameDate] = useState<string | null>(dayjs().toISOString());
+    const [gameDateBound, setGameDateBound] = useState<string | null>(dayjs().add(1, 'day').toISOString());
+    const [gameStartDate, setGameStartDate] = useState<string | null>(dayjs().toISOString());
+    const [gameEndDate, setGameEndDate] = useState<string | null>(dayjs().add(1, 'day').toISOString());
     const [seasonType, setSeasonType] = useState<SeasonType>('regular');
     const [gamePlayers, setGamePlayers] = useState<GameBoxScorePlayers[]>([]);
     const [gameTeams, setGameTeams] = useState<GameBoxScoreTeam[]>([]);
@@ -80,24 +81,24 @@ const GamesView: React.FC = () => {
                     <>
                         <DatePicker
                             label="Start Date"
-                            value={gameStartDate ? new Date(gameStartDate) : null}
-                            onChange={(newValue) => setGameStartDate(newValue ? newValue.toISOString().split('T')[0] : null)}
+                            value={gameStartDate ? dayjs(gameStartDate) : null}
+                            onChange={(newValue) => setGameStartDate(newValue ? newValue.toISOString() : null)}
                             slotProps={{ textField: { variant: 'outlined' } }}
                         />
                         <DatePicker
                             label="End Date"
-                            value={gameEndDate ? new Date(gameEndDate) : null}
-                            onChange={(newValue) => setGameEndDate(newValue ? (newValue.setDate(newValue.getDate() + 1), newValue.toISOString().split('T')[0]) : null)}
+                            value={gameEndDate ? dayjs(gameEndDate) : null}
+                            onChange={(newValue) => setGameEndDate(newValue ? newValue.add(1, 'day').toISOString() : null)}
                             slotProps={{ textField: { variant: 'outlined' } }}
                         />
                     </>
                 ) : (
                     <DatePicker
                         label="Game Date"
-                        value={gameDate ? new Date(gameDate) : null}
+                        value={gameDate ? dayjs(gameDate) : null}
                         onChange={(newValue) => {
-                            setGameDate(newValue ? newValue.toISOString().split('T')[0] : null);
-                            setGameDateBound(newValue ? (newValue.setDate(newValue.getDate() + 1), newValue.toISOString().split('T')[0]) : null);
+                            setGameDate(newValue ? newValue.toISOString() : null);
+                            setGameDateBound(newValue ? newValue.add(1, 'day').toISOString() : null);
                         }}
                         slotProps={{ textField: { variant: 'outlined' } }}
                     />
