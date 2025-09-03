@@ -1,13 +1,22 @@
 // frontend/src/components/PlayerSeasonStatsCard.tsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 import { PlayerSeasonStats } from '../types/api';
+import { SEASON_SEARCH_OPTIONS } from '../types/currentData';
 
 interface PlayerSeasonStatsCardProps {
   stats: PlayerSeasonStats;
 }
 
 const PlayerSeasonStatsCard: React.FC<PlayerSeasonStatsCardProps> = ({ stats }) => {
+  const seasonLabel = useMemo(() => {
+    if (!stats.season) {
+      return null;
+    } else {
+      return SEASON_SEARCH_OPTIONS.find(option => option.value === stats.season)?.label;
+    }
+  }, [stats.season]);
+
   if (!stats) {
     return null;
   }
@@ -16,7 +25,7 @@ const PlayerSeasonStatsCard: React.FC<PlayerSeasonStatsCardProps> = ({ stats }) 
   return (
     <Card sx={{ minWidth: 275, mb: 2 }}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>{playerStats.seasonLabel} Season Stats</Typography>
+        <Typography variant="h6" gutterBottom>{seasonLabel} Season Stats</Typography>
         <Grid container spacing={2}>
           <Grid>
             <Typography variant="subtitle1">Overall</Typography>
