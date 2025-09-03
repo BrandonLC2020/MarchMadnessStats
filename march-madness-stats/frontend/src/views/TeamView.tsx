@@ -129,7 +129,7 @@ const TeamView: React.FC = () => {
         fetchTeamSeasonShootingStatsData();
         fetchPlayerSeasonStatsData();
         fetchPlayerSeasonShootingStatsData();
-    }, []);
+    }, [season]);
 
     if (loading) {
         return (
