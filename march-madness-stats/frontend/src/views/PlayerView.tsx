@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
 import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
 import PlayerSeasonShootingStatsCard from '../components/PlayerSeasonShootingStatsCard';
+import { SEASON_SEARCH_OPTIONS } from '../types/currentData';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
@@ -31,10 +32,10 @@ const PlayerView: React.FC = () => {
                     Weight: {player.weight}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Start Season: {player.startSeason}
+                    Start Season: {SEASON_SEARCH_OPTIONS.find(option => option.value === player.startSeason)?.label}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    End Season: {player.endSeason}
+                    End Season: {SEASON_SEARCH_OPTIONS.find(option => option.value === player.endSeason)?.label}
                 </Typography>
                 {player.hometown && (
                     <Typography variant="body1" gutterBottom>
