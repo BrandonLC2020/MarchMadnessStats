@@ -9,6 +9,7 @@ import { CURRENT_SEASON, SEASON_SEARCH_OPTIONS } from '../types/currentData';
 import TeamSeasonStatsCard from '../components/TeamSeasonStatsCard';
 import TeamSeasonShootingStatsCard from '../components/TeamSeasonShootingStatsCard';
 import ShootingPieChart from '../components/ShootingPieChart';
+import ReboundsPieChart from '../components/ReboundsPieChart';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -210,14 +211,16 @@ const TeamView: React.FC = () => {
             </Paper>
             {teamSeasonStatsData && (
                 <>
-                    <Typography variant="h6" sx={{ mt: 2 }}>
-                        {teamData.school}'s Shooting Percentages
+                    <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
+                        {teamData.school}'s Stat Breakdown
                     </Typography>
                     <ShootingPieChart shootingData={teamSeasonStatsData.teamStats} />
-                    <Typography variant="h6" sx={{ mt: 2 }}>
-                        Opponent's Shooting Percentages
+                    <ReboundsPieChart reboundsData={teamSeasonStatsData.teamStats.rebounds} />
+                    <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
+                        Opponent's Stat Breakdown
                     </Typography>
                     <ShootingPieChart shootingData={teamSeasonStatsData.opponentStats} />
+                    <ReboundsPieChart reboundsData={teamSeasonStatsData.opponentStats.rebounds} />
                 </>
             )}
             <Grid container spacing={2} sx={{ mt: 2 }}>
