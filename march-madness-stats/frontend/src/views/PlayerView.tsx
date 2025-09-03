@@ -5,6 +5,7 @@ import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '
 import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
 import PlayerSeasonShootingStatsCard from '../components/PlayerSeasonShootingStatsCard';
 import { SEASON_SEARCH_OPTIONS } from '../types/currentData';
+import ShootingPieChart from '../components/ShootingPieChart';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
@@ -43,6 +44,14 @@ const PlayerView: React.FC = () => {
                     </Typography>
                 )}
             </Paper>
+            {playerSeasonStatsData && playerSeasonStatsData.map(stats => (
+                <React.Fragment key={stats.season}>
+                    <Typography variant="h6" sx={{ mt: 2 }}>
+                        {`${SEASON_SEARCH_OPTIONS.find(s => s.value === stats.season)?.label}`} Shooting Percentages
+                    </Typography>
+                    <ShootingPieChart shootingData={stats} />
+                </React.Fragment>
+            ))}
             <Grid container spacing={2} sx={{ mt: 2 }}>
                 {playerSeasonStatsData && playerSeasonStatsData.map((stats) => (
                     <Grid key={stats.season}>
