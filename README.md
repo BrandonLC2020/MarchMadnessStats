@@ -1,7 +1,7 @@
 # March Madness Stats 🏀
 
 Welcome to **March Madness Stats**, a full-stack web application designed to provide detailed statistics and information for NCAA Men's College Basketball. This application features a React frontend that communicates with a Spring Boot backend, which in turn retrieves data from the College Basketball Data API. This architecture allows for a robust and scalable application where users can browse through data on games, teams, players, conferences, and historical rankings.
-
+REMOVE THIS
 ## Features ✨
 
   * **Games View**: Search for games by a single date or a date range and view game-by-game results.
