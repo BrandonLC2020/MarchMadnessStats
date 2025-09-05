@@ -1,6 +1,6 @@
 // frontend/src/views/PlayerView.tsx
-import React from 'react';
-import { Typography, Paper, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Paper, Box, Button } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
 import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
@@ -10,12 +10,38 @@ import ReboundsPieChart from '../components/ReboundsPieChart';
 import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
 import ShotTypeBarChart from '../components/ShotTypeBarChart';
 import GeminiAnalysis from '../components/GeminiAnalysis';
+import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
     const player = location.state?.player as TeamRosterPlayer;
     const playerSeasonStatsData = location.state?.playerSeasonStatsData as PlayerSeasonStats[];
     const playerSeasonShootingStatsData = location.state?.playerSeasonShootingStatsData as PlayerSeasonShootingStats[];
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkIfFavorite = async () => {
+            if (player) {
+                const docRef = doc(db, "favoritePlayers", player.id.toString());
+                const docSnap = await getDoc(docRef);
+                setIsFavorite(docSnap.exists());
+            }
+        };
+        checkIfFavorite();
+    }, [player]);
+
+    const toggleFavorite = async () => {
+        if (!player) return;
+        const docRef = doc(db, "favoritePlayers", player.id.toString());
+        if (isFavorite) {
+            await deleteDoc(docRef);
+        } else {
+            await setDoc(docRef, player);
+        }
+        setIsFavorite(!isFavorite);
+    };
+
 
     if (!player) {
         return <Typography>Player data not available.</Typography>;
@@ -36,6 +62,9 @@ const PlayerView: React.FC = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     {player.name} - #{player.jersey}
                 </Typography>
+                <Button variant="contained" onClick={toggleFavorite}>
+                    {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                </Button>
                 <Typography variant="body1" gutterBottom>
                     Position: {player.position}
                 </Typography>

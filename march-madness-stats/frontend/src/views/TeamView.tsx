@@ -153,7 +153,7 @@ const TeamView: React.FC = () => {
     useEffect(() => {
         const checkIfFavorite = async () => {
             if (teamData) {
-                const docRef = doc(db, "favorites", teamData.id.toString());
+                const docRef = doc(db, "favoriteTeams", teamData.id.toString());
                 const docSnap = await getDoc(docRef);
                 setIsFavorite(docSnap.exists());
             }
