@@ -13,7 +13,7 @@ Welcome to **March Madness Stats**, a full-stack web application designed to pro
   * **Gemini Stat Analysis**: Leverage Google Gemini to get AI-powered analysis of team and player statistics.
   * **Firebase Integration**: Save your favorite teams and players for easy access.
   * **Advanced Statistical Analysis**: In-depth stats including adjusted efficiency, Simple Rating System (SRS), and various shooting metrics.
-    
+
 -----
 
 ## Tech Stack 🛠️
@@ -110,8 +110,11 @@ To get this project up and running on your local machine, follow these steps.
 Once both the backend and frontend are running, you can start exploring the application:
 
   * The **Homepage** provides navigation to the main sections: Games, Conferences, and Rankings.
-  * From the **Conferences** page, you can click on a conference to see its member teams.
-  * From the **Team** page, you can view detailed stats and click on a player's name in the roster to navigate to their individual page.
+  * **Games View**: Search for games by a single date or a date range and filter by season type. Clicking on any game card will take you to a detailed view with team and player box scores.
+  * **Conferences View**: Browse a list of all NCAA conferences. Clicking on a conference reveals all the teams that are part of it for the selected season.
+  * **Rankings View**: Explore historical AP poll rankings by selecting a season and a week. You can also filter the displayed rankings by conference.
+  * **Team View**: From the Conferences page, click on a team to see a comprehensive dashboard with their season stats, shooting statistics, and roster. You can change the season to view historical data.
+  * **Player View**: Clicking on a player's name in the team roster navigates to their individual profile, showing their stats, bio, and visual breakdowns of their performance.
 
 -----
 
