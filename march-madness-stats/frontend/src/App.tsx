@@ -32,7 +32,7 @@ const Home = () => (
       Home Dashboard
     </Typography>
     <Grid container spacing={4} sx={{ mt: 2 }}>
-      <Grid>
+      <Grid {...{ xs: 12, sm: 6, md: 4 } as any}>
         <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/games">
             <CardContent>
@@ -46,7 +46,7 @@ const Home = () => (
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid>
+      <Grid {...{ xs: 12, sm: 6, md: 4 } as any}>
         <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/conferences">
             <CardContent>
@@ -60,7 +60,7 @@ const Home = () => (
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid>
+      <Grid {...{ xs: 12, sm: 6, md: 4 } as any}>
         <Card sx={{ minWidth: 275, mb: 2 }}>
           <CardActionArea component={RouterLink} to="/rankings">
             <CardContent>

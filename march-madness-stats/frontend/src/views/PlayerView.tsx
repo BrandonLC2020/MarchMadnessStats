@@ -1,12 +1,14 @@
+// frontend/src/views/PlayerView.tsx
 import React from 'react';
-import { Typography, Paper, Grid } from '@mui/material';
+import { Typography, Paper, Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
 import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
-import PlayerSeasonShootingStatsCard from '../components/PlayerSeasonShootingStatsCard';
 import { SEASON_SEARCH_OPTIONS } from '../types/currentData';
 import ShootingPieChart from '../components/ShootingPieChart';
 import ReboundsPieChart from '../components/ReboundsPieChart';
+import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
+import ShotTypeBarChart from '../components/ShotTypeBarChart';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
@@ -19,7 +21,7 @@ const PlayerView: React.FC = () => {
     }
 
     return (
-        <div>
+        <Box sx={{ pb: 4 }}>
             <Paper sx={{ p: 3, mt: 3 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     {player.name} - #{player.jersey}
@@ -45,30 +47,38 @@ const PlayerView: React.FC = () => {
                     </Typography>
                 )}
             </Paper>
-            {playerSeasonStatsData && playerSeasonStatsData.map(stats => (
-                <React.Fragment key={stats.season}>
-                     <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
-                        {`${SEASON_SEARCH_OPTIONS.find(s => s.value === stats.season)?.label}`} Visual Breakdown
-                    </Typography>
-                    <ShootingPieChart shootingData={stats} />
-                    <ReboundsPieChart reboundsData={stats.rebounds} />
-                </React.Fragment>
-            ))}
-            <Grid container spacing={2} sx={{ mt: 2 }}>
-                {playerSeasonStatsData && playerSeasonStatsData.map((stats) => (
-                    <Grid key={stats.season}>
-                        <PlayerSeasonStatsCard stats={stats} />
-                    </Grid>
-                ))}
-            </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
-                {playerSeasonShootingStatsData && playerSeasonShootingStatsData.map((stats) => (
-                    <Grid key={stats.season}>
-                        <PlayerSeasonShootingStatsCard stats={stats} />
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+            {playerSeasonStatsData && playerSeasonStatsData.map(stats => {
+                const shootingStats = playerSeasonShootingStatsData.find(ss => ss.season === stats.season);
+                return (
+                    <React.Fragment key={stats.season}>
+                        <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
+                            {`${SEASON_SEARCH_OPTIONS.find(s => s.value === stats.season)?.label}`} Stat Breakdown
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                            <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
+                                <ShootingPieChart shootingData={stats} />
+                            </Box>
+                            <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
+                                <ReboundsPieChart reboundsData={stats.rebounds} />
+                            </Box>
+                        </Box>
+                        {shootingStats && (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
+                                    <ShotTypeBarChart shootingData={shootingStats} />
+                                </Box>
+                                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
+                                    <ShotDistributionPieChart shootingData={shootingStats} />
+                                </Box>
+                            </Box>
+                        )}
+                        <Box sx={{ mt: 2 }}>
+                            <PlayerSeasonStatsCard stats={stats} />
+                        </Box>
+                    </React.Fragment>
+                )
+            })}
+        </Box>
     );
 };
 

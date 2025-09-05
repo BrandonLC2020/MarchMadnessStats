@@ -1,6 +1,6 @@
 // frontend/src/views/GamesView.tsx
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import GameCard from '../components/GameCard';
 import { useGames } from '../hooks/useGames';
@@ -115,21 +115,21 @@ const GamesView: React.FC = () => {
             ) : error ? (
                 <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>
             ) : games.length > 0 ? (
-                <Grid container spacing={2} justifyContent="center">
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                     {games.map((game: GameInfo) => {
                         const boxScoreTeam = gameTeams.find(team => team.gameId === game.id);
                         const boxScorePlayers = gamePlayers.find(players => players.gameId === game.id);
                         return (
-                            <Grid key={game.id}>
+                            <Box key={game.id} sx={{ width: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 11px)' } }}>
                                 <GameCard
                                     game={game}
                                     boxScoreTeam={boxScoreTeam}
                                     boxScorePlayers={boxScorePlayers}
                                 />
-                            </Grid>
+                            </Box>
                         );
                     })}
-                </Grid>
+                </Box>
             ) : (
                 <Typography>No games found.</Typography>
             )}

@@ -1,6 +1,6 @@
 // frontend/src/components/ShootingPieChart.tsx
 import React from 'react';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Box, Typography } from '@mui/material';
 import Plot from 'react-plotly.js';
 import { PlayerSeasonStats, TeamSeasonUnitStats } from '../types/api';
 
@@ -25,7 +25,7 @@ const PieChart: React.FC<{ title: string; made: number; attempted: number }> = (
   ];
 
   return (
-    <Grid>
+    <Box sx={{ width: '50%', p: 1 }}>
       <Typography align="center" variant="subtitle1">
         {title}
       </Typography>
@@ -39,7 +39,7 @@ const PieChart: React.FC<{ title: string; made: number; attempted: number }> = (
         config={{ displayModeBar: false }}
         style={{ width: '100%' }}
       />
-    </Grid>
+    </Box>
   );
 };
 
@@ -56,38 +56,45 @@ const ShootingPieChart: React.FC<ShootingPieChartProps> = ({ shootingData }) => 
   } = shootingData;
 
   return (
-    <Card sx={{ minWidth: 275, mb: 2 }}>
+    <Card sx={{ minWidth: 275, mb: 2, height: '100%' }}>
       <CardContent>
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
-          {fieldGoals && (
-            <PieChart
-              title="Field Goals"
-              made={fieldGoals.made ?? 0}
-              attempted={fieldGoals.attempted ?? 0}
-            />
-          )}
-          {twoPointFieldGoals && (
-            <PieChart
-              title="2-Pointers"
-              made={twoPointFieldGoals.made ?? 0}
-              attempted={twoPointFieldGoals.attempted ?? 0}
-            />
-          )}
-          {threePointFieldGoals && (
-            <PieChart
-              title="3-Pointers"
-              made={threePointFieldGoals.made ?? 0}
-              attempted={threePointFieldGoals.attempted ?? 0}
-            />
-          )}
-          {freeThrows && (
-            <PieChart
-              title="Free Throws"
-              made={freeThrows.made ?? 0}
-              attempted={freeThrows.attempted ?? 0}
-            />
-          )}
-        </Grid>
+        <Typography variant="h6" gutterBottom align="center">
+          Shooting Breakdown
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', width: '100%' }}>
+            {fieldGoals && (
+              <PieChart
+                title="Field Goals"
+                made={fieldGoals.made ?? 0}
+                attempted={fieldGoals.attempted ?? 0}
+              />
+            )}
+            {twoPointFieldGoals && (
+              <PieChart
+                title="2-Pointers"
+                made={twoPointFieldGoals.made ?? 0}
+                attempted={twoPointFieldGoals.attempted ?? 0}
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', width: '100%' }}>
+            {threePointFieldGoals && (
+              <PieChart
+                title="3-Pointers"
+                made={threePointFieldGoals.made ?? 0}
+                attempted={threePointFieldGoals.attempted ?? 0}
+              />
+            )}
+            {freeThrows && (
+              <PieChart
+                title="Free Throws"
+                made={freeThrows.made ?? 0}
+                attempted={freeThrows.attempted ?? 0}
+              />
+            )}
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -29,7 +29,7 @@ const ReboundsPieChart: React.FC<ReboundsPieChartProps> = ({ reboundsData }) => 
   ];
 
   return (
-    <Card sx={{ minWidth: 275, mb: 2 }}>
+    <Card sx={{ minWidth: 275, mb: 2, height: '100%' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom align="center">
           Rebound Breakdown
@@ -38,7 +38,7 @@ const ReboundsPieChart: React.FC<ReboundsPieChartProps> = ({ reboundsData }) => 
           data={data as any}
           layout={{
             showlegend: true,
-            height: 300,
+            height: 450,
             margin: { t: 10, b: 10, l: 10, r: 10 },
           }}
           config={{ displayModeBar: false }}
