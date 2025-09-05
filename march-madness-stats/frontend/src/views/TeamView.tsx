@@ -1,6 +1,6 @@
 // frontend/src/views/TeamView.tsx
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, TextField, MenuItem, Link, Chip } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, TextField, MenuItem, Link, Chip, Button } from '@mui/material';
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { useStats } from '../hooks/useStats';
@@ -14,6 +14,8 @@ import ReboundsPieChart from '../components/ReboundsPieChart';
 import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
 import ShotTypeBarChart from '../components/ShotTypeBarChart';
 import GeminiAnalysis from '../components/GeminiAnalysis';
+import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -30,6 +32,7 @@ const TeamView: React.FC = () => {
     const { getTeams, getTeamRoster } = useTeams();
     const { getTeamSeasonStats, getTeamSeasonShootingStats, getPlayerSeasonStats, getPlayerSeasonShootingStats } = useStats();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchTeamData = async () => {
@@ -130,6 +133,15 @@ const TeamView: React.FC = () => {
             }
         };
 
+        const checkIfFavorite = async () => {
+            if (teamBasicData) {
+                const docRef = doc(db, "favoriteTeams", teamBasicData.id.toString());
+                const docSnap = await getDoc(docRef);
+                setIsFavorite(docSnap.exists());
+            }
+        };
+        checkIfFavorite();
+
         fetchTeamData();
         fetchTeamRosterData();
         fetchTeamSeasonStatsData();
@@ -137,6 +149,30 @@ const TeamView: React.FC = () => {
         fetchPlayerSeasonStatsData();
         fetchPlayerSeasonShootingStatsData();
     }, [season]);
+
+    useEffect(() => {
+        const checkIfFavorite = async () => {
+            if (teamData) {
+                const docRef = doc(db, "favoriteTeams", teamData.id.toString());
+                const docSnap = await getDoc(docRef);
+                setIsFavorite(docSnap.exists());
+            }
+        };
+        checkIfFavorite();
+    }, [teamData]);
+
+    const toggleFavorite = async () => {
+        if (!teamData) return;
+        const docRef = doc(db, "favoriteTeams", teamData.id.toString());
+        if (isFavorite) {
+            await deleteDoc(docRef);
+        } else {
+            await setDoc(docRef, teamData);
+        }
+        setIsFavorite(!isFavorite);
+    };
+
+
 
     if (loading) {
         return (
@@ -178,6 +214,9 @@ const TeamView: React.FC = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     {teamData.school} {teamData.mascot}
                 </Typography>
+                <Button variant="contained" onClick={toggleFavorite}>
+                    {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                </Button>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'flex-start' }}>
                     {/* Column 1: Conference & Season */}
                     <Box sx={{ width: { xs: '100%', md: 'calc(33.333% - 11px)' }, display: 'flex', flexDirection: 'column', gap: 1 }}>

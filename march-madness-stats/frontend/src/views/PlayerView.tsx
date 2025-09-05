@@ -1,6 +1,6 @@
 // frontend/src/views/PlayerView.tsx
-import React from 'react';
-import { Typography, Paper, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Paper, Box, Button, CircularProgress } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { PlayerSeasonShootingStats, PlayerSeasonStats, TeamRosterPlayer } from '../types/api';
 import PlayerSeasonStatsCard from '../components/PlayerSeasonStatsCard';
@@ -10,15 +10,83 @@ import ReboundsPieChart from '../components/ReboundsPieChart';
 import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
 import ShotTypeBarChart from '../components/ShotTypeBarChart';
 import GeminiAnalysis from '../components/GeminiAnalysis';
+import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useStats } from '../hooks/useStats';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
     const player = location.state?.player as TeamRosterPlayer;
-    const playerSeasonStatsData = location.state?.playerSeasonStatsData as PlayerSeasonStats[];
-    const playerSeasonShootingStatsData = location.state?.playerSeasonShootingStatsData as PlayerSeasonShootingStats[];
+    const [playerSeasonStatsData, setPlayerSeasonStatsData] = useState<PlayerSeasonStats[]>(location.state?.playerSeasonStatsData || []);
+    const [playerSeasonShootingStatsData, setPlayerSeasonShootingStatsData] = useState<PlayerSeasonShootingStats[]>(location.state?.playerSeasonShootingStatsData || []);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { getPlayerSeasonStats, getPlayerSeasonShootingStats } = useStats();
+
+    useEffect(() => {
+        const checkIfFavorite = async () => {
+            if (player) {
+                const docRef = doc(db, "favoritePlayers", player.id.toString());
+                const docSnap = await getDoc(docRef);
+                setIsFavorite(docSnap.exists());
+            }
+        };
+
+        const fetchMissingStats = async () => {
+            if (player && playerSeasonStatsData.length === 0) {
+                setLoading(true);
+                try {
+                    const seasons = Array.from({ length: player.endSeason - player.startSeason + 1 }, (_, i) => player.startSeason + i);
+
+                    const statsPromises = seasons.map(season => getPlayerSeasonStats({ season, team: undefined }));
+                    const allStatsResponses = await Promise.all(statsPromises);
+                    const allPlayerStats = allStatsResponses.flat().filter(stat => stat.athleteId === player.id);
+                    setPlayerSeasonStatsData(allPlayerStats);
+
+                    if (allPlayerStats.length > 0) {
+                        const shootingStatsPromises = allPlayerStats.map(playerStat =>
+                            getPlayerSeasonShootingStats({ season: playerStat.season, team: playerStat.team, conference: playerStat.conference || undefined })
+                        );
+
+                        const allShootingStatsResponses = await Promise.all(shootingStatsPromises);
+                        const allPlayerShootingStats = allShootingStatsResponses.flat().filter(stat => stat.athleteId === player.id);
+                        setPlayerSeasonShootingStatsData(allPlayerShootingStats);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch player stats:", error);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        checkIfFavorite();
+        fetchMissingStats();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [player]);
+
+    const toggleFavorite = async () => {
+        if (!player) return;
+        const docRef = doc(db, "favoritePlayers", player.id.toString());
+        if (isFavorite) {
+            await deleteDoc(docRef);
+        } else {
+            await setDoc(docRef, player);
+        }
+        setIsFavorite(!isFavorite);
+    };
+
 
     if (!player) {
         return <Typography>Player data not available.</Typography>;
+    }
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                <CircularProgress />
+            </Box>
+        );
     }
 
     const formatHeight = (inches: number | null) => {
@@ -36,6 +104,9 @@ const PlayerView: React.FC = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     {player.name} - #{player.jersey}
                 </Typography>
+                <Button variant="contained" onClick={toggleFavorite}>
+                    {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                </Button>
                 <Typography variant="body1" gutterBottom>
                     Position: {player.position}
                 </Typography>
