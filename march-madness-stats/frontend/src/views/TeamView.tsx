@@ -13,6 +13,7 @@ import ShootingPieChart from '../components/ShootingPieChart';
 import ReboundsPieChart from '../components/ReboundsPieChart';
 import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
 import ShotTypeBarChart from '../components/ShotTypeBarChart';
+import GeminiAnalysis from '../components/GeminiAnalysis';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -223,6 +224,11 @@ const TeamView: React.FC = () => {
                     </Box>
                 </Box>
             </Paper>
+            {teamSeasonStatsData && (
+                <Box sx={{ my: 2 }}>
+                    <GeminiAnalysis data={{ teamData, teamSeasonStatsData, teamSeasonShootingStatsData }} />
+                </Box>
+            )}
             {teamSeasonStatsData && (
                 <>
                     <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>

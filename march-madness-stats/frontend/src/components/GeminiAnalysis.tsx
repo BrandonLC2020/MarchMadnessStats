@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Card, CardContent, Typography, CircularProgress, Alert } from '@mui/material';
 import useGemini from '../hooks/useGemini';
+import ReactMarkdown from 'react-markdown';
 
 interface GeminiAnalysisProps {
   data: any;
@@ -20,7 +21,7 @@ const GeminiAnalysis: React.FC<GeminiAnalysisProps> = ({ data }) => {
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Typography variant="h6">Gemini Analysis</Typography>
-            <Typography>{analysis}</Typography>
+            <ReactMarkdown>{analysis}</ReactMarkdown>
           </CardContent>
         </Card>
       )}
