@@ -1,5 +1,6 @@
+// frontend/src/views/ConferencesView.tsx
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, CircularProgress, Alert } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert } from '@mui/material';
 import ConferenceCard from '../components/ConferenceCard';
 import { useConferences } from '../hooks/useConferences';
 import { ConferenceInfo } from '../types/api';
@@ -41,13 +42,13 @@ const ConferencesView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Conferences
             </Typography>
-            <Grid container spacing={2}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {conferences.map((conference: ConferenceInfo) => (
-                    <Grid key={conference.id}>
+                    <Box key={conference.id} sx={{ width: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 11px)' } }}>
                         <ConferenceCard conference={conference} />
-                    </Grid>
+                    </Box>
                 ))}
-            </Grid>
+            </Box>
         </Box>
     );
 };

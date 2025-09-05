@@ -12,8 +12,8 @@ interface GameCardProps {
 
 const GameCard: React.FC<GameCardProps> = ({ game, boxScoreTeam, boxScorePlayers }) => {
   return (
-    <Card sx={{ minWidth: 275, mb: 2 }}>
-      <CardActionArea component={RouterLink} to={`/game/${game.id}`} state={{ game, boxScoreTeam, boxScorePlayers }}>
+    <Card sx={{ minWidth: 275, mb: 2, height: '100%' }}>
+      <CardActionArea component={RouterLink} to={`/game/${game.id}`} state={{ game, boxScoreTeam, boxScorePlayers }} sx={{ height: '100%' }}>
         <CardContent>
           <Typography variant="h5" component="div">
             {game.awayTeam} vs. {game.homeTeam}

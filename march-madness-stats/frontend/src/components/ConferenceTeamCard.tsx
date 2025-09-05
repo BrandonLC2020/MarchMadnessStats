@@ -10,8 +10,8 @@ interface ConferenceTeamCardProps {
 
 const ConferenceTeamCard: React.FC<ConferenceTeamCardProps> = ({ team }) => {
     return (
-        <Card sx={{ minWidth: 275, mb: 2 }}>
-            <CardActionArea component={RouterLink} to={`/team/${team.id}`} state={{ team }}>
+        <Card sx={{ minWidth: 275, mb: 2, height: '100%' }}>
+            <CardActionArea component={RouterLink} to={`/team/${team.id}`} state={{ team }} sx={{ height: '100%' }}>
                 <CardContent>
                     <Typography variant="h6" component="div">
                         {team.school}

@@ -1,6 +1,6 @@
 // frontend/src/views/GamesView.tsx
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, TextField, Button, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import GameCard from '../components/GameCard';
 import { useGames } from '../hooks/useGames';
@@ -55,26 +55,34 @@ const GamesView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Games
             </Typography>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                 <TextField
                     select
                     label="Season Type"
                     value={seasonType}
                     onChange={(e) => setSeasonType(e.target.value as SeasonType)}
+                    sx={{ minWidth: 150 }}
                 >
                     <MenuItem value='preseason'>Preseason</MenuItem>
                     <MenuItem value='regular'>Regular</MenuItem>
                     <MenuItem value="postseason">Postseason</MenuItem>
                 </TextField>
-                <ToggleButtonGroup exclusive value={searchDateType} onChange={(event, newValue) => setSearchDateType(newValue)}>
+                <ToggleButtonGroup 
+                    exclusive 
+                    value={searchDateType} 
+                    onChange={(event, newValue) => {
+                        if (newValue !== null) {
+                            setSearchDateType(newValue);
+                        }
+                    }}
+                >
                     <ToggleButton value='single'>
-                        <Typography variant="body2">Single Date</Typography>
+                        Single Date
                     </ToggleButton>
                     <ToggleButton value='range'>
-                        <Typography variant="body2">Date Range</Typography>
+                        Date Range
                     </ToggleButton>
                 </ToggleButtonGroup>
-
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
                 {searchDateType === 'range' ? (
@@ -83,13 +91,11 @@ const GamesView: React.FC = () => {
                             label="Start Date"
                             value={gameStartDate ? dayjs(gameStartDate) : null}
                             onChange={(newValue) => setGameStartDate(newValue ? newValue.toISOString() : null)}
-                            slotProps={{ textField: { variant: 'outlined' } }}
                         />
                         <DatePicker
                             label="End Date"
                             value={gameEndDate ? dayjs(gameEndDate) : null}
                             onChange={(newValue) => setGameEndDate(newValue ? newValue.add(1, 'day').toISOString() : null)}
-                            slotProps={{ textField: { variant: 'outlined' } }}
                         />
                     </>
                 ) : (
@@ -100,7 +106,6 @@ const GamesView: React.FC = () => {
                             setGameDate(newValue ? newValue.toISOString() : null);
                             setGameDateBound(newValue ? newValue.add(1, 'day').toISOString() : null);
                         }}
-                        slotProps={{ textField: { variant: 'outlined' } }}
                     />
                 )}
                 <Button variant="contained" onClick={fetchGames} disabled={loading}>
@@ -115,21 +120,21 @@ const GamesView: React.FC = () => {
             ) : error ? (
                 <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>
             ) : games.length > 0 ? (
-                <Grid container spacing={2} justifyContent="center">
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                     {games.map((game: GameInfo) => {
                         const boxScoreTeam = gameTeams.find(team => team.gameId === game.id);
                         const boxScorePlayers = gamePlayers.find(players => players.gameId === game.id);
                         return (
-                            <Grid key={game.id}>
+                            <Box key={game.id} sx={{ width: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 11px)' } }}>
                                 <GameCard
                                     game={game}
                                     boxScoreTeam={boxScoreTeam}
                                     boxScorePlayers={boxScorePlayers}
                                 />
-                            </Grid>
+                            </Box>
                         );
                     })}
-                </Grid>
+                </Box>
             ) : (
                 <Typography>No games found.</Typography>
             )}
