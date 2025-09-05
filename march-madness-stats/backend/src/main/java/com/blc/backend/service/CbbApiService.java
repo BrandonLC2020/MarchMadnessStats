@@ -64,7 +64,7 @@ public class CbbApiService {
 
     // --- Conferences ---
     public Flux<ConferenceInfo> getConferences() {
-        return performGetRequest("/conferences", Map.of(), ConferenceInfo.class);
+        return performGetRequest("/conferences", new HashMap<>(), ConferenceInfo.class);
     }
 
     public Flux<ConferenceHistory> getConferenceHistory(String conference) {
@@ -84,11 +84,11 @@ public class CbbApiService {
     }
 
     public Flux<DraftPosition> getDraftPositions() {
-        return performGetRequest("/draft/positions", Map.of(), DraftPosition.class);
+        return performGetRequest("/draft/positions", new HashMap<>(), DraftPosition.class);
     }
 
     public Flux<DraftTeam> getDraftTeams() {
-        return performGetRequest("/draft/teams", Map.of(), DraftTeam.class);
+        return performGetRequest("/draft/teams", new HashMap<>(), DraftTeam.class);
     }
 
     // --- Games ---
@@ -141,16 +141,18 @@ public class CbbApiService {
     }
 
     public Flux<LineProviderInfo> getProviders() {
-        return performGetRequest("/lines/providers", Map.of(), LineProviderInfo.class);
+        return performGetRequest("/lines/providers", new HashMap<>(), LineProviderInfo.class);
     }
 
     // --- Plays ---
     public Flux<PlayInfo> getPlays(Integer gameId, Boolean shootingPlaysOnly) {
-        return performGetRequest("/plays/game/" + gameId, Map.of("shootingPlaysOnly", shootingPlaysOnly), PlayInfo.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("shootingPlaysOnly", shootingPlaysOnly);
+        return performGetRequest("/plays/game/" + gameId, params, PlayInfo.class);
     }
 
     public Flux<PlayTypeInfo> getPlayTypes() {
-        return performGetRequest("/plays/types", Map.of(), PlayTypeInfo.class);
+        return performGetRequest("/plays/types", new HashMap<>(), PlayTypeInfo.class);
     }
 
     // --- Rankings ---
@@ -211,37 +213,54 @@ public class CbbApiService {
     }
 
     public Flux<PlayerSeasonStats> getPlayerSeasonStats(Integer season, String team) {
-        return performGetRequest("/stats/player/season", Map.of("season", season, "team", team), PlayerSeasonStats.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        return performGetRequest("/stats/player/season", params, PlayerSeasonStats.class);
     }
 
     public Flux<PlayerSeasonShootingStats> getPlayerSeasonShootingStats(Integer season, String team) {
-        return performGetRequest("/stats/player/shooting/season", Map.of("season", season, "team", team), PlayerSeasonShootingStats.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        return performGetRequest("/stats/player/shooting/season", params, PlayerSeasonShootingStats.class);
     }
 
     // --- Substitutions ---
     public Flux<PlayerSubsititution> getSubstitutionsByGame(Integer gameId) {
-        return performGetRequest("/substitutions/game/" + gameId, Map.of(), PlayerSubsititution.class);
+        return performGetRequest("/substitutions/game/" + gameId, new HashMap<>(), PlayerSubsititution.class);
     }
 
     public Flux<PlayerSubsititution> getSubstitutionsByPlayerId(Integer playerId, Integer season) {
-        return performGetRequest("/substitutions/player/" + playerId, Map.of("season", season), PlayerSubsititution.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        return performGetRequest("/substitutions/player/" + playerId, params, PlayerSubsititution.class);
     }
 
     public Flux<PlayerSubsititution> getSubstitutionsByTeam(Integer season, String team) {
-        return performGetRequest("/substitutions/team", Map.of("season", season, "team", team), PlayerSubsititution.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        return performGetRequest("/substitutions/team", params, PlayerSubsititution.class);
     }
 
     // --- Teams ---
     public Flux<TeamInfo> getTeams(String conference, Integer season) {
-        return performGetRequest("/teams", Map.of("conference", conference, "season", season), TeamInfo.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("conference", conference);
+        params.put("season", season);
+        return performGetRequest("/teams", params, TeamInfo.class);
     }
 
     public Flux<TeamRoster> getTeamRoster(Integer season, String team) {
-        return performGetRequest("/teams/roster", Map.of("season", season, "team", team), TeamRoster.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("season", season);
+        params.put("team", team);
+        return performGetRequest("/teams/roster", params, TeamRoster.class);
     }
 
     // --- Venues ---
     public Flux<VenueInfo> getVenues() {
-        return performGetRequest("/venues", Map.of(), VenueInfo.class);
+        return performGetRequest("/venues", new HashMap<>(), VenueInfo.class);
     }
 }

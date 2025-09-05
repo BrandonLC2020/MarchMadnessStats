@@ -55,10 +55,10 @@ const TeamView: React.FC = () => {
         };
 
         const fetchTeamRosterData = async () => {
-            if (!teamData) return;
+            if (!teamBasicData) return;
 
             try {
-                const data = await getTeamRoster(season, teamData.school);
+                const data = await getTeamRoster(season, teamBasicData.school);
                 if (!data || data.length === 0) {
                     setError("No roster data found for the provided team.");
                 } else {
@@ -70,10 +70,10 @@ const TeamView: React.FC = () => {
         };
 
         const fetchTeamSeasonStatsData = async () => {
-            if (!teamData) return;
+            if (!teamBasicData) return;
 
             try {
-                const data = await getTeamSeasonStats({ season, team: teamData.school, conference: teamData.conference ? teamData.conference : undefined });
+                const data = await getTeamSeasonStats({ season, team: teamBasicData.school, conference: teamBasicData.conference ? teamBasicData.conference : undefined });
                 if (!data) {
                     setError("No season stats found for the provided team.");
                 } else {
@@ -85,10 +85,10 @@ const TeamView: React.FC = () => {
         };
 
         const fetchTeamSeasonShootingStatsData = async () => {
-            if (!teamData) return;
+            if (!teamBasicData) return;
 
             try {
-                const data = await getTeamSeasonShootingStats({ season, team: teamData.school, conference: teamData.conference ? teamData.conference : undefined });
+                const data = await getTeamSeasonShootingStats({ season, team: teamBasicData.school, conference: teamBasicData.conference ? teamBasicData.conference : undefined });
                 if (!data) {
                     setError("No season shooting stats found for the provided team.");
                 } else {
@@ -100,10 +100,10 @@ const TeamView: React.FC = () => {
         };
 
         const fetchPlayerSeasonStatsData = async () => {
-            if (!teamData) return;
+            if (!teamBasicData) return;
 
             try {
-                const data = await getPlayerSeasonStats({ season, team: teamData.school });
+                const data = await getPlayerSeasonStats({ season, team: teamBasicData.school });
                 if (!data) {
                     setError("No player season stats found for the provided team.");
                 } else {
@@ -115,10 +115,10 @@ const TeamView: React.FC = () => {
         };
 
         const fetchPlayerSeasonShootingStatsData = async () => {
-            if (!teamData) return;
+            if (!teamBasicData) return;
 
             try {
-                const data = await getPlayerSeasonShootingStats({ season, team: teamData.school });
+                const data = await getPlayerSeasonShootingStats({ season, team: teamBasicData.school });
                 if (!data) {
                     setError("No player season shooting stats found for the provided team.");
                 } else {
@@ -154,6 +154,22 @@ const TeamView: React.FC = () => {
     }
 
     const locationString = [teamData.currentCity, teamData.currentState].filter(Boolean).join(', ');
+
+    const formatHeight = (inches: number | null) => {
+        if (inches === null || inches === undefined) {
+            return 'N/A';
+        }
+        const feet = Math.floor(inches / 12);
+        const remainingInches = inches % 12;
+        return `${feet}' ${remainingInches}"`;
+    };
+
+    const chipStyles = {
+        height: 'auto',
+        padding: '8px 12px',
+        fontSize: '1rem',
+        fontWeight: 'bold'
+    };
 
     return (
         <Box sx={{ pb: 4 }}>
@@ -200,9 +216,9 @@ const TeamView: React.FC = () => {
                     {/* Column 3: Wins/Losses */}
                     <Box sx={{ width: { xs: '100%', md: 'calc(33.333% - 11px)' } }}>
                         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                            <Chip label={`Wins: ${teamSeasonStatsData?.wins ?? 0}`} color="success" />
-                            <Chip label={`Losses: ${teamSeasonStatsData?.losses ?? 0}`} color="error" />
-                            <Chip label={`Games: ${teamSeasonStatsData?.games ?? 0}`} />
+                            <Chip label={`Wins: ${teamSeasonStatsData?.wins ?? 0}`} color="success" sx={chipStyles} />
+                            <Chip label={`Losses: ${teamSeasonStatsData?.losses ?? 0}`} color="error" sx={chipStyles} />
+                            <Chip label={`Games: ${teamSeasonStatsData?.games ?? 0}`} sx={chipStyles} />
                         </Box>
                     </Box>
                 </Box>
@@ -277,8 +293,8 @@ const TeamView: React.FC = () => {
                                     </Link>
                                 </TableCell>
                                 <TableCell>{player.position}</TableCell>
-                                <TableCell>{player.height}</TableCell>
-                                <TableCell>{player.weight}</TableCell>
+                                <TableCell>{formatHeight(player.height)}</TableCell>
+                                <TableCell>{player.weight ? `${player.weight} lbs` : 'N/A'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

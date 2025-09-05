@@ -20,6 +20,15 @@ const PlayerView: React.FC = () => {
         return <Typography>Player data not available.</Typography>;
     }
 
+    const formatHeight = (inches: number | null) => {
+        if (inches === null || inches === undefined) {
+            return 'N/A';
+        }
+        const feet = Math.floor(inches / 12);
+        const remainingInches = inches % 12;
+        return `${feet}' ${remainingInches}"`;
+    };
+
     return (
         <Box sx={{ pb: 4 }}>
             <Paper sx={{ p: 3, mt: 3 }}>
@@ -30,10 +39,10 @@ const PlayerView: React.FC = () => {
                     Position: {player.position}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Height: {player.height}
+                    Height: {formatHeight(player.height)}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Weight: {player.weight}
+                    Weight: {player.weight ? `${player.weight} lbs` : 'N/A'}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                     Start Season: {SEASON_SEARCH_OPTIONS.find(option => option.value === player.startSeason)?.label}
