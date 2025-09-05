@@ -1,3 +1,4 @@
+// frontend/src/views/RankingsView.tsx
 import React, { useState, useMemo, useEffect } from 'react';
 import { Typography, Box, Paper, Button, Popover, TextField, MenuItem, Chip, TableContainer, TableBody, Table, TableCell, TableRow, TableHead, CircularProgress, TableCellProps } from '@mui/material';
 import { useRankings } from '../hooks/useRankings';
@@ -99,12 +100,13 @@ const RankingsView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Rankings
             </Typography>
-            <Box sx={{ direction: 'row', display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                 <TextField
                     select
                     label="Season"
                     value={searchSeason}
                     onChange={(e) => setSearchSeason(e.target.value)}
+                    sx={{ minWidth: 120 }}
                 >
                     {SEASON_SEARCH_OPTIONS.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -118,6 +120,7 @@ const RankingsView: React.FC = () => {
                     value={searchWeek}
                     onChange={(e) => setSearchWeek(e.target.value)}
                     disabled={!searchSeason}
+                    sx={{ minWidth: 120 }}
                 >
                     {filteredWeekOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -128,6 +131,7 @@ const RankingsView: React.FC = () => {
                 <Button variant="contained" color="primary" onClick={handleSearchRankings} disabled={!searchWeek || !searchSeason}>
                     Get Rankings
                 </Button>
+                <Box sx={{ flexGrow: 1 }} /> 
                 <Button aria-describedby={id} variant="contained" onClick={handleClick} disabled={!data.length}>
                     Filter By Conference
                 </Button>
