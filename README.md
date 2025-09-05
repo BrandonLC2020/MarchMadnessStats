@@ -12,7 +12,8 @@ Welcome to **March Madness Stats**, a full-stack web application designed to pro
   * **Detailed Game Breakdowns**: Click on any game to see a full box score for both teams and individual players.
   * **Gemini Stat Analysis**: Leverage Google Gemini to get AI-powered analysis of team and player statistics.
   * **Firebase Integration**: Save your favorite teams and players for easy access.
-
+  * **Advanced Statistical Analysis**: In-depth stats including adjusted efficiency, Simple Rating System (SRS), and various shooting metrics.
+    
 -----
 
 ## Tech Stack 🛠️
@@ -25,6 +26,7 @@ This project is a full-stack application with the following technologies:
   * **TypeScript**
   * **Material-UI (MUI)** for components and styling
   * **React Router** for navigation
+  * **Plotly.js** for interactive charts and data visualization
   * **Firebase** for user authentication and data persistence (favorites)
   * **Google Gemini** for AI-powered data analysis
 
@@ -33,7 +35,7 @@ This project is a full-stack application with the following technologies:
   * **Java 21**
   * **Spring Boot 3**: Acts as a middleware, fetching data from the CBB API and serving it to the React frontend.
   * **Maven** for dependency management
-  * **JPA (Hibernate)** for data persistence
+  * **WebFlux** for reactive programming and handling asynchronous requests
   * **OpenAPI Generator** to create REST API definitions from a Swagger/OpenAPI specification.
 
 -----
