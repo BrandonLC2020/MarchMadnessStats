@@ -9,6 +9,7 @@ import ShootingPieChart from '../components/ShootingPieChart';
 import ReboundsPieChart from '../components/ReboundsPieChart';
 import ShotDistributionPieChart from '../components/ShotDistributionPieChart';
 import ShotTypeBarChart from '../components/ShotTypeBarChart';
+import GeminiAnalysis from '../components/GeminiAnalysis';
 
 const PlayerView: React.FC = () => {
     const location = useLocation();
@@ -63,6 +64,9 @@ const PlayerView: React.FC = () => {
                         <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
                             {`${SEASON_SEARCH_OPTIONS.find(s => s.value === stats.season)?.label}`} Stat Breakdown
                         </Typography>
+                        <Box sx={{ my: 2 }}>
+                            <GeminiAnalysis data={{ player, playerSeasonStats: stats, playerSeasonShootingStats: shootingStats }} />
+                        </Box>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                             <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
                                 <ShootingPieChart shootingData={stats} />
