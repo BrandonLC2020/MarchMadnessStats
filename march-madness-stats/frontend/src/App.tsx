@@ -25,6 +25,7 @@ import GameDetailsView from './views/GameDetailsView';
 import './App.css';
 import GamesView from './views/GamesView';
 import logo from './logo.svg';
+import FavoritesView from './views/FavoritesView';
 
 const Home = () => (
   <Box sx={{ my: 4 }}>
@@ -74,6 +75,20 @@ const Home = () => (
           </CardActionArea>
         </Card>
       </Grid>
+      <Grid {...{ xs: 12, sm: 6, md: 4 } as any}>
+        <Card sx={{ minWidth: 275, mb: 2 }}>
+          <CardActionArea component={RouterLink} to="/favorites">
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Favorites
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                View your favorite teams.
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
     </Grid>
   </Box>
 );
@@ -101,6 +116,7 @@ function App() {
           <Route path="/player/:playerId" element={<PlayerView />} />
           <Route path="/team/:teamId" element={<TeamView />} />
           <Route path="/game/:gameId" element={<GameDetailsView />} />
+          <Route path="/favorites" element={<FavoritesView />} />
         </Routes>
       </Container>
     </Router>
