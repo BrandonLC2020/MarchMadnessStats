@@ -135,7 +135,7 @@ const TeamView: React.FC = () => {
 
         const checkIfFavorite = async () => {
             if (teamBasicData) {
-                const docRef = doc(db, "favorites", teamBasicData.id.toString());
+                const docRef = doc(db, "favoriteTeams", teamBasicData.id.toString());
                 const docSnap = await getDoc(docRef);
                 setIsFavorite(docSnap.exists());
             }
@@ -163,7 +163,7 @@ const TeamView: React.FC = () => {
 
     const toggleFavorite = async () => {
         if (!teamData) return;
-        const docRef = doc(db, "favorites", teamData.id.toString());
+        const docRef = doc(db, "favoriteTeams", teamData.id.toString());
         if (isFavorite) {
             await deleteDoc(docRef);
         } else {

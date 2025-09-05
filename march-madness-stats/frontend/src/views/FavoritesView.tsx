@@ -14,7 +14,7 @@ const FavoritesView: React.FC = () => {
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const favoritesCollection = collection(db, 'favorites');
+                const favoritesCollection = collection(db, 'favoriteTeams');
                 const favoritesSnapshot = await getDocs(favoritesCollection);
                 const favoritesList = favoritesSnapshot.docs.map(doc => doc.data() as TeamInfo);
                 setFavorites(favoritesList);
