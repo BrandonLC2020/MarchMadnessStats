@@ -103,8 +103,8 @@ const GamesView: React.FC = () => {
                         label="Game Date"
                         value={gameDate ? dayjs(gameDate) : null}
                         onChange={(newValue) => {
-                            setGameDate(newValue ? newValue.toISOString() : null);
-                            setGameDateBound(newValue ? newValue.add(1, 'day').toISOString() : null);
+                            setGameDate(newValue ? newValue.startOf('day').toISOString() : null);
+                            setGameDateBound(newValue ? newValue.endOf('day').toISOString() : null);
                         }}
                     />
                 )}
