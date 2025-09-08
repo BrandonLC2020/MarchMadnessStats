@@ -16,6 +16,12 @@ Welcome to **March Madness Stats**, a full-stack web application designed to pro
 
 -----
 
+## Demo
+
+You can see screen recordings and screenshots of the app [here](https://brandonlc2020.github.io/Portfolio/project/1).
+
+-----
+
 ## Tech Stack 🛠️
 
 This project is a full-stack application with the following technologies:
