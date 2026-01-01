@@ -1,6 +1,7 @@
-export const CURRENT_SEASON = 2025
+export const CURRENT_SEASON = 2026
 
 export const SEASON_SEARCH_OPTIONS = [
+    { value: 2026, label: '2025-26' },
     { value: 2025, label: '2024-25' },
     { value: 2024, label: '2023-24' },
     { value: 2023, label: '2022-23' },
@@ -52,6 +53,7 @@ export const WEEK_SEARCH_OPTIONS: { value: number | string; label: string }[] = 
 ];
 
 export const SEASON_MAX_WEEKS: { [key: number]: number } = {
+    2026: 20,
     2025: 20,
     2024: 20,
     2023: 19, 
@@ -78,6 +80,7 @@ export const SEASON_MAX_WEEKS: { [key: number]: number } = {
 };
 
 export const SEASON_MIN_WEEKS: { [key: number]: number } = {
+    2026: 2,
     2025: 2,
     2024: 2,
     2023: 2, 
@@ -104,6 +107,7 @@ export const SEASON_MIN_WEEKS: { [key: number]: number } = {
 };
 
 export const SEASON_WITH_PRESEASONS: { [key: number]: boolean } = {
+    2026: true,
     2025: true,
     2024: true,
     2023: true,
@@ -130,6 +134,7 @@ export const SEASON_WITH_PRESEASONS: { [key: number]: boolean } = {
 };
 
 export const SEASON_WITH_POSTSEASONS: { [key: number]: boolean } = {
+    2026: true,
     2025: true,
     2024: true,
     2023: false,
