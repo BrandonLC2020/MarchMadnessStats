@@ -1,6 +1,6 @@
 // frontend/src/views/TeamView.tsx
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, CircularProgress, Alert, Paper, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, TextField, MenuItem, Link, Chip, Button } from '@mui/material';
+import { Typography, Box, CircularProgress, Alert, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, TextField, MenuItem, Link, Chip, Button, useTheme } from '@mui/material';
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { useTeams } from '../hooks/useTeams';
 import { useStats } from '../hooks/useStats';
@@ -16,6 +16,8 @@ import ShotTypeBarChart from '../components/ShotTypeBarChart';
 import GeminiAnalysis from '../components/GeminiAnalysis';
 import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import GlassCard from '../components/GlassCard';
+import TeamLogo from '../components/TeamLogo';
 
 const TeamView: React.FC = () => {
     const location = useLocation();
@@ -33,6 +35,7 @@ const TeamView: React.FC = () => {
     const { getTeamSeasonStats, getTeamSeasonShootingStats, getPlayerSeasonStats, getPlayerSeasonShootingStats } = useStats();
     const [season, setSeason] = useState<number>(CURRENT_SEASON);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const theme = useTheme();
 
     useEffect(() => {
         const fetchTeamData = async () => {
@@ -191,6 +194,11 @@ const TeamView: React.FC = () => {
     }
 
     const locationString = [teamData.currentCity, teamData.currentState].filter(Boolean).join(', ');
+    const normalizeColor = (color: string | null | undefined) => {
+        if (!color) return null;
+        return color.startsWith('#') ? color : `#${color}`;
+    };
+    const brandColor = normalizeColor(teamData.primaryColor) ?? theme.palette.primary.main;
 
     const formatHeight = (inches: number | null) => {
         if (inches === null || inches === undefined) {
@@ -209,24 +217,65 @@ const TeamView: React.FC = () => {
     };
 
     return (
-        <Box sx={{ pb: 4 }}>
-            <Paper sx={{ p: 3, mt: 3 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    {teamData.school} {teamData.mascot}
-                </Typography>
-                <Button variant="contained" onClick={toggleFavorite}>
-                    {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-                </Button>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'flex-start' }}>
-                    {/* Column 1: Conference & Season */}
+        <Box sx={{ pb: 4, position: 'relative' }}>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    top: '20%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '600px',
+                    height: '600px',
+                    background: brandColor,
+                    filter: 'blur(150px)',
+                    opacity: 0.15,
+                    zIndex: -1,
+                    pointerEvents: 'none',
+                }}
+            />
+            <GlassCard sx={{ mt: 3, mb: 4 }} teamColor={brandColor}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
+                    <Box sx={{ p: 1, background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}>
+                        <TeamLogo school={teamData.school} size={100} />
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Typography
+                            variant="h3"
+                            component="h1"
+                            fontWeight="800"
+                            sx={{
+                                background: `linear-gradient(45deg, ${brandColor}, ${theme.palette.text.primary})`,
+                                backgroundClip: 'text',
+                                color: 'transparent',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                            }}
+                        >
+                            {teamData.school}
+                        </Typography>
+                        <Typography variant="h5" color="text.secondary" fontWeight="500">
+                            {teamData.mascot}
+                        </Typography>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        onClick={toggleFavorite}
+                        sx={{
+                            borderRadius: '20px',
+                            bgcolor: brandColor,
+                            '&:hover': { bgcolor: brandColor, filter: 'brightness(0.9)' },
+                        }}
+                    >
+                        {isFavorite ? '♥ Favorited' : '♡ Add to Favorites'}
+                    </Button>
+                </Box>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'flex-start', mt: 3 }}>
                     <Box sx={{ width: { xs: '100%', md: 'calc(33.333% - 11px)' }, display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Typography variant="h6" component="h2">
                             Conference: {teamData.conference ?? 'N/A'}
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant="body1">
-                                Season:
-                            </Typography>
+                            <Typography variant="body1">Season:</Typography>
                             <TextField
                                 select
                                 value={season}
@@ -242,8 +291,6 @@ const TeamView: React.FC = () => {
                             </TextField>
                         </Box>
                     </Box>
-
-                    {/* Column 2: Venue & Location */}
                     <Box sx={{ width: { xs: '100%', md: 'calc(33.333% - 11px)' }, display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Typography variant="body1">
                             <strong>Venue:</strong> {teamData.currentVenue ?? 'N/A'}
@@ -252,8 +299,6 @@ const TeamView: React.FC = () => {
                             <strong>Location:</strong> {locationString || 'N/A'}
                         </Typography>
                     </Box>
-
-                    {/* Column 3: Wins/Losses */}
                     <Box sx={{ width: { xs: '100%', md: 'calc(33.333% - 11px)' } }}>
                         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                             <Chip label={`Wins: ${teamSeasonStatsData?.wins ?? 0}`} color="success" sx={chipStyles} />
@@ -262,89 +307,108 @@ const TeamView: React.FC = () => {
                         </Box>
                     </Box>
                 </Box>
-            </Paper>
+                <Box sx={{ display: 'flex', gap: 2, mt: 3, flexWrap: 'wrap' }}>
+                    <Chip label={`${teamData.conference ?? 'N/A'}`} variant="outlined" sx={{ borderColor: brandColor, fontWeight: 'bold' }} />
+                    <Chip label={`Wins: ${teamSeasonStatsData?.wins ?? 0}`} color="success" />
+                    <Chip label={`Losses: ${teamSeasonStatsData?.losses ?? 0}`} color="error" />
+                </Box>
+            </GlassCard>
             {teamSeasonStatsData && (
-                <Box sx={{ my: 2 }}>
-                    <GeminiAnalysis data={{ teamData, teamSeasonStatsData, teamSeasonShootingStatsData }} />
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+                    <Box sx={{ gridColumn: '1 / -1' }}>
+                        <GlassCard delay={0.1}>
+                            <GeminiAnalysis data={{ teamData, teamSeasonStatsData, teamSeasonShootingStatsData }} />
+                        </GlassCard>
+                    </Box>
+                    <GlassCard delay={0.2}>
+                        <Typography variant="h6" gutterBottom>
+                            Team Shot Distribution
+                        </Typography>
+                        <ShootingPieChart shootingData={teamSeasonStatsData.teamStats} />
+                    </GlassCard>
+                    <GlassCard delay={0.3}>
+                        <Typography variant="h6" gutterBottom>
+                            Team Rebounds
+                        </Typography>
+                        <ReboundsPieChart reboundsData={teamSeasonStatsData.teamStats.rebounds} />
+                    </GlassCard>
+                    <GlassCard delay={0.4}>
+                        <Typography variant="h6" gutterBottom>
+                            Opponent Shot Distribution
+                        </Typography>
+                        <ShootingPieChart shootingData={teamSeasonStatsData.opponentStats} />
+                    </GlassCard>
+                    <GlassCard delay={0.5}>
+                        <Typography variant="h6" gutterBottom>
+                            Opponent Rebounds
+                        </Typography>
+                        <ReboundsPieChart reboundsData={teamSeasonStatsData.opponentStats.rebounds} />
+                    </GlassCard>
                 </Box>
             )}
             {teamSeasonStatsData && (
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3, mt: 3 }}>
+                    <GlassCard delay={0.2}>
+                        <TeamSeasonStatsCard stats={teamSeasonStatsData.teamStats} team={teamData.school} />
+                    </GlassCard>
+                    <GlassCard delay={0.3}>
+                        <TeamSeasonStatsCard stats={teamSeasonStatsData.opponentStats} team={'Opponent'} />
+                    </GlassCard>
+                </Box>
+            )}
+            {teamSeasonShootingStatsData && (
                 <>
-                    <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
-                        {teamData.school}'s Stat Breakdown
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                        <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                            <ShootingPieChart shootingData={teamSeasonStatsData.teamStats} />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                            <ReboundsPieChart reboundsData={teamSeasonStatsData.teamStats.rebounds} />
-                        </Box>
-                    </Box>
-                    
-                    <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
-                        Opponent's Stat Breakdown
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                        <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                            <ShootingPieChart shootingData={teamSeasonStatsData.opponentStats} />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                            <ReboundsPieChart reboundsData={teamSeasonStatsData.opponentStats.rebounds} />
-                        </Box>
+                    <GlassCard sx={{ mt: 3 }} delay={0.4}>
+                        <TeamSeasonShootingStatsCard stats={teamSeasonShootingStatsData} team={teamData.school} />
+                    </GlassCard>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3, mt: 3 }}>
+                        <GlassCard delay={0.5}>
+                            <ShotTypeBarChart shootingData={teamSeasonShootingStatsData} />
+                        </GlassCard>
+                        <GlassCard delay={0.6}>
+                            <ShotDistributionPieChart shootingData={teamSeasonShootingStatsData} />
+                        </GlassCard>
                     </Box>
                 </>
             )}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
-                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                    {teamSeasonStatsData?.teamStats && <TeamSeasonStatsCard stats={teamSeasonStatsData.teamStats} team={teamData.school} />}
-                </Box>
-                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                    {teamSeasonStatsData?.opponentStats && <TeamSeasonStatsCard stats={teamSeasonStatsData.opponentStats} team={'Opponent'} />}
-                </Box>
-            </Box>
-            <Box sx={{ mt: 2 }}>
-                {teamSeasonShootingStatsData && <TeamSeasonShootingStatsCard stats={teamSeasonShootingStatsData} team={teamData.school} />}
-            </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
-                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                    {teamSeasonShootingStatsData && <ShotTypeBarChart shootingData={teamSeasonShootingStatsData} />}
-                </Box>
-                <Box sx={{ width: { xs: '100%', md: 'calc(50% - 8px)' } }}>
-                    {teamSeasonShootingStatsData && <ShotDistributionPieChart shootingData={teamSeasonShootingStatsData} />}
-                </Box>
-            </Box>
-            <TableContainer component={Paper} sx={{ mt: 3 }}>
-                <Typography variant="h6" component="h2" gutterBottom sx={{ p: 2 }}>
+            <GlassCard sx={{ mt: 4 }} delay={0.4}>
+                <Typography
+                    variant="h5"
+                    fontWeight="bold"
+                    gutterBottom
+                    sx={{ borderBottom: `2px solid ${brandColor}`, display: 'inline-block', pb: 1 }}
+                >
                     Team Roster
                 </Typography>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Jersey</TableCell>
-                            <TableCell>Player</TableCell>
-                            <TableCell>Position</TableCell>
-                            <TableCell>Height</TableCell>
-                            <TableCell>Weight</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {teamRosterData?.players.map(player => (
-                            <TableRow key={player.id}>
-                                <TableCell>{player.jersey}</TableCell>
-                                <TableCell>
-                                    <Link component={RouterLink} to={`/player/${player.id}`} state={{ player, playerSeasonStatsData: playerSeasonStatsData.filter((data) => data.athleteId === player.id), playerSeasonShootingStatsData: playerSeasonShootingStatsData.filter((data) => data.athleteId === player.id) }}>
-                                        {player.name}
-                                    </Link>
-                                </TableCell>
-                                <TableCell>{player.position}</TableCell>
-                                <TableCell>{formatHeight(player.height)}</TableCell>
-                                <TableCell>{player.weight ? `${player.weight} lbs` : 'N/A'}</TableCell>
+                <TableContainer sx={{ background: 'transparent' }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Jersey</TableCell>
+                                <TableCell>Player</TableCell>
+                                <TableCell>Position</TableCell>
+                                <TableCell>Height</TableCell>
+                                <TableCell>Weight</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {teamRosterData?.players.map(player => (
+                                <TableRow key={player.id}>
+                                    <TableCell>{player.jersey}</TableCell>
+                                    <TableCell>
+                                        <Link component={RouterLink} to={`/player/${player.id}`} state={{ player, playerSeasonStatsData: playerSeasonStatsData.filter((data) => data.athleteId === player.id), playerSeasonShootingStatsData: playerSeasonShootingStatsData.filter((data) => data.athleteId === player.id) }}>
+                                            {player.name}
+                                        </Link>
+                                    </TableCell>
+                                    <TableCell>{player.position}</TableCell>
+                                    <TableCell>{formatHeight(player.height)}</TableCell>
+                                    <TableCell>{player.weight ? `${player.weight} lbs` : 'N/A'}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </GlassCard>
         </Box>
     );
 };

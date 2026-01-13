@@ -13,9 +13,12 @@ import {
   CardContent,
   Container,
   Grid,
+  IconButton,
   Toolbar,
   Typography,
 } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import RankingsView from './views/RankingsView';
 import ConferencesView from './views/ConferencesView';
 import ConferenceTeamsView from './views/ConferenceTeamsView';
@@ -24,8 +27,17 @@ import TeamView from './views/TeamView';
 import GameDetailsView from './views/GameDetailsView';
 import './App.css';
 import GamesView from './views/GamesView';
-import logo from './logo.svg';
 import FavoritesView from './views/FavoritesView';
+import { useColorMode } from './ThemeContext';
+
+const ThemeToggle = () => {
+  const { toggleColorMode, mode } = useColorMode();
+  return (
+    <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+      {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+    </IconButton>
+  );
+};
 
 const Home = () => (
   <Box sx={{ my: 4 }}>
@@ -96,14 +108,22 @@ const Home = () => (
 function App() {
   return (
     <Router>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        color="transparent"
+        elevation={0}
+        sx={{
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+        }}
+      >
         <Toolbar>
-          <img src={logo} className="App-logo" alt="logo" style={{ height: '40px', marginRight: '10px' }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold', letterSpacing: '1px' }}>
             <RouterLink to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Men's College Basketball Stats
+              CBB STATS
             </RouterLink>
           </Typography>
+          <ThemeToggle />
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg">

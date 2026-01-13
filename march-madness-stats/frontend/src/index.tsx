@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from '@mui/material/styles';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import theme from './theme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ThemeProvider } from './ThemeContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <App />
       </LocalizationProvider>
