@@ -24,6 +24,40 @@ You can see screen recordings and screenshots of the app [here](https://brandonl
 
 ## Tech Stack 🛠️
 
+```mermaid
+graph TD
+    subgraph "User Interface"
+        User([User]) -- Interacts with --> ReactApp{React Frontend}
+    end
+
+    subgraph "Frontend Application"
+        direction LR
+        ReactApp -- Built with --> React[React & TypeScript]
+        ReactApp -- Styled with --> MUI[Material-UI]
+        ReactApp -- Navigated by --> ReactRouter[React Router]
+        ReactApp -- Visualized with --> Plotly[Plotly.js]
+    end
+
+    subgraph "Backend Services"
+        direction LR
+        SpringBootApp{Spring Boot Backend} -- Built with --> Java[Java 21 & WebFlux]
+        SpringBootApp -- Dependencies via --> Maven[Maven]
+        SpringBootApp -- API defined by --> OpenAPI
+    end
+
+    subgraph "External Dependencies"
+        direction LR
+        CbbApi[College Basketball API]
+        Firebase[Firebase for Favorites]
+        Gemini[Google Gemini for Analysis]
+    end
+
+    ReactApp -- API Calls --> SpringBootApp
+    SpringBootApp -- Fetches Data --> CbbApi
+    ReactApp -- Interacts with --> Firebase
+    ReactApp -- Gets Analysis from --> Gemini
+```
+
 This project is a full-stack application with the following technologies:
 
 ### Frontend
