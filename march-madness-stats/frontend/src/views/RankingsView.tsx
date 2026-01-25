@@ -12,7 +12,7 @@ const columns = [
     { field: 'points', headerName: 'Points', width: 160, align: 'right' as TableCellProps['align'] },
     { field: 'firstPlaceVotes', headerName: 'First Place Votes', width: 160, align: 'right' as TableCellProps['align'] }
 ];
- 
+
 const conferenceFilterOptions = [
     { value: 'ACC', label: 'ACC' },
     { value: 'Big 12', label: 'Big 12' },
@@ -100,7 +100,7 @@ const RankingsView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Rankings
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
                 <TextField
                     select
                     label="Season"
@@ -131,7 +131,7 @@ const RankingsView: React.FC = () => {
                 <Button variant="contained" color="primary" onClick={handleSearchRankings} disabled={!searchWeek || !searchSeason}>
                     Get Rankings
                 </Button>
-                <Box sx={{ flexGrow: 1 }} /> 
+                <Box sx={{ flexGrow: 1 }} />
                 <Button aria-describedby={id} variant="contained" onClick={handleClick} disabled={!data.length}>
                     Filter By Conference
                 </Button>
@@ -163,7 +163,7 @@ const RankingsView: React.FC = () => {
                     </Box>
                 </Popover>
             </Box>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
                 <Table>
                     <TableHead>
                         <TableRow>

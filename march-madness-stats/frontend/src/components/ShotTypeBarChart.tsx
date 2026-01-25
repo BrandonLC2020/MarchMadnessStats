@@ -1,6 +1,6 @@
 // frontend/src/components/ShotTypeBarChart.tsx
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, useTheme } from '@mui/material';
 import Plot from 'react-plotly.js';
 import { PlayerSeasonShootingStats, SeasonShootingStats } from '../types/api';
 
@@ -9,6 +9,8 @@ interface ShotTypeBarChartProps {
 }
 
 const ShotTypeBarChart: React.FC<ShotTypeBarChartProps> = ({ shootingData }) => {
+  const theme = useTheme();
+
   if (!shootingData) {
     return null;
   }
@@ -35,7 +37,7 @@ const ShotTypeBarChart: React.FC<ShotTypeBarChartProps> = ({ shootingData }) => 
     name: 'Made',
     type: 'bar',
     marker: {
-      color: '#E67E22',
+      color: theme.palette.primary.main,
     },
     text: hoverTextMakes,
     hoverinfo: 'text',
@@ -48,7 +50,7 @@ const ShotTypeBarChart: React.FC<ShotTypeBarChartProps> = ({ shootingData }) => 
     name: 'Missed',
     type: 'bar',
     marker: {
-      color: '#F2F2F2',
+      color: theme.palette.mode === 'dark' ? '#333333' : '#F2F2F2',
     },
     text: hoverTextMisses,
     hoverinfo: 'text',
@@ -70,11 +72,30 @@ const ShotTypeBarChart: React.FC<ShotTypeBarChartProps> = ({ shootingData }) => 
             showlegend: true,
             height: 450,
             margin: { t: 10, b: 100, l: 40, r: 10 },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: {
+              color: theme.palette.text.primary,
+            },
             xaxis: {
               tickangle: -45,
+              tickfont: {
+                color: theme.palette.text.primary,
+              },
+              // gridcolor: theme.palette.divider, 
             },
             yaxis: {
-              title: { text: 'Shots' },
+              title: {
+                text: 'Shots',
+                font: {
+                  color: theme.palette.text.primary,
+                },
+              },
+              tickfont: {
+                color: theme.palette.text.primary,
+              },
+              gridcolor: theme.palette.divider,
+              zerolinecolor: theme.palette.divider,
             },
           }}
           config={{ displayModeBar: false }}

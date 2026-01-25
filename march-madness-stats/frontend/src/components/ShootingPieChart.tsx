@@ -1,6 +1,6 @@
 // frontend/src/components/ShootingPieChart.tsx
 import React from 'react';
-import { Card, CardContent, Box, Typography } from '@mui/material';
+import { Card, CardContent, Box, Typography, useTheme } from '@mui/material';
 import Plot from 'react-plotly.js';
 import { PlayerSeasonStats, TeamSeasonUnitStats } from '../types/api';
 
@@ -9,7 +9,9 @@ interface ShootingPieChartProps {
 }
 
 const PieChart: React.FC<{ title: string; made: number; attempted: number }> = ({ title, made, attempted }) => {
+  const theme = useTheme();
   const missed = attempted - made;
+
   const data = [
     {
       values: [made, missed],
@@ -17,7 +19,7 @@ const PieChart: React.FC<{ title: string; made: number; attempted: number }> = (
       type: 'pie',
       hole: 0.4,
       marker: {
-        colors: ['#E67E22', '#F2F2F2'],
+        colors: [theme.palette.primary.main, theme.palette.mode === 'dark' ? '#333333' : '#F2F2F2'],
       },
       textinfo: 'percent',
       hoverinfo: 'label+value',
@@ -35,6 +37,11 @@ const PieChart: React.FC<{ title: string; made: number; attempted: number }> = (
           showlegend: false,
           height: 200,
           margin: { t: 0, b: 0, l: 0, r: 0 },
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          font: {
+            color: theme.palette.text.primary,
+          },
         }}
         config={{ displayModeBar: false }}
         style={{ width: '100%' }}

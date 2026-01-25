@@ -900,6 +900,31 @@
                         "format": "double",
                         "nullable": true
                     },
+                    "freeThrows": {
+                        "properties": {
+                            "pct": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            },
+                            "attempted": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            },
+                            "made": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            }
+                        },
+                        "required": [
+                            "pct",
+                            "attempted",
+                            "made"
+                        ],
+                        "type": "object"
+                    },
                     "attemptsBreakdown": {
                         "properties": {
                             "threePointJumpers": {
@@ -1400,6 +1425,31 @@
                         "type": "number",
                         "format": "double",
                         "nullable": true
+                    },
+                    "freeThrows": {
+                        "properties": {
+                            "pct": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            },
+                            "attempted": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            },
+                            "made": {
+                                "type": "number",
+                                "format": "double",
+                                "nullable": true
+                            }
+                        },
+                        "required": [
+                            "pct",
+                            "attempted",
+                            "made"
+                        ],
+                        "type": "object"
                     },
                     "attemptsBreakdown": {
                         "properties": {
@@ -5426,8 +5476,8 @@
                         "name": "season",
                         "required": false,
                         "schema": {
-                            "format": "double",
-                            "type": "number"
+                            "format": "int32",
+                            "type": "integer"
                         }
                     },
                     {
@@ -5523,8 +5573,8 @@
                         "name": "season",
                         "required": false,
                         "schema": {
-                            "format": "double",
-                            "type": "number"
+                            "format": "int32",
+                            "type": "integer"
                         }
                     },
                     {
@@ -5620,8 +5670,8 @@
                         "name": "season",
                         "required": false,
                         "schema": {
-                            "format": "double",
-                            "type": "number"
+                            "format": "int32",
+                            "type": "integer"
                         }
                     },
                     {

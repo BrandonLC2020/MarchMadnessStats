@@ -16,7 +16,7 @@ const useGemini = () => {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
         const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY || "");
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         const prompt = `Analyze the following basketball data and provide a summary: ${JSON.stringify(data)}`;
         const result = await model.generateContent(prompt);
         const response = await result.response;

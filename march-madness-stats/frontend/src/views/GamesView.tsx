@@ -55,7 +55,7 @@ const GamesView: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Games
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
                 <TextField
                     select
                     label="Season Type"
@@ -67,9 +67,9 @@ const GamesView: React.FC = () => {
                     <MenuItem value='regular'>Regular</MenuItem>
                     <MenuItem value="postseason">Postseason</MenuItem>
                 </TextField>
-                <ToggleButtonGroup 
-                    exclusive 
-                    value={searchDateType} 
+                <ToggleButtonGroup
+                    exclusive
+                    value={searchDateType}
                     onChange={(event, newValue) => {
                         if (newValue !== null) {
                             setSearchDateType(newValue);
@@ -84,7 +84,7 @@ const GamesView: React.FC = () => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2, flexWrap: 'wrap' }}>
                 {searchDateType === 'range' ? (
                     <>
                         <DatePicker

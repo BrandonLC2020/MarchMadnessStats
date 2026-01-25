@@ -12,6 +12,16 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, delay = 0, teamColor, s
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
+  // Theme-aware shadow - blue glow in dark mode, subtle shadow in light mode
+  const getBoxShadow = () => {
+    if (teamColor) {
+      return `0 8px 32px 0 ${teamColor}22`;
+    }
+    return isDark
+      ? '0 8px 32px 0 rgba(0, 0, 0, 0.3), 0 0 20px rgba(100, 149, 237, 0.15)'
+      : '0 4px 20px 0 rgba(0, 0, 0, 0.08)';
+  };
+
   return (
     <Box
       component={motion.div}
@@ -31,21 +41,20 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, delay = 0, teamColor, s
         sx={{
           height: '100%',
           p: 3,
-          background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+          background: isDark
+            ? 'rgba(30, 30, 30, 0.6)'
+            : 'rgba(255, 255, 255, 0.85)',
           backdropFilter: 'blur(16px)',
           border: '1px solid',
           borderColor: teamColor
             ? teamColor
             : isDark
               ? 'rgba(255, 255, 255, 0.1)'
-              : 'rgba(255, 255, 255, 0.4)',
-          boxShadow: isDark ? '0 8px 32px 0 rgba(0, 0, 0, 0.3)' : '0 8px 32px 0 rgba(31, 38, 135, 0.1)',
+              : 'rgba(0, 0, 0, 0.08)',
+          boxShadow: getBoxShadow(),
           borderRadius: 4,
           overflow: 'hidden',
-          transition: 'border-color 0.3s ease',
-          ...(teamColor && {
-            boxShadow: `0 8px 32px 0 ${teamColor}22`,
-          }),
+          transition: 'border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease',
         }}
       >
         {children}

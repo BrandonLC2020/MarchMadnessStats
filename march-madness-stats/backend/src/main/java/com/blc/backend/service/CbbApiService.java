@@ -92,7 +92,8 @@ public class CbbApiService {
     }
 
     // --- Games ---
-    public Flux<GameInfo> getGames(String startDateRange, String endDateRange, String team, String conference, Integer season, String seasonType, String status, String tournament) {
+    public Flux<GameInfo> getGames(String startDateRange, String endDateRange, String team, String conference,
+            Integer season, String seasonType, String status, String tournament) {
         Map<String, Object> params = new HashMap<>();
         params.put("startDateRange", startDateRange);
         params.put("endDateRange", endDateRange);
@@ -105,8 +106,9 @@ public class CbbApiService {
         return performGetRequest("/games", params, GameInfo.class);
     }
 
-    public Flux<GameBoxScoreTeam> getGameTeams(String startDateRange, String endDateRange, String team, String conference, Double season, String seasonType, String tournament) {
-         Map<String, Object> params = new HashMap<>();
+    public Flux<GameBoxScoreTeam> getGameTeams(String startDateRange, String endDateRange, String team,
+            String conference, Integer season, String seasonType, String tournament) {
+        Map<String, Object> params = new HashMap<>();
         params.put("startDateRange", startDateRange);
         params.put("endDateRange", endDateRange);
         params.put("team", team);
@@ -117,7 +119,8 @@ public class CbbApiService {
         return performGetRequest("/games/teams", params, GameBoxScoreTeam.class);
     }
 
-    public Flux<GameBoxScorePlayers> getGamePlayers(String startDateRange, String endDateRange, String team, String conference, Double season, String seasonType, String tournament) {
+    public Flux<GameBoxScorePlayers> getGamePlayers(String startDateRange, String endDateRange, String team,
+            String conference, Integer season, String seasonType, String tournament) {
         Map<String, Object> params = new HashMap<>();
         params.put("startDateRange", startDateRange);
         params.put("endDateRange", endDateRange);
@@ -130,7 +133,8 @@ public class CbbApiService {
     }
 
     // --- Lines ---
-    public Flux<GameLines> getLines(Integer season, String team, String conference, String startDateRange, String endDateRange) {
+    public Flux<GameLines> getLines(Integer season, String team, String conference, String startDateRange,
+            String endDateRange) {
         Map<String, Object> params = new HashMap<>();
         params.put("season", season);
         params.put("team", team);
@@ -166,7 +170,6 @@ public class CbbApiService {
         }
         return performGetRequest("/rankings", params, PollTeamInfo.class);
     }
-
 
     // --- Ratings ---
     public Flux<SrsInfo> getSrs(Integer season, String team, String conference) {

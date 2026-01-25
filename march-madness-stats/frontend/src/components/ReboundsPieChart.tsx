@@ -1,6 +1,6 @@
 // frontend/src/components/ReboundsPieChart.tsx
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, useTheme } from '@mui/material';
 import Plot from 'react-plotly.js';
 import { TeamSeasonUnitStatsRebounds } from '../types/api';
 
@@ -9,6 +9,8 @@ interface ReboundsPieChartProps {
 }
 
 const ReboundsPieChart: React.FC<ReboundsPieChartProps> = ({ reboundsData }) => {
+  const theme = useTheme();
+
   if (!reboundsData) {
     return null;
   }
@@ -21,7 +23,7 @@ const ReboundsPieChart: React.FC<ReboundsPieChartProps> = ({ reboundsData }) => 
       type: 'pie',
       hole: 0.4,
       marker: {
-        colors: ['#E67E22', '#F2F2F2'],
+        colors: [theme.palette.primary.main, theme.palette.mode === 'dark' ? '#333333' : '#F2F2F2'],
       },
       textinfo: 'percent',
       hoverinfo: 'label+value',
@@ -40,6 +42,11 @@ const ReboundsPieChart: React.FC<ReboundsPieChartProps> = ({ reboundsData }) => 
             showlegend: true,
             height: 450,
             margin: { t: 10, b: 10, l: 10, r: 10 },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: {
+              color: theme.palette.text.primary,
+            },
           }}
           config={{ displayModeBar: false }}
           style={{ width: '100%' }}

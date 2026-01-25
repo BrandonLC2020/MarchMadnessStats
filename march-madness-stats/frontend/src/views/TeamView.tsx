@@ -19,6 +19,18 @@ import { db } from '../firebase';
 import GlassCard from '../components/GlassCard';
 import TeamLogo from '../components/TeamLogo';
 
+// Helper to calculate relative luminance and return contrasting text color
+const getContrastText = (hexColor: string): string => {
+    // Remove # if present
+    const hex = hexColor.replace('#', '');
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    // Calculate relative luminance using WCAG formula
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5 ? '#000000' : '#FFFFFF';
+};
+
 const TeamView: React.FC = () => {
     const location = useLocation();
     const { teamId } = useParams<{ teamId: string }>();
@@ -44,7 +56,7 @@ const TeamView: React.FC = () => {
                 setLoading(false);
                 return;
             }
-            if (teamData) return; 
+            if (teamData) return;
 
             try {
                 const data = await getTeams({ season: season });
@@ -263,6 +275,7 @@ const TeamView: React.FC = () => {
                         sx={{
                             borderRadius: '20px',
                             bgcolor: brandColor,
+                            color: getContrastText(brandColor),
                             '&:hover': { bgcolor: brandColor, filter: 'brightness(0.9)' },
                         }}
                     >
