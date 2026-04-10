@@ -1,0 +1,18 @@
+# =============================================================================
+# March Madness Stats — Terraform Variables
+# =============================================================================
+# Copy this file to terraform.tfvars or use -var-file flag:
+#   terraform plan -var-file=environments/dev.tfvars
+# =============================================================================
+
+aws_region  = "us-east-1"
+environment = "dev"
+
+# -- Networking ---------------------------------------------------------------
+# vpc_cidr = "10.0.0.0/16"
+
+# -- Backend (ECS Fargate) ---------------------------------------------------
+# backend_container_port = 8080
+# backend_cpu            = 256    # 0.25 vCPU (dev), 512 for prod
+# backend_memory         = 512    # MiB (dev), 1024 for prod
+# backend_desired_count  = 1      # 1 for dev, 2+ for prod
