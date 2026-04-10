@@ -18,14 +18,15 @@ March Madness Stats is a data-driven application that aggregates and visualizes 
 
 ```text
 /
-├── march-madness-stats/
-│   ├── backend/           # Spring Boot application
-│   │   ├── src/main/java  # Source code (API, Service, Config)
-│   │   ├── src/main/resources/schemas/swagger.json # Source for OpenAPI generation
-│   │   └── pom.xml        # Maven configuration
-│   └── frontend/          # React application
-│       ├── src/           # Components, hooks, views, types
-│       └── package.json   # Node.js dependencies and scripts
+├── backend/               # Spring Boot application
+│   ├── src/main/java      # Source code (API, Service, Config)
+│   ├── src/main/resources/schemas/swagger.json # Source for OpenAPI generation
+│   └── pom.xml            # Maven configuration
+├── frontend/              # React application
+│   ├── src/               # Components, hooks, views, types
+│   └── package.json       # Node.js dependencies and scripts
+├── infra/                 # Terraform infrastructure
+├── scripts/               # Utility scripts
 └── README.md              # General project documentation
 ```
 

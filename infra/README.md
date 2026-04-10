@@ -43,14 +43,14 @@ aws ssm put-parameter \
 
 ```bash
 # 1. Build the Docker image
-cd march-madness-stats/backend
+cd backend
 docker build -t mms-backend .
 
 # 2. Tag and push to ECR
 aws ecr get-login-password --region us-east-1 | \
   docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
 
-ECR_URL=$(terraform -chdir=../../infra output -raw ecr_repository_url)
+ECR_URL=$(terraform -chdir=../infra output -raw ecr_repository_url)
 docker tag mms-backend:latest $ECR_URL:latest
 docker push $ECR_URL:latest
 
@@ -65,15 +65,15 @@ aws ecs update-service \
 
 ```bash
 # 1. Build the React app
-cd march-madness-stats/frontend
+cd frontend
 npm run build
 
 # 2. Sync to S3
-S3_BUCKET=$(terraform -chdir=../../infra output -raw frontend_s3_bucket)
+S3_BUCKET=$(terraform -chdir=../infra output -raw frontend_s3_bucket)
 aws s3 sync build/ s3://$S3_BUCKET --delete
 
 # 3. Invalidate CloudFront cache
-CF_DIST_ID=$(terraform -chdir=../../infra output -raw cloudfront_distribution_url)
+CF_DIST_ID=$(terraform -chdir=../infra output -raw cloudfront_distribution_url)
 aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths "/*"
 ```
 

@@ -6,21 +6,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 March Madness Stats is a full-stack NCAA Men's College Basketball statistics application:
 
-- **Backend** (`march-madness-stats/backend/`): Spring Boot 3 "Edge Service" — proxies all data requests to the external [College Basketball Data API](https://collegebasketballdata.com/) using Spring WebFlux (reactive).
-- **Frontend** (`march-madness-stats/frontend/`): React 19 SPA with MUI 7, Plotly.js charts, Firebase (favorites/persistence), and Gemini AI analysis.
+- **Backend** (`backend/`): Spring Boot 3 "Edge Service" — proxies all data requests to the external [College Basketball Data API](https://collegebasketballdata.com/) using Spring WebFlux (reactive).
+- **Frontend** (`frontend/`): React 19 SPA with MUI 7, Plotly.js charts, Firebase (favorites/persistence), and Gemini AI analysis.
 
 ---
 
 ## Commands
 
-### Backend (from `march-madness-stats/backend/`)
+### Backend (from `backend/`)
 ```bash
 mvn clean install    # Build + run OpenAPI code generation (required first)
 mvn spring-boot:run  # Start on port 8080
 mvn test             # Run tests
 ```
 
-### Frontend (from `march-madness-stats/frontend/`)
+### Frontend (from `frontend/`)
 ```bash
 npm install   # Install dependencies
 npm start     # Start dev server on port 3000 (proxy → localhost:8080)
@@ -32,7 +32,7 @@ npm test      # Run tests
 
 ## Environment Setup
 
-Copy `march-madness-stats/sample.env` and populate values. The backend `.env` lives in `march-madness-stats/` (loaded by `java-dotenv`). The frontend `.env` lives in `march-madness-stats/frontend/`.
+Copy `sample.env` and populate values. The backend `.env` lives in the project root (loaded by `java-dotenv`). The frontend `.env` lives in `frontend/`.
 
 Required variables:
 - **Backend**: `CBB_API_KEY` — College Basketball Data API key
@@ -63,7 +63,7 @@ React View → custom hook → apiHelper.ts → GET /endpoint
 - **Styling**: Use MUI `SxProps` / Emotion. Avoid global CSS.
 
 ### When API Changes Are Needed
-1. Edit `march-madness-stats/backend/src/main/resources/schemas/swagger.json`
+1. Edit `backend/src/main/resources/schemas/swagger.json`
 2. Run `mvn clean install` to regenerate backend models/interfaces
 3. Implement the controller method
 4. Update `src/types/api.ts` in the frontend to match

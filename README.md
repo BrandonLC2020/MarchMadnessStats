@@ -84,8 +84,8 @@ This project is a full-stack application with the following technologies:
 
 The project is organized into two main directories:
 
-  * `march-madness-stats/backend/`: Contains the Spring Boot application that serves as the middleman between the frontend and the CBB API.
-  * `march-madness-stats/frontend/`: Contains the React single-page application that consumes data from the Spring Boot backend.
+  * `backend/`: Contains the Spring Boot application that serves as the middleman between the frontend and the CBB API.
+  * `frontend/`: Contains the React single-page application that consumes data from the Spring Boot backend.
 
 -----
 
@@ -103,7 +103,7 @@ To get this project up and running on your local machine, follow these steps.
 
 1.  **Navigate to the backend directory**:
     ```bash
-    cd march-madness-stats/backend
+    cd backend
     ```
 2.  **Install dependencies and build the project**: Maven will handle this process. The `openapi-generator-maven-plugin` will also generate the API controllers and models from the `swagger.json` file.
     ```bash
@@ -119,9 +119,9 @@ To get this project up and running on your local machine, follow these steps.
 
 1.  **Navigate to the frontend directory**:
     ```bash
-    cd march-madness-stats/frontend
+    cd frontend
     ```
-2.  **Create a `.env` file**: In the `march-madness-stats/frontend/` directory, create a `.env` file to specify the backend API URL and your Firebase/Gemini API keys.
+2.  **Create a `.env` file**: In the `frontend/` directory, create a `.env` file to specify the backend API URL and your Firebase/Gemini API keys.
     ```env
     LOCAL_BASE_URL=http://localhost:8080
     CBB_API_KEY=your_api_key_if_needed 

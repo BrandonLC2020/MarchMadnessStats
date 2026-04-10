@@ -24,28 +24,28 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-march-madness-stats/.LCKpom.xml~
-march-madness-stats/backend/.LCKpom.xml~
-march-madness-stats/frontend/.LCKpom.xml~
+.LCKpom.xml~
+backend/.LCKpom.xml~
+frontend/.LCKpom.xml~
 
 # dotenv File
-/march-madness-stats/.env
-/march-madness-stats/backend/src/main/resources/.env
-/march-madness-stats/frontend/.env
+/.env
+/backend/src/main/resources/.env
+/frontend/.env
 
 VM Instance March Madness Stats.rdp
 .vscode/
-march-madness-stats/backend/NCAAMB Schema
+backend/NCAAMB Schema
 
 # Maven build output
 target/
 
 # React frontend
-/march-madness-stats/frontend/node/
-/march-madness-stats/frontend/node_modules/
-/march-madness-stats/frontend/build/
-/march-madness-stats/frontend/npm-debug.log
-/march-madness-stats/frontend/package-lock.json
+/frontend/node/
+/frontend/node_modules/
+/frontend/build/
+/frontend/npm-debug.log
+/frontend/package-lock.json
 
 # Terraform
 infra/.terraform/
