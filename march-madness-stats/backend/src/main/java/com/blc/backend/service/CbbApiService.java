@@ -1,11 +1,16 @@
 package com.blc.backend.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import com.blc.backend.model.AdjustedEfficiencyInfo;
 import com.blc.backend.model.ConferenceHistory;
@@ -38,15 +43,28 @@ import reactor.core.publisher.Flux;
 public class CbbApiService {
 
     private final WebClient webClient;
+    private final Cache<String, List<?>> responseCache;
 
     @Value("${CBB_API_KEY}")
     private String cbbApiKey;
 
     public CbbApiService(WebClient.Builder webClientBuilder, @Value("${cbb.api.base-url}") String cbbApiBaseUrl) {
         this.webClient = webClientBuilder.baseUrl(cbbApiBaseUrl).build();
+        this.responseCache = Caffeine.newBuilder()
+                .expireAfterWrite(24, TimeUnit.HOURS)
+                .maximumSize(500)
+                .build();
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Flux<T> performGetRequest(String path, Map<String, Object> params, Class<T> responseType) {
+        String cacheKey = buildCacheKey(path, params, responseType);
+        
+        List<?> cachedList = this.responseCache.getIfPresent(cacheKey);
+        if (cachedList != null) {
+            return Flux.fromIterable((List<T>) cachedList);
+        }
+
         return this.webClient.get()
                 .uri(uriBuilder -> {
                     uriBuilder.path(path);
@@ -59,7 +77,22 @@ public class CbbApiService {
                 })
                 .header("Authorization", "Bearer " + cbbApiKey)
                 .retrieve()
-                .bodyToFlux(responseType);
+                .bodyToFlux(responseType)
+                .collectList()
+                .doOnNext(list -> this.responseCache.put(cacheKey, list))
+                .flatMapIterable(list -> list);
+    }
+
+    private String buildCacheKey(String path, Map<String, Object> params, Class<?> responseType) {
+        StringBuilder keyBuilder = new StringBuilder(path);
+        keyBuilder.append("?");
+        params.forEach((key, value) -> {
+            if (value != null) {
+                keyBuilder.append(key).append("=").append(value).append("&");
+            }
+        });
+        keyBuilder.append("type=").append(responseType.getSimpleName());
+        return keyBuilder.toString();
     }
 
     // --- Conferences ---
