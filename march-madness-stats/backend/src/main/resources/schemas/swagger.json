@@ -3852,6 +3852,37 @@
                 ],
                 "type": "object",
                 "additionalProperties": false
+            },
+            "SystemHealth": {
+                "properties": {
+                    "backendStatus": {
+                        "type": "string"
+                    },
+                    "apiConnectionStatus": {
+                        "type": "string"
+                    },
+                    "quotaLimit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "quotaRemaining": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "quotaReset": {
+                        "type": "integer",
+                        "format": "int64",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "backendStatus",
+                    "apiConnectionStatus"
+                ],
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {
@@ -3874,6 +3905,26 @@
         }
     },
     "paths": {
+        "/system/health": {
+            "get": {
+                "operationId": "GetSystemHealth",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SystemHealth"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "System"
+                ]
+            }
+        },
         "/venues": {
             "get": {
                 "operationId": "GetVenues",

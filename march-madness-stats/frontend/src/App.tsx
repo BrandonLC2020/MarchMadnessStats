@@ -25,6 +25,8 @@ import ConferenceTeamsView from './views/ConferenceTeamsView';
 import PlayerView from './views/PlayerView';
 import TeamView from './views/TeamView';
 import GameDetailsView from './views/GameDetailsView';
+import SettingsView from './views/SettingsView';
+import SettingsIcon from '@mui/icons-material/Settings';
 import './App.css';
 import GamesView from './views/GamesView';
 import FavoritesView from './views/FavoritesView';
@@ -123,8 +125,11 @@ function App() {
               CBB STATS
             </RouterLink>
           </Typography>
-          <ThemeToggle />
-        </Toolbar>
+            <ThemeToggle />
+            <IconButton sx={{ ml: 1 }} component={RouterLink} to="/settings" color="inherit">
+              <SettingsIcon />
+            </IconButton>
+          </Toolbar>
       </AppBar>
       <Container maxWidth="lg">
         <Routes>
@@ -137,6 +142,7 @@ function App() {
           <Route path="/team/:teamId" element={<TeamView />} />
           <Route path="/game/:gameId" element={<GameDetailsView />} />
           <Route path="/favorites" element={<FavoritesView />} />
+          <Route path="/settings" element={<SettingsView />} />
         </Routes>
       </Container>
     </Router>

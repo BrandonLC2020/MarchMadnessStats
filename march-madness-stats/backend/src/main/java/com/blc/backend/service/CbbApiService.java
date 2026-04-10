@@ -39,22 +39,50 @@ import com.blc.backend.model.VenueInfo;
 
 import reactor.core.publisher.Flux;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import reactor.core.publisher.Mono;
+
 @Service
 public class CbbApiService {
 
     private final WebClient webClient;
     private final Cache<String, List<?>> responseCache;
+    
+    // Quota monitoring
+    private final AtomicInteger quotaLimit = new AtomicInteger(-1);
+    private final AtomicInteger quotaRemaining = new AtomicInteger(-1);
+    private final AtomicReference<Long> quotaReset = new AtomicReference<>(null);
 
     @Value("${CBB_API_KEY}")
     private String cbbApiKey;
 
     public CbbApiService(WebClient.Builder webClientBuilder, @Value("${cbb.api.base-url}") String cbbApiBaseUrl) {
-        this.webClient = webClientBuilder.baseUrl(cbbApiBaseUrl).build();
+        this.webClient = webClientBuilder.baseUrl(cbbApiBaseUrl)
+                .filter(logAndExtractQuotaFilter())
+                .build();
         this.responseCache = Caffeine.newBuilder()
                 .expireAfterWrite(24, TimeUnit.HOURS)
                 .maximumSize(500)
                 .build();
     }
+    
+    private ExchangeFilterFunction logAndExtractQuotaFilter() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
+            clientResponse.headers().header("X-RateLimit-Limit").stream().findFirst()
+                    .map(Integer::parseInt).ifPresent(quotaLimit::set);
+            clientResponse.headers().header("X-RateLimit-Remaining").stream().findFirst()
+                    .map(Integer::parseInt).ifPresent(quotaRemaining::set);
+            clientResponse.headers().header("X-RateLimit-Reset").stream().findFirst()
+                    .map(Long::parseLong).ifPresent(quotaReset::set);
+            return Mono.just(clientResponse);
+        });
+    }
+
+    public Integer getQuotaLimit() { return quotaLimit.get() == -1 ? null : quotaLimit.get(); }
+    public Integer getQuotaRemaining() { return quotaRemaining.get() == -1 ? null : quotaRemaining.get(); }
+    public Long getQuotaReset() { return quotaReset.get(); }
 
     @SuppressWarnings("unchecked")
     private <T> Flux<T> performGetRequest(String path, Map<String, Object> params, Class<T> responseType) {

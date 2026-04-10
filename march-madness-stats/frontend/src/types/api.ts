@@ -747,3 +747,11 @@ export interface VenueInfo {
   state: string | null;
   country: string | null;
 }
+
+export interface SystemHealth {
+  backendStatus: string;
+  apiConnectionStatus: string;
+  quotaLimit: number | null;
+  quotaRemaining: number | null;
+  quotaReset: number | null;
+}
